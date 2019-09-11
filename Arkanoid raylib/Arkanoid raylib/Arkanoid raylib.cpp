@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include <math.h>
 struct Player
 {
 	Rectangle rectangle;		
@@ -25,6 +26,29 @@ int main(void)
 	Vector2 ballPosition = { GetScreenWidth() / 2, GetScreenHeight() / 2 };
 	Vector2 ballSpeed = { 0.0f, 0.0f };
 
+	const int brickAmmount = 112;
+	int brickLines=0;
+	Rectangle Brick[brickAmmount];
+	bool BrickExists[brickAmmount];
+
+	for (int i = 0; i < brickAmmount; i++)
+	{
+		BrickExists[i] = true;
+		Brick[i].height = 30;
+		Brick[i].width = 40;
+		Brick[i].y = 0;
+		Brick[i].x = 50 * i;
+		if (Brick[i].x + Brick[i].width >= GetScreenWidth())
+		{
+			while (Brick[i].x + Brick[i].width >= GetScreenWidth())
+			{
+				Brick[i].y += 40;
+				Brick[i].x -= GetScreenWidth();
+			}
+		}
+		brickLines+= Brick[i].width + 10;
+	}
+	brickLines = brickLines/GetScreenWidth();
 	int ballRadius = 10;
 
 	bool pause = 0;
@@ -32,10 +56,10 @@ int main(void)
 
 	SetTargetFPS(60);
 
-	while (!WindowShouldClose())    // Detect window close button or ESC key
+	while (!WindowShouldClose())    
 	{
 		// Update
-		
+
 		if (IsKeyPressed(KEY_ENTER)||IsKeyPressed('P')) pause = !pause;
 		if (!pause)
 		{
@@ -52,8 +76,8 @@ int main(void)
 			ballPosition.x += ballSpeed.x;
 			ballPosition.y += ballSpeed.y;
 			
+			//check
 			if (player.ballAttached == true)ballPosition = Vector2 { GetCenterPos(player), player.rectangle.y-ballRadius };
-			// Check walls collision for bouncing
 			if ((ballPosition.x >= (GetScreenWidth() - ballRadius)) || (ballPosition.x <= ballRadius)) ballSpeed.x *= -1.0f;
 			if ((ballPosition.y >= (GetScreenHeight() - ballRadius)) || (ballPosition.y <= ballRadius)) ballSpeed.y *= -1.0f;
 			
@@ -65,6 +89,45 @@ int main(void)
 					ballSpeed.x = (ballPosition.x - player.rectangle.x) / (GetCenterPos(player)) * 6;
 				}
 			}
+			
+			for (int i = 0; i < brickLines; i++)
+			{
+				if (BrickExists[i]==true)
+				{
+					// Hit below
+					if (((ballPosition.y - ballRadius) <= (Brick[i].y + Brick[i].height / 2)) &&
+						((ballPosition.y - ballRadius) > (Brick[i].y + Brick[i].height / 2 + ballSpeed.y)) &&
+						((fabs(ballPosition.x - Brick[i].x)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y < 0))
+					{
+						BrickExists[i] = false;
+						ballSpeed.y *= -1;
+					}
+					// Hit above
+					else if (((ballPosition.y + ballRadius) >= (Brick[i].y - Brick[i].height / 2)) &&
+						((ballPosition.y + ballRadius) < (Brick[i].y - Brick[i].height / 2 + ballSpeed.y)) &&
+						((fabs(ballPosition.x - Brick[i].x)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y > 0))
+					{
+						BrickExists[i] = false;
+						ballSpeed.y *= -1;
+					}
+					// Hit left
+					else if (((ballPosition.x + ballRadius) >= (Brick[i].x - Brick[i].width / 2)) &&
+						((ballPosition.x + ballRadius) < (Brick[i].x - Brick[i].width / 2 + ballSpeed.x)) &&
+						((fabs(ballPosition.y - Brick[i].y)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x > 0))
+					{
+						BrickExists[i] = false;
+						ballSpeed.x *= -1;
+					}
+					// Hit right
+					else if (((ballPosition.x - ballRadius) <= (Brick[i].x + Brick[i].width / 2)) &&
+						((ballPosition.x - ballRadius) > (Brick[i].x + Brick[i].width / 2 + ballSpeed.x)) &&
+						((fabs(ballPosition.y - Brick[i].y)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x < 0))
+					{
+						BrickExists[i] = false;
+						ballSpeed.x *= -1;
+					}
+				}
+			}
 		}
 		else framesCounter++;
 
@@ -74,12 +137,21 @@ int main(void)
 
 		ClearBackground(RAYWHITE);
 
+		for (int i = 0; i < brickAmmount; i++)
+		{
+			Color auxcolor;
+			if (i%2==0)	auxcolor = RED;
+			else auxcolor = BLUE;
+			if (BrickExists[i]==true)
+			{
+				DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
+			}
+		}
 		DrawCircleV(ballPosition, ballRadius, MAROON);
 		DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, BROWN);
 
 		if (pause && ((framesCounter / 30) % 2)) DrawText("PAUSED", 350, 200, 30, GRAY);
-
-		DrawFPS(10, 10);
+		//DrawText(TextFormat("filas: %i", brickLines), 10, 10, 20, BLACK);
 
 		EndDrawing();
 	}
@@ -91,7 +163,8 @@ float GetCenterPos(Player player)
 {
 	return player.centerPosition = player.rectangle.x + player.rectangle.width / 2;
 }
-/*#include <stdio.h>
+/*
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
