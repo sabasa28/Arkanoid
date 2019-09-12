@@ -1,11 +1,21 @@
 #include "raylib.h"
 #include <math.h>
+
+enum State
+{
+	Menu,
+	Gameplay,
+	FinalScreen,
+	Closing
+};
+State Gamestate = Gameplay;
 struct Player
 {
 	Rectangle rectangle;		
 	float speed;
 	bool ballAttached = true;
 	float centerPosition;
+	int vidas;
 };
 float GetCenterPos(Player player);
 
@@ -14,7 +24,7 @@ int main(void)
 	const int screenWidth = 800;
 	const int screenHeight = 450;
 
-	InitWindow(screenWidth, screenHeight, "Arkanoid raylib");
+	InitWindow(screenWidth, screenHeight, "Arkanoid raylib- Inaki Diez");//Iñaki
 
 	Player player;
 	player.rectangle.width = 100;
@@ -22,6 +32,7 @@ int main(void)
 	player.rectangle.x = GetScreenWidth() / 2;
 	player.rectangle.y = GetScreenHeight() - player.rectangle.height*2;
 	player.speed = 5;
+	player.vidas = 5;
 	
 	Vector2 ballPosition = { GetScreenWidth() / 2, GetScreenHeight() / 2 };
 	Vector2 ballSpeed = { 0.0f, 0.0f };
@@ -75,10 +86,14 @@ int main(void)
 			ballPosition.x += ballSpeed.x;
 			ballPosition.y += ballSpeed.y;
 			
+			if (ballPosition.y+ballRadius>=GetScreenHeight())
+			{
+				player.ballAttached = true;
+				player.vidas--;
+			}
 			if (player.ballAttached == true)ballPosition = Vector2 { GetCenterPos(player), player.rectangle.y-ballRadius };
 			if ((ballPosition.x >= (GetScreenWidth() - ballRadius)) || (ballPosition.x <= ballRadius)) ballSpeed.x *= -1.0f;
-			if ((ballPosition.y >= (GetScreenHeight() - ballRadius)) || (ballPosition.y <= ballRadius)) ballSpeed.y *= -1.0f;
-			
+			if ((ballPosition.y <= ballRadius)) ballSpeed.y *= -1.0f;
 			if (CheckCollisionCircleRec(ballPosition, ballRadius,player.rectangle))
 			{
 				if (ballSpeed.y > 0)
@@ -87,35 +102,34 @@ int main(void)
 					ballSpeed.x = (ballPosition.x - player.rectangle.x-player.rectangle.width/2) / (player.rectangle.width/2) * 5;
 				}
 			}
-			
 			for (int i = 0; i < brickAmmount; i++)
 			{
 				if (BrickExists[i]==true)
 				{
-					if (((ballPosition.y - ballRadius) <= (Brick[i].y + Brick[i].height / 2)) &&
+					if (((ballPosition.y - ballRadius) <= (Brick[i].y + Brick[i].height)) &&
 						((ballPosition.y - ballRadius) > (Brick[i].y + Brick[i].height / 2 + ballSpeed.y)) &&
-						((fabs(ballPosition.x - Brick[i].x)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y < 0))
+						((fabs(ballPosition.x - Brick[i].x - Brick[i].width / 2)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y < 0))
 					{
 						BrickExists[i] = false;
 						ballSpeed.y *= -1;
 					}
-					else if (((ballPosition.y + ballRadius) >= (Brick[i].y - Brick[i].height / 2)) &&
-						((ballPosition.y + ballRadius) < (Brick[i].y - Brick[i].height / 2 + ballSpeed.y)) &&
-						((fabs(ballPosition.x - Brick[i].x)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y > 0))
+					else if (((ballPosition.y + ballRadius) >= (Brick[i].y)) &&
+						((ballPosition.y + ballRadius) < (Brick[i].y + ballSpeed.y)) &&
+						((fabs(ballPosition.x - Brick[i].x - Brick[i].width / 2)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y > 0))
 					{
 						BrickExists[i] = false;
 						ballSpeed.y *= -1;
 					}
-					else if (((ballPosition.x + ballRadius) >= (Brick[i].x - Brick[i].width / 2)) &&
-						((ballPosition.x + ballRadius) < (Brick[i].x - Brick[i].width / 2 + ballSpeed.x)) &&
-						((fabs(ballPosition.y - Brick[i].y)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x > 0))
+					else if (((ballPosition.x + ballRadius) >= (Brick[i].x)) &&
+						((ballPosition.x + ballRadius) < (Brick[i].x + ballSpeed.x)) &&
+						((fabs(ballPosition.y - Brick[i].y - Brick[i].height / 2)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x > 0))
 					{
 						BrickExists[i] = false;
 						ballSpeed.x *= -1;
 					}
-					else if (((ballPosition.x - ballRadius) <= (Brick[i].x + Brick[i].width / 2)) &&
-						((ballPosition.x - ballRadius) > (Brick[i].x + Brick[i].width / 2 + ballSpeed.x)) &&
-						((fabs(ballPosition.y - Brick[i].y)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x < 0))
+					else if (((ballPosition.x - ballRadius) <= (Brick[i].x + Brick[i].width)) &&
+						((ballPosition.x - ballRadius) > (Brick[i].x + Brick[i].width + ballSpeed.x)) &&
+						((fabs(ballPosition.y - Brick[i].y - Brick[i].height / 2)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x < 0))
 					{
 						BrickExists[i] = false;
 						ballSpeed.x *= -1;
@@ -127,8 +141,9 @@ int main(void)
 
 		BeginDrawing();
 
-		ClearBackground(RAYWHITE);
+		ClearBackground(BLACK);
 
+		DrawText(TextFormat("Lives left: %i", player.vidas ), 40 ,GetScreenHeight()- 40, 20, GRAY);
 		for (int i = 0; i < brickAmmount; i++)
 		{
 			Color auxcolor;
@@ -139,8 +154,8 @@ int main(void)
 				DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
 			}
 		}
-		DrawCircleV(ballPosition, ballRadius, MAROON);
-		DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, BROWN);
+		DrawCircleV(ballPosition, ballRadius, YELLOW);
+		DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, GREEN);
 
 		if (pause && ((framesCounter / 30) % 2)) DrawText("PAUSED", 350, 200, 30, GRAY);
 
