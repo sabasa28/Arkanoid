@@ -10,14 +10,21 @@ struct Bounce {
 bool invertY = false;
 bool invertX = false;
 Bounce bounceSide;
+enum Scorestate
+{
+	lost,
+	won,
+	playing
+};
+Scorestate scorestate;
 enum State
 {
-	Menu,
-	Gameplay,
-	FinalScreen,
-	Closing
+	menu,
+	gameplay,
+	finalScreen,
+	closing
 };
-State Gamestate = Gameplay;
+State gamestate = gameplay;
 struct Player
 {
 	Rectangle rectangle;		
@@ -78,193 +85,168 @@ int main(void)
 
 	while (!WindowShouldClose())    
 	{
-
-		if (IsKeyPressed(KEY_ENTER)||IsKeyPressed('P')) pause = !pause;
-		if (!pause)
+		if (gamestate == gameplay)
 		{
-			if (IsKeyDown('T'))ballSpeed.y=-5.0f;
-			if (IsKeyDown('G'))ballSpeed.y=5.0f;
-			if (IsKeyDown('F'))ballSpeed.x=-2.5f;
-			if (IsKeyDown('H'))ballSpeed.x=2.5f;
+			if (IsKeyPressed(KEY_ENTER) || IsKeyPressed('P')) pause = !pause;
+			if (!pause)
+			{
+				if (IsKeyDown('T'))ballSpeed.y = -5.0f;
+				if (IsKeyDown('G'))ballSpeed.y = 5.0f;
+				if (IsKeyDown('F'))ballSpeed.x = -2.5f;
+				if (IsKeyDown('H'))ballSpeed.x = 2.5f;
 
-			if(player.rectangle.x+player.rectangle.width <= GetScreenWidth())
-				if (IsKeyDown(KEY_RIGHT) || IsKeyDown('D'))player.rectangle.x += player.speed;
-			if (player.rectangle.x >= 0)
-				if (IsKeyDown(KEY_LEFT)||IsKeyDown('A')) player.rectangle.x-=player.speed;
-			if (player.ballAttached == true)
-				if (IsKeyPressed(KEY_SPACE))
-				{
-					player.ballAttached = false;
-					ballSpeed = { 0.0f,-5.0f };
-				}
-			ballPosition.x += ballSpeed.x/1.5f;
-			ballPosition.y += ballSpeed.y;
-			
-			if (ballPosition.y+ballRadius>=GetScreenHeight())
-			{
-				player.ballAttached = true;
-				player.vidas--;
-			}
-			if (player.ballAttached == true)ballPosition = { GetCenterPos(player), player.rectangle.y-ballRadius };
-			if (ballPosition.x + ballRadius >= (GetScreenWidth())&&ballSpeed.x>0) ballSpeed.x *= -1.0f;
-			if (ballPosition.x <= ballRadius&&ballSpeed.x<0) ballSpeed.x *= -1.0f;
-			if ((ballPosition.y <= ballRadius)&&ballSpeed.y<0) ballSpeed.y *= -1.0f;
-			if (CheckCollisionCircleRec(ballPosition, ballRadius,player.rectangle))
-			{
-				if (ballSpeed.y > 0)
-				{
-					ballSpeed.y *= -1;
-					ballSpeed.x = (ballPosition.x - player.rectangle.x-player.rectangle.width/2) / (player.rectangle.width/2) * 5;
-				}
-			}
-			for (int i = 0; i < brickAmmount; i++)
-			{
-				if (BrickExists[i] == true && CheckCollisionCircleRec(ballPosition, ballRadius, Brick[i]))
-				{
-					if (ballSpeed.y < 0) {
-						if ((ballPosition.y - ballRadius) <= (Brick[i].y + Brick[i].height)) {
-							//ballSpeed.y *= -1;
-							bounceSide.down = true;
-							BrickExists[i] = false;
-						}
+				if (player.rectangle.x + player.rectangle.width <= GetScreenWidth())
+					if (IsKeyDown(KEY_RIGHT) || IsKeyDown('D'))player.rectangle.x += player.speed;
+				if (player.rectangle.x >= 0)
+					if (IsKeyDown(KEY_LEFT) || IsKeyDown('A')) player.rectangle.x -= player.speed;
+				if (player.ballAttached == true)
+					if (IsKeyPressed(KEY_SPACE))
+					{
+						player.ballAttached = false;
+						ballSpeed = { 0.0f,-5.0f };
 					}
+				ballPosition.x += ballSpeed.x;
+				ballPosition.y += ballSpeed.y;
+
+				if (ballPosition.y + ballRadius >= GetScreenHeight())
+				{
+					player.ballAttached = true;
+					player.vidas--;
+				}
+				if (player.ballAttached == true)ballPosition = { GetCenterPos(player), player.rectangle.y - ballRadius };
+				if (ballPosition.x + ballRadius >= (GetScreenWidth()) && ballSpeed.x > 0) ballSpeed.x *= -1.0f;
+				if (ballPosition.x <= ballRadius && ballSpeed.x < 0) ballSpeed.x *= -1.0f;
+				if ((ballPosition.y <= ballRadius) && ballSpeed.y < 0) ballSpeed.y *= -1.0f;
+				if (CheckCollisionCircleRec(ballPosition, ballRadius, player.rectangle))
+				{
 					if (ballSpeed.y > 0)
 					{
-						if ((ballPosition.y + ballRadius) >= (Brick[i].y)) {
-							//ballSpeed.y *= -1;
-							bounceSide.up = true;
-							BrickExists[i] = false;
-						}
+						ballSpeed.y *= -1;
+						ballSpeed.x = (ballPosition.x - player.rectangle.x - player.rectangle.width / 2) / (player.rectangle.width / 2) * 4;
 					}
-					if (ballSpeed.x < 0) {
-						if ((ballPosition.x - ballRadius) <= (Brick[i].x + Brick[i].width)) {
-							//ballSpeed.x *= -1;
-							bounceSide.right = true;
-							BrickExists[i] = false;
-						}
-					}
-					if (ballSpeed.x > 0) {
-						if ((ballPosition.x + ballRadius) >= (Brick[i].x)) {
-							//ballSpeed.x *= -1;
-							bounceSide.left = true;
-							BrickExists[i] = false;
-						}
-					}
-
-					
-					//if (bounceSide.left==true && bounceSide.right==true)
-					//{
-					//
-					//}
-					
-					if (bounceSide.down==true && bounceSide.up==true)
-					{
-						if (((Brick[i].y + Brick[i].height)-(ballPosition.y - ballRadius))< ((ballPosition.y + ballRadius)-(Brick[i].y))) bounceSide.up=false;
-						else bounceSide.down=false;
-					}
-					if (bounceSide.left == true && bounceSide.right == true)
-					{
-						if (((Brick[i].x + Brick[i].width) - (ballPosition.x - ballRadius)) < ((ballPosition.x + ballRadius) - (Brick[i].x))) bounceSide.right = false;
-						else bounceSide.left == false;
-					}
-					if (bounceSide.down==true)
-					{
-						if (bounceSide.left==true)
-						{
-							if (((Brick[i].y + Brick[i].height) - (ballPosition.y - ballRadius)) < ((ballPosition.x + ballRadius) - (Brick[i].x)))bounceSide.left = false;
-							else bounceSide.down = false;
-							
-						}
-						if (bounceSide.right==true)
-						{
-							if (((Brick[i].y + Brick[i].height) - (ballPosition.y - ballRadius)) < ((Brick[i].x + Brick[i].width) - (ballPosition.x - ballRadius)))bounceSide.right = false;
-							else bounceSide.down = false;
-						}
-					}
-					if (bounceSide.up==true)
-					{
-						if (bounceSide.left==true)
-						{
-							if (((ballPosition.y + ballRadius)- (Brick[i].y))< ((ballPosition.x + ballRadius) - (Brick[i].x)))bounceSide.left = false;
-							else bounceSide.up = false;
-						}
-						if (bounceSide.right == true)
-						{
-							if (((ballPosition.y + ballRadius) - (Brick[i].y)) < ((Brick[i].x + Brick[i].width) - (ballPosition.x - ballRadius)))bounceSide.right = false;
-							else bounceSide.up = false;
-						}						
-					}
-					if (bounceSide.right == true && ballSpeed.x < 0) invertX = true;
-					if (bounceSide.left == true && ballSpeed.x > 0) invertX = true;
-					if (bounceSide.down == true && ballSpeed.y< 0) invertY= true;
-					if (bounceSide.up == true && ballSpeed.y> 0) invertY= true;
-					bounceSide.up = false;
-					bounceSide.down = false;
-					bounceSide.left = false;
-					bounceSide.right = false;
 				}
-				if (invertY == true)ballSpeed.y *= -1.0f;
-				if (invertX == true)ballSpeed.x *= -1.0f;
-				invertX = false;
-				invertY = false;
-					/*
-					if (((ballPosition.y - ballRadius) <= (Brick[i].y + Brick[i].height)) &&
-						((ballPosition.y - ballRadius) > (Brick[i].y + Brick[i].height + ballSpeed.y)) &&
-						((fabs(ballPosition.x - Brick[i].x - Brick[i].width / 2)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y < 0))
+				for (int i = 0; i < brickAmmount; i++)
+				{
+					if (BrickExists[i] == true && CheckCollisionCircleRec(ballPosition, ballRadius, Brick[i]))
 					{
-						BrickExists[i] = false;
-						ballSpeed.y *= -1;
+						if (ballSpeed.y < 0) {
+							if ((ballPosition.y - ballRadius) <= (Brick[i].y + Brick[i].height)) {
+								bounceSide.down = true;
+								BrickExists[i] = false;
+							}
+						}
+						if (ballSpeed.y > 0)
+						{
+							if ((ballPosition.y + ballRadius) >= (Brick[i].y)) {
+								bounceSide.up = true;
+								BrickExists[i] = false;
+							}
+						}
+						if (ballSpeed.x < 0) {
+							if ((ballPosition.x - ballRadius) <= (Brick[i].x + Brick[i].width)) {
+								bounceSide.right = true;
+								BrickExists[i] = false;
+							}
+						}
+						if (ballSpeed.x > 0) {
+							if ((ballPosition.x + ballRadius) >= (Brick[i].x)) {
+								bounceSide.left = true;
+								BrickExists[i] = false;
+							}
+						}
+						if (bounceSide.down == true && bounceSide.up == true)
+						{
+							if (((Brick[i].y + Brick[i].height) - (ballPosition.y - ballRadius)) < ((ballPosition.y + ballRadius) - (Brick[i].y))) bounceSide.up = false;
+							else bounceSide.down = false;
+						}
+						if (bounceSide.left == true && bounceSide.right == true)
+						{
+							if (((Brick[i].x + Brick[i].width) - (ballPosition.x - ballRadius)) < ((ballPosition.x + ballRadius) - (Brick[i].x))) bounceSide.right = false;
+							else bounceSide.left == false;
+						}
+						if (bounceSide.down == true)
+						{
+							if (bounceSide.left == true)
+							{
+								if (((Brick[i].y + Brick[i].height) - (ballPosition.y - ballRadius)) < ((ballPosition.x + ballRadius) - (Brick[i].x)))bounceSide.left = false;
+								else bounceSide.down = false;
+
+							}
+							if (bounceSide.right == true)
+							{
+								if (((Brick[i].y + Brick[i].height) - (ballPosition.y - ballRadius)) < ((Brick[i].x + Brick[i].width) - (ballPosition.x - ballRadius)))bounceSide.right = false;
+								else bounceSide.down = false;
+							}
+						}
+						if (bounceSide.up == true)
+						{
+							if (bounceSide.left == true)
+							{
+								if (((ballPosition.y + ballRadius) - (Brick[i].y)) < ((ballPosition.x + ballRadius) - (Brick[i].x)))bounceSide.left = false;
+								else bounceSide.up = false;
+							}
+							if (bounceSide.right == true)
+							{
+								if (((ballPosition.y + ballRadius) - (Brick[i].y)) < ((Brick[i].x + Brick[i].width) - (ballPosition.x - ballRadius)))bounceSide.right = false;
+								else bounceSide.up = false;
+							}
+						}
+						if (bounceSide.right == true && ballSpeed.x < 0) invertX = true;
+						if (bounceSide.left == true && ballSpeed.x > 0) invertX = true;
+						if (bounceSide.down == true && ballSpeed.y < 0) invertY = true;
+						if (bounceSide.up == true && ballSpeed.y > 0) invertY = true;
+						bounceSide.up = false;
+						bounceSide.down = false;
+						bounceSide.left = false;
+						bounceSide.right = false;
 					}
-					else if (((ballPosition.y + ballRadius) >= (Brick[i].y)) &&
-						((ballPosition.y + ballRadius) < (Brick[i].y + ballSpeed.y)) &&
-						((fabs(ballPosition.x - Brick[i].x - Brick[i].width / 2)) < (Brick[i].width / 2 + ballRadius * 2 / 3)) && (ballSpeed.y > 0))
+					if (invertY == true)ballSpeed.y *= -1.0f;
+					if (invertX == true)ballSpeed.x *= -1.0f;
+					invertX = false;
+					invertY = false;
+				}
+				if (player.vidas <= 0)
+				{
+					gamestate = finalScreen;
+					scorestate = lost;
+				}
+				BeginDrawing();
+				ClearBackground(BLACK);
+				DrawText(TextFormat("Lives left: %i", player.vidas ), 40 ,GetScreenHeight()- 40, 20, GRAY);
+				for (int i = 0; i < brickAmmount; i++)
+				{
+					Color auxcolor;
+					if (i%2==0)	auxcolor = RED;
+					else auxcolor = BLUE;
+					if (BrickExists[i]==true)
 					{
-						BrickExists[i] = false;
-						ballSpeed.y *= -1;
+						DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
 					}
-					else if (((ballPosition.x + ballRadius) >= (Brick[i].x)) &&
-						((ballPosition.x + ballRadius) < (Brick[i].x + ballSpeed.x)) &&
-						((fabs(ballPosition.y - Brick[i].y - Brick[i].height / 2)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x > 0))
-					{
-						BrickExists[i] = false;
-						ballSpeed.x *= -1;
-					}
-					else if (((ballPosition.x - ballRadius) <= (Brick[i].x + Brick[i].width)) &&
-						((ballPosition.x - ballRadius) > (Brick[i].x + Brick[i].width + ballSpeed.x)) &&
-						((fabs(ballPosition.y - Brick[i].y - Brick[i].height / 2)) < (Brick[i].height / 2 + ballRadius * 2 / 3)) && (ballSpeed.x < 0))
-					{
-						BrickExists[i] = false;
-						ballSpeed.x *= -1;
-					}
-					*/
-				
+				}
+				DrawCircleV(ballPosition, ballRadius, YELLOW);
+				DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, GREEN);
+				if (pause && ((framesCounter / 30) % 2)) DrawText("PAUSED", 350, 200, 30, GRAY);
+				EndDrawing();
 			}
+			if (gamestate==finalScreen)
+			{
+				BeginDrawing();
+				ClearBackground(BLUE);
+				if (scorestate==lost)
+				{
+					DrawText("Perdiste :(", screenWidth / 2, screenHeight / 2, 50, WHITE);
+				}
+				if (scorestate == won)
+				{
+					DrawText("Ganaste :)", screenWidth / 2, screenHeight / 2, 50, WHITE);
+				}
+				EndDrawing();
+			}
+
 		}
 		else framesCounter++;
 
-		BeginDrawing();
-
-		ClearBackground(BLACK);
-
-		DrawText(TextFormat("Lives left: %i", player.vidas ), 40 ,GetScreenHeight()- 40, 20, GRAY);
-		for (int i = 0; i < brickAmmount; i++)
-		{
-			Color auxcolor;
-			if (i%2==0)	auxcolor = RED;
-			else auxcolor = BLUE;
-			if (BrickExists[i]==true)
-			{
-				DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
-			}
-		}
-		DrawCircleV(ballPosition, ballRadius, YELLOW);
-		DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, GREEN);
-
-		if (pause && ((framesCounter / 30) % 2)) DrawText("PAUSED", 350, 200, 30, GRAY);
-
-		EndDrawing();
 	}
-
 	CloseWindow();
 	return 0;
 }
