@@ -20,11 +20,12 @@ Scorestate scorestate;
 enum State
 {
 	menu,
+	resetingValues,
 	gameplay,
 	finalScreen,
 	closing
 };
-State gamestate = gameplay;
+State gamestate = menu;
 struct Player
 {
 	Rectangle rectangle;		
@@ -34,7 +35,7 @@ struct Player
 	int vidas;
 };
 float GetCenterPos(Player player);
-
+int bricksRemmaining = 0;
 int main(void)
 {
 	const int screenWidth = 800;
@@ -53,7 +54,7 @@ int main(void)
 	Vector2 ballPosition = { GetScreenWidth() / 2, GetScreenHeight() / 2 };
 	Vector2 ballSpeed = { 0.0f, 0.0f };
 
-	const int brickAmmount = 112;
+	const int brickAmmount = 64;
 	int brickLines=0;
 	Rectangle Brick[brickAmmount];
 	bool BrickExists[brickAmmount];
@@ -82,9 +83,59 @@ int main(void)
 	int framesCounter = 0;
 
 	SetTargetFPS(60);
-
+	Rectangle Jugar;
+	Jugar.width = screenWidth / 3;
+	Jugar.height = screenHeight / 6;
+	Jugar.x = screenWidth / 2 - Jugar.width / 2;
+	Jugar.y = screenHeight / 4;
+	Rectangle Opciones;
+	Opciones.width = screenWidth / 3;
+	Opciones.height = screenHeight / 6;
+	Opciones.x = screenWidth / 2 - Jugar.width / 2;
+	Opciones.y = screenHeight / 2.2;
+	Rectangle Salir;
+	Salir.width = screenWidth / 3;
+	Salir.height = screenHeight / 6;
+	Salir.x = screenWidth / 2 - Jugar.width / 2;
+	Salir.y = screenHeight / 1.5;
+	int opciones = 3;
+	Color colorOpciones3=BLUE;
+	Color colorOpciones2=WHITE;
+	Color colorOpciones1 = WHITE;
 	while (!WindowShouldClose())    
 	{
+		if (gamestate == menu)
+		{
+			if (IsKeyPressed(KEY_ENTER)) gamestate = gameplay;
+			if (IsKeyPressed(KEY_DOWN))opciones--;
+			if (IsKeyPressed(KEY_UP))opciones++;
+			if (opciones < 1)opciones = 3;
+			if (opciones > 3)opciones = 1;
+			if (opciones==1)
+			{
+				colorOpciones3 = WHITE;
+				colorOpciones2 = WHITE;
+				colorOpciones1 = BLUE;
+			}
+			if (opciones == 2)
+			{
+				colorOpciones3 = WHITE;
+				colorOpciones2 = BLUE;
+				colorOpciones1 = WHITE;
+			}
+			if (opciones == 3)
+			{
+				colorOpciones3 = BLUE;
+				colorOpciones2 = WHITE;
+				colorOpciones1 = WHITE;
+			}
+			BeginDrawing();
+			ClearBackground(BLACK);
+			DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, colorOpciones3);
+			DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, colorOpciones2);
+			DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, colorOpciones1);
+			EndDrawing();
+		}
 		if (gamestate == gameplay)
 		{
 			if (IsKeyPressed(KEY_ENTER) || IsKeyPressed('P')) pause = !pause;
@@ -210,6 +261,16 @@ int main(void)
 					gamestate = finalScreen;
 					scorestate = lost;
 				}
+				bricksRemmaining = 0;
+				for (int i = 0; i < brickAmmount; i++)
+				{
+					if (BrickExists[i] == true)bricksRemmaining += 1;
+				}
+				if (bricksRemmaining==0)
+				{
+					gamestate = finalScreen;
+					scorestate = won;
+				}
 				BeginDrawing();
 				ClearBackground(BLACK);
 				DrawText(TextFormat("Lives left: %i", player.vidas ), 40 ,GetScreenHeight()- 40, 20, GRAY);
@@ -228,24 +289,37 @@ int main(void)
 				if (pause && ((framesCounter / 30) % 2)) DrawText("PAUSED", 350, 200, 30, GRAY);
 				EndDrawing();
 			}
-			if (gamestate==finalScreen)
-			{
-				BeginDrawing();
-				ClearBackground(BLUE);
-				if (scorestate==lost)
-				{
-					DrawText("Perdiste :(", screenWidth / 2, screenHeight / 2, 50, WHITE);
-				}
-				if (scorestate == won)
-				{
-					DrawText("Ganaste :)", screenWidth / 2, screenHeight / 2, 50, WHITE);
-				}
-				EndDrawing();
-			}
 
 		}
 		else framesCounter++;
-
+		if (gamestate == finalScreen)
+		{
+			if (IsKeyDown('R'))gamestate = resetingValues;
+			BeginDrawing();
+			ClearBackground(BLUE);
+			if (scorestate == lost)
+			{
+				DrawText("Perdiste :(", screenWidth / 3, screenHeight / 3, 50, WHITE);
+			}
+			if (scorestate == won)
+			{
+				DrawText("Ganaste :)", screenWidth / 3, screenHeight / 3, 50, WHITE);
+			}
+			DrawText("Presiona 'R' para jugar de nuevo ;)", screenWidth/3, screenHeight/2, 30, WHITE);
+			EndDrawing();
+		}
+		if (gamestate==resetingValues)
+		{
+			for (int i = 0; i < brickAmmount; i++)
+			{
+				BrickExists[i] = true;
+			}
+			player.rectangle.x = GetScreenWidth() / 2;
+			player.vidas = 5;
+			player.ballAttached = true;
+			ballPosition = { GetCenterPos(player), player.rectangle.y - ballRadius };
+			gamestate = gameplay;
+		}
 	}
 	CloseWindow();
 	return 0;
