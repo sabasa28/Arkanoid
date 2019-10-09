@@ -2,10 +2,10 @@
 #include <math.h>
 
 struct Bounce {
-	bool right= false;
-	bool left= false;
-	bool up= false;
-	bool down= false;
+	bool right = false;
+	bool left = false;
+	bool up = false;
+	bool down = false;
 };
 bool invertY = false;
 bool invertX = false;
@@ -28,7 +28,7 @@ enum State
 State gamestate = menu;
 struct Player
 {
-	Rectangle rectangle;		
+	Rectangle rectangle;
 	float speed;
 	bool ballAttached = true;
 	float centerPosition;
@@ -47,15 +47,15 @@ int main(void)
 	player.rectangle.width = 100;
 	player.rectangle.height = 10;
 	player.rectangle.x = GetScreenWidth() / 2;
-	player.rectangle.y = GetScreenHeight() - player.rectangle.height*2;
+	player.rectangle.y = GetScreenHeight() - player.rectangle.height * 2;
 	player.speed = 5;
 	player.vidas = 5;
-	
+
 	Vector2 ballPosition = { GetScreenWidth() / 2, GetScreenHeight() / 2 };
 	Vector2 ballSpeed = { 0.0f, 0.0f };
 
 	const int brickAmmount = 64;
-	int brickLines=0;
+	int brickLines = 0;
 	Rectangle Brick[brickAmmount];
 	bool BrickExists[brickAmmount];
 
@@ -74,9 +74,9 @@ int main(void)
 				Brick[i].x -= GetScreenWidth();
 			}
 		}
-		brickLines+= Brick[i].width + 10;
+		brickLines += Brick[i].width + 10;
 	}
-	brickLines = brickLines/GetScreenWidth();
+	brickLines = brickLines / GetScreenWidth();
 	int ballRadius = 10;
 
 	bool pause = 0;
@@ -99,41 +99,48 @@ int main(void)
 	Salir.x = screenWidth / 2 - Jugar.width / 2;
 	Salir.y = screenHeight / 1.5;
 	int opciones = 3;
-	Color colorOpciones3=BLUE;
-	Color colorOpciones2=WHITE;
+	Color colorOpciones3 = BLUE;
+	Color colorOpciones2 = WHITE;
 	Color colorOpciones1 = WHITE;
-	while (!WindowShouldClose())    
+	Color playText = WHITE;
+	while (!WindowShouldClose() && gamestate != closing)
 	{
 		if (gamestate == menu)
 		{
-			if (IsKeyPressed(KEY_ENTER)) gamestate = gameplay;
 			if (IsKeyPressed(KEY_DOWN))opciones--;
 			if (IsKeyPressed(KEY_UP))opciones++;
 			if (opciones < 1)opciones = 3;
 			if (opciones > 3)opciones = 1;
-			if (opciones==1)
+			if (opciones == 1)
 			{
 				colorOpciones3 = WHITE;
 				colorOpciones2 = WHITE;
 				colorOpciones1 = BLUE;
+				playText = BLUE;
+				if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
 			}
 			if (opciones == 2)
 			{
 				colorOpciones3 = WHITE;
 				colorOpciones2 = BLUE;
 				colorOpciones1 = WHITE;
+				playText = BLUE;
 			}
 			if (opciones == 3)
 			{
+				if (IsKeyPressed(KEY_ENTER)) gamestate = gameplay;
 				colorOpciones3 = BLUE;
 				colorOpciones2 = WHITE;
 				colorOpciones1 = WHITE;
+				playText = WHITE;
+
 			}
 			BeginDrawing();
 			ClearBackground(BLACK);
 			DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, colorOpciones3);
 			DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, colorOpciones2);
 			DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, colorOpciones1);
+			DrawText("Play", Jugar.x + Jugar.width / 3,Jugar.y+Jugar.height/6,50,playText);
 			EndDrawing();
 		}
 		if (gamestate == gameplay)
@@ -251,11 +258,25 @@ int main(void)
 						bounceSide.left = false;
 						bounceSide.right = false;
 					}
-					if (invertY == true)ballSpeed.y *= -1.0f;
-					if (invertX == true)ballSpeed.x *= -1.0f;
-					invertX = false;
-					invertY = false;
+					if (invertY == true)
+					{
+						ballSpeed.y *= -1.0f;
+						invertY = false;
+						break;
+					}
+					if (invertX == true)
+					{
+						invertX = false;
+						ballSpeed.x *= -1.0f;
+						break;
+					}
+					
+					
 				}
+
+
+
+
 				if (player.vidas <= 0)
 				{
 					gamestate = finalScreen;
@@ -266,20 +287,20 @@ int main(void)
 				{
 					if (BrickExists[i] == true)bricksRemmaining += 1;
 				}
-				if (bricksRemmaining==0)
+				if (bricksRemmaining == 0)
 				{
 					gamestate = finalScreen;
 					scorestate = won;
 				}
 				BeginDrawing();
 				ClearBackground(BLACK);
-				DrawText(TextFormat("Lives left: %i", player.vidas ), 40 ,GetScreenHeight()- 40, 20, GRAY);
+				DrawText(TextFormat("Lives left: %i", player.vidas), 40, GetScreenHeight() - 40, 20, GRAY);
 				for (int i = 0; i < brickAmmount; i++)
 				{
 					Color auxcolor;
-					if (i%2==0)	auxcolor = RED;
+					if (i % 2 == 0)	auxcolor = RED;
 					else auxcolor = BLUE;
-					if (BrickExists[i]==true)
+					if (BrickExists[i] == true)
 					{
 						DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
 					}
@@ -305,10 +326,10 @@ int main(void)
 			{
 				DrawText("Ganaste :)", screenWidth / 3, screenHeight / 3, 50, WHITE);
 			}
-			DrawText("Presiona 'R' para jugar de nuevo ;)", screenWidth/3, screenHeight/2, 30, WHITE);
+			DrawText("Presiona 'R' para jugar de nuevo B)", screenWidth / 6, screenHeight / 2, 30, WHITE);
 			EndDrawing();
 		}
-		if (gamestate==resetingValues)
+		if (gamestate == resetingValues)
 		{
 			for (int i = 0; i < brickAmmount; i++)
 			{
