@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Arkanoid raylib.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="ball.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -31,6 +28,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="console.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

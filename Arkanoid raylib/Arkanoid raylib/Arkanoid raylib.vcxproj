@@ -129,7 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Arkanoid raylib.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="blocks.cpp" />
     <ClCompile Include="console.cpp" />
