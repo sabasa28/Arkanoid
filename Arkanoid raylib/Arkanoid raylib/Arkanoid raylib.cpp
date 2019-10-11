@@ -20,6 +20,7 @@ Scorestate scorestate;
 enum State
 {
 	menu,
+	options,
 	resetingValues,
 	gameplay,
 	finalScreen,
@@ -78,8 +79,8 @@ int main(void)
 	}
 	brickLines = brickLines / GetScreenWidth();
 	int ballRadius = 10;
-
-	bool pause = 0;
+	SetExitKey(NULL);
+	bool pause = false;
 	int framesCounter = 0;
 
 	SetTargetFPS(60);
@@ -134,7 +135,7 @@ int main(void)
 			if (opciones == 1)
 			{
 				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-				DrawText("Play", screenWidth/ playText.x, screenHeight/playText.y, screenHeight/playText.font, notSelectedText);
+				DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
 				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
 				DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
 				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, selectedOption);
@@ -144,28 +145,72 @@ int main(void)
 			if (opciones == 2)
 			{
 				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-				DrawText("Play", screenWidth/ playText.x, screenHeight/ playText.y, screenHeight/ playText.font, notSelectedText);
+				DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
 				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, selectedOption);
 				DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, selectedText);
 				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
 				DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
+				if (IsKeyDown(KEY_ENTER))
+				{
+					gamestate = options;
+					opciones = 3;
+				}
 			}
 			if (opciones == 3)
 			{
 				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, selectedOption);
-				DrawText("Play", screenWidth/ playText.x, screenHeight / playText.y, screenHeight/playText.font, selectedText);
+				DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, selectedText);
 				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
 				DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
 				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
 				DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
+				if (IsKeyDown(KEY_ENTER)&&gamestate==menu) gamestate = gameplay;
+			}
+			EndDrawing();
+		}
+		if (gamestate == options)
+		{
+			if (IsKeyPressed(KEY_DOWN))opciones--;
+			if (IsKeyPressed(KEY_UP))opciones++;
+			if (opciones < 1)opciones = 3;
+			if (opciones > 3)opciones = 1;
+			BeginDrawing();
+			ClearBackground(BLACK);
+			if (opciones == 1)
+			{
+				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
+				//DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
+				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
+				//DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
+				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, selectedOption);
+				//DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, selectedText);
+				if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
+			}
+			if (opciones == 2)
+			{
+				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
+				//DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
+				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, selectedOption);
+				//DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, selectedText);
+				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
+				//DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
+			}
+			if (opciones == 3)
+			{
+				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, selectedOption);
+				//DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, selectedText);
+				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
+				//DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
+				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
+				//DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
 				if (IsKeyPressed(KEY_ENTER)) gamestate = gameplay;
 			}
 			EndDrawing();
 		}
 		if (gamestate == gameplay)
 		{
-			if (IsKeyPressed(KEY_ENTER) || IsKeyPressed('P')) pause = !pause;
-			if (!pause)
+			if (IsKeyPressed(KEY_ESCAPE)) pause = !pause;
+			if (pause == false)
 			{
 				if (IsKeyDown('T'))ballSpeed.y = -5.0f;
 				if (IsKeyDown('G'))ballSpeed.y = 5.0f;
@@ -209,7 +254,7 @@ int main(void)
 						if (ballSpeed.y < 0) {
 							if ((ballPosition.y - ballRadius) <= (Brick[i].y + Brick[i].height)) {
 								bounceSide.down = true;
-								BrickExists[i] = false;
+								BrickExists[i] = false;   // TENER UNO SOLO DE ESTOS EN EL IF GENERAL
 							}
 						}
 						if (ballSpeed.y > 0)
@@ -289,13 +334,7 @@ int main(void)
 						ballSpeed.x *= -1.0f;
 						break;
 					}
-					
-					
 				}
-
-
-
-
 				if (player.vidas <= 0)
 				{
 					gamestate = finalScreen;
@@ -311,27 +350,62 @@ int main(void)
 					gamestate = finalScreen;
 					scorestate = won;
 				}
-				BeginDrawing();
-				ClearBackground(BLACK);
-				DrawText(TextFormat("Lives left: %i", player.vidas), 40, GetScreenHeight() - 40, 20, GRAY);
-				for (int i = 0; i < brickAmmount; i++)
-				{
-					Color auxcolor;
-					if (i % 2 == 0)	auxcolor = RED;
-					else auxcolor = BLUE;
-					if (BrickExists[i] == true)
-					{
-						DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
-					}
-				}
-				DrawCircleV(ballPosition, ballRadius, YELLOW);
-				DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, GREEN);
-				if (pause && ((framesCounter / 30) % 2)) DrawText("PAUSED", 350, 200, 30, GRAY);
-				EndDrawing();
 			}
-
+			if (pause&&IsKeyPressed(KEY_DOWN))opciones--;
+			if (pause&&IsKeyPressed(KEY_UP))opciones++;
+			if (opciones < 1)opciones = 3;
+			if (opciones > 3)opciones = 1;
+			framesCounter++;
+			BeginDrawing();
+			ClearBackground(BLACK);
+			DrawText(TextFormat("Lives left: %i", player.vidas), 40, GetScreenHeight() - 40, 20, GRAY);
+			for (int i = 0; i < brickAmmount; i++)
+			{
+				Color auxcolor;
+				if (i % 2 == 0)	auxcolor = RED;
+				else auxcolor = BLUE;
+				if (BrickExists[i] == true)
+				{
+					DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
+				}
+			}
+			DrawCircleV(ballPosition, ballRadius, YELLOW);
+			DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, GREEN);
+			if (pause)
+			{
+				if (((framesCounter / 30) % 2)) DrawText("PAUSED", 350, screenHeight / 8, 30, GRAY);
+				if (opciones == 3)
+				{
+					DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, selectedOption);
+					DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
+					DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
+					DrawText("Return", screenWidth / optionsText.x, screenHeight / playText.y, screenHeight / playText.font, selectedText);
+					DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
+					DrawText("Menu", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
+					if(IsKeyPressed(KEY_ENTER))pause = !pause;
+				}
+				if (opciones == 2)
+				{
+					DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
+					DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, selectedOption);
+					DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
+					DrawText("Return", screenWidth / optionsText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
+					DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, selectedText);
+					DrawText("Menu", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
+				}
+				if (opciones == 1)
+				{
+					DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
+					DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
+					DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, selectedOption);
+					DrawText("Return", screenWidth / optionsText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
+					DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
+					DrawText("Menu", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, selectedText);
+					if (IsKeyPressed(KEY_ENTER))gamestate = menu;
+				}
+			}
+			EndDrawing();
 		}
-		else framesCounter++;
 		if (gamestate == finalScreen)
 		{
 			if (IsKeyDown('R'))gamestate = resetingValues;
