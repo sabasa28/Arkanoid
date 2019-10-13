@@ -1,211 +1,39 @@
 #include "raylib.h"
 #include <math.h>
+#include "ball.h"
+#include "bricks.h"
+#include "console.h"
+#include "player.h"
+#include "powerUP.h"
+#include "game.h"
+#include "menu.h"
+#include "options.h"
 
-struct Bounce {
-	bool right = false;
-	bool left = false;
-	bool up = false;
-	bool down = false;
-};
-bool invertY = false;
-bool invertX = false;
-Bounce bounceSide;
-enum Scorestate
-{
-	lost,
-	won,
-	playing
-};
-Scorestate scorestate;
-enum State
-{
-	menu,
-	options,
-	resetingValues,
-	gameplay,
-	finalScreen,
-	closing
-};
-State gamestate = menu;
-struct Player
-{
-	Rectangle rectangle;
-	float speed;
-	bool ballAttached = true;
-	float centerPosition;
-	int vidas;
-};
+//CAMBIAR GETCENTERPOSITION A GETRECTANGLECENTER Y QUE TOME UN RECTANGULO
+//TERMINAR DE PULIR COLISIONES
+//INTENTAR CAMBIAR COLISION BOLA - PALETA
+//AGREGAR COSAS A PANTALLA FINAL
+//REVISAR QUE TODO LO EXTERN SEA NECESARIO Y SINO QUE SEA STATIC, EJ OPCIONES EN MENU
+//PONER TODO EN INGLES
+//cambiar el menu a como estan las opciones
 float GetCenterPos(Player player);
-int bricksRemmaining = 0;
+
+
 int main(void)
 {
-	const int screenWidth = 800;
-	const int screenHeight = 450;
+	initConsole();
+	init();
 
-	InitWindow(screenWidth, screenHeight, "Arkanoid raylib- Inaki Diez");//Iñaki
-
-	Player player;
-	player.rectangle.width = 100;
-	player.rectangle.height = 10;
-	player.rectangle.x = GetScreenWidth() / 2;
-	player.rectangle.y = GetScreenHeight() - player.rectangle.height * 2;
-	player.speed = 5;
-	player.vidas = 5;
-
-	Vector2 ballPosition = { GetScreenWidth() / 2, GetScreenHeight() / 2 };
-	Vector2 ballSpeed = { 0.0f, 0.0f };
-
-	const int brickAmmount = 64;
-	int brickLines = 0;
-	Rectangle Brick[brickAmmount];
-	bool BrickExists[brickAmmount];
-
-	for (int i = 0; i < brickAmmount; i++)
-	{
-		BrickExists[i] = true;
-		Brick[i].height = 30;
-		Brick[i].width = 40;
-		Brick[i].y = 0;
-		Brick[i].x = 50 * i;
-		if (Brick[i].x + Brick[i].width >= GetScreenWidth())
-		{
-			while (Brick[i].x + Brick[i].width >= GetScreenWidth())
-			{
-				Brick[i].y += 40;
-				Brick[i].x -= GetScreenWidth();
-			}
-		}
-		brickLines += Brick[i].width + 10;
-	}
-	brickLines = brickLines / GetScreenWidth();
-	int ballRadius = 10;
-	SetExitKey(NULL);
-	bool pause = false;
-	int framesCounter = 0;
-
-	SetTargetFPS(60);
-	struct TextDivider
-	{
-		float x;
-		float y;
-		float font;
-	};
-	Rectangle Jugar;
-	Jugar.width = screenWidth / 3;
-	Jugar.height = screenHeight / 6;
-	Jugar.x = screenWidth / 2 - Jugar.width / 2;
-	Jugar.y = screenHeight / 4;
-	TextDivider playText;
-	TextDivider optionsText;
-	TextDivider exitText;
-	playText.x = 2.3f;
-	playText.y = 3.7f;
-	playText.font = 9.0f;
-	optionsText.x = 2.6f;
-	optionsText.y = 2.1f;
-	optionsText.font = 9.0f;
-	exitText.x = 2.3f;
-	exitText.y = 1.45;
-	exitText.font = 9.0f;
-	Rectangle Opciones;
-	Opciones.width = screenWidth / 3;
-	Opciones.height = screenHeight / 6;
-	Opciones.x = screenWidth / 2 - Jugar.width / 2;
-	Opciones.y = screenHeight / 2.2;
-	Rectangle Salir;
-	Salir.width = screenWidth / 3;
-	Salir.height = screenHeight / 6;
-	Salir.x = screenWidth / 2 - Jugar.width / 2;
-	Salir.y = screenHeight / 1.5;
-	int opciones = 3;
-	Color selectedOption = WHITE;
-	Color notSelectedOption = BLUE;
-	Color selectedText = BLUE;
-	Color notSelectedText = WHITE;
+	
 	while (!WindowShouldClose() && gamestate != closing)
 	{
 		if (gamestate == menu)
 		{
-			if (IsKeyPressed(KEY_DOWN))opciones--;
-			if (IsKeyPressed(KEY_UP))opciones++;
-			if (opciones < 1)opciones = 3;
-			if (opciones > 3)opciones = 1;
-			BeginDrawing();
-			ClearBackground(BLACK);
-			if (opciones == 1)
-			{
-				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-				DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
-				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
-				DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
-				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, selectedOption);
-				DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, selectedText);
-				if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
-			}
-			if (opciones == 2)
-			{
-				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-				DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
-				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, selectedOption);
-				DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, selectedText);
-				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
-				DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
-				if (IsKeyDown(KEY_ENTER))
-				{
-					gamestate = options;
-					opciones = 3;
-				}
-			}
-			if (opciones == 3)
-			{
-				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, selectedOption);
-				DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, selectedText);
-				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
-				DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
-				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
-				DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
-				if (IsKeyDown(KEY_ENTER)&&gamestate==menu) gamestate = gameplay;
-			}
-			EndDrawing();
+			executeMenu();
 		}
 		if (gamestate == options)
 		{
-			if (IsKeyPressed(KEY_DOWN))opciones--;
-			if (IsKeyPressed(KEY_UP))opciones++;
-			if (opciones < 1)opciones = 3;
-			if (opciones > 3)opciones = 1;
-			BeginDrawing();
-			ClearBackground(BLACK);
-			if (opciones == 1)
-			{
-				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-				//DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
-				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
-				//DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
-				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, selectedOption);
-				//DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, selectedText);
-				if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
-			}
-			if (opciones == 2)
-			{
-				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-				//DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
-				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, selectedOption);
-				//DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, selectedText);
-				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
-				//DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
-			}
-			if (opciones == 3)
-			{
-				DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, selectedOption);
-				//DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, selectedText);
-				DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
-				//DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
-				DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
-				//DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
-				if (IsKeyPressed(KEY_ENTER)) gamestate = gameplay;
-			}
-			EndDrawing();
+			executeOptions();
 		}
 		if (gamestate == gameplay)
 		{

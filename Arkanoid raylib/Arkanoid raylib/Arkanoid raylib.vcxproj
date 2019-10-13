@@ -129,12 +129,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="codingTools.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ball.cpp" />
-    <ClCompile Include="blocks.cpp" />
+    <ClCompile Include="bricks.cpp" />
     <ClCompile Include="console.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="options.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="powerUP.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ball.h" />
+    <ClInclude Include="bricks.h" />
+    <ClInclude Include="codingTools.h" />
+    <ClInclude Include="console.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="options.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="powerUP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
