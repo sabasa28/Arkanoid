@@ -5,21 +5,15 @@
 #include "codingTools.h"
 #include "console.h"
 #include "game.h"
+#include "gameplay.h"
 
-//Rectangle SwapScreen1;
-//Rectangle SwapScreen2;
-//Rectangle SwapScreen3;
-//Rectangle Back;
 Button MuteVolume;
 Button SwapScreensize1;
 Button SwapScreensize2;
 Button SwapScreensize3;
 Button Back;
-int opcionesMenu = 5;
-static Color selectedButton = WHITE;
-static Color notSelectedButton = BLUE;
-static Color selectedText = BLUE;
-static Color notSelectedText = WHITE;
+static int optionCounter = 5;
+
 void initOptions()
 {
 	MuteVolume.divider.x = 3.1f;
@@ -85,31 +79,34 @@ void initOptions()
 
 void executeOptions()
 {
-	if (IsKeyPressed(KEY_DOWN))opcionesMenu--;
-	if (IsKeyPressed(KEY_UP))opcionesMenu++;
-	if (opcionesMenu < 1)opcionesMenu = 5;
-	if (opcionesMenu > 5)opcionesMenu = 1;
-	if (opcionesMenu == 1)
+	if (IsKeyPressed(KEY_DOWN))optionCounter--;
+	if (IsKeyPressed(KEY_UP))optionCounter++;
+	if (optionCounter < 1)optionCounter = 5;
+	if (optionCounter > 5)optionCounter = 1;
+	if (optionCounter == 1)
 	{
-		if (IsKeyPressed(KEY_ENTER)) gamestate = menu;
-		MuteVolume.color = notSelectedButton;
-		SwapScreensize1.color = notSelectedButton;
-		SwapScreensize2.color = notSelectedButton;
-		SwapScreensize3.color = notSelectedButton;
-		Back.color = selectedButton;
+		MuteVolume.color = notSelectedOption;
+		SwapScreensize1.color = notSelectedOption;
+		SwapScreensize2.color = notSelectedOption;
+		SwapScreensize3.color = notSelectedOption;
+		Back.color = selectedOption;
 		MuteVolume.textColor = notSelectedText;
 		SwapScreensize1.textColor = notSelectedText;
 		SwapScreensize2.textColor = notSelectedText;
 		SwapScreensize3.textColor = notSelectedText;
 		Back.textColor = selectedText;
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			gamestate = lastState;
+		}
 	}
-	if (opcionesMenu == 2)
+	if (optionCounter == 2)
 	{
-		MuteVolume.color = notSelectedButton;
-		SwapScreensize1.color = notSelectedButton;
-		SwapScreensize2.color = notSelectedButton;
-		SwapScreensize3.color = selectedButton;
-		Back.color = notSelectedButton;
+		MuteVolume.color = notSelectedOption;
+		SwapScreensize1.color = notSelectedOption;
+		SwapScreensize2.color = notSelectedOption;
+		SwapScreensize3.color = selectedOption;
+		Back.color = notSelectedOption;
 		MuteVolume.textColor = notSelectedText;
 		SwapScreensize1.textColor = notSelectedText;
 		SwapScreensize2.textColor = notSelectedText;
@@ -124,13 +121,13 @@ void executeOptions()
 			init();
 		}
 	}
-	if (opcionesMenu == 3)
+	if (optionCounter == 3)
 	{
-		MuteVolume.color = notSelectedButton;
-		SwapScreensize1.color = notSelectedButton;
-		SwapScreensize2.color = selectedButton;
-		SwapScreensize3.color = notSelectedButton;
-		Back.color = notSelectedButton;
+		MuteVolume.color = notSelectedOption;
+		SwapScreensize1.color = notSelectedOption;
+		SwapScreensize2.color = selectedOption;
+		SwapScreensize3.color = notSelectedOption;
+		Back.color = notSelectedOption;
 		MuteVolume.textColor = notSelectedText;
 		SwapScreensize1.textColor = notSelectedText;
 		SwapScreensize2.textColor = selectedText;
@@ -149,13 +146,13 @@ void executeOptions()
 			init();
 		}
 	}
-	if (opcionesMenu == 4)
+	if (optionCounter == 4)
 	{
-		MuteVolume.color = notSelectedButton;
-		SwapScreensize1.color = selectedButton;
-		SwapScreensize2.color = notSelectedButton;
-		SwapScreensize3.color = notSelectedButton;
-		Back.color = notSelectedButton;
+		MuteVolume.color = notSelectedOption;
+		SwapScreensize1.color = selectedOption;
+		SwapScreensize2.color = notSelectedOption;
+		SwapScreensize3.color = notSelectedOption;
+		Back.color = notSelectedOption;
 		MuteVolume.textColor = notSelectedText;
 		SwapScreensize1.textColor = selectedText;
 		SwapScreensize2.textColor = notSelectedText;
@@ -174,13 +171,13 @@ void executeOptions()
 			init();
 		}
 	}
-	if (opcionesMenu == 5)
+	if (optionCounter == 5)
 	{
-		MuteVolume.color = selectedButton;
-		SwapScreensize1.color = notSelectedButton;
-		SwapScreensize2.color = notSelectedButton;
-		SwapScreensize3.color = notSelectedButton;
-		Back.color = notSelectedButton;
+		MuteVolume.color = selectedOption;
+		SwapScreensize1.color = notSelectedOption;
+		SwapScreensize2.color = notSelectedOption;
+		SwapScreensize3.color = notSelectedOption;
+		Back.color = notSelectedOption;
 		MuteVolume.textColor = selectedText;
 		SwapScreensize1.textColor = notSelectedText;
 		SwapScreensize2.textColor = notSelectedText;

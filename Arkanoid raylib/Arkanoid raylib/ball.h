@@ -2,16 +2,25 @@
 #define BALL_H
 #include "raylib.h"
 
-extern Vector2 ballPosition;
-extern Vector2 ballSpeed;
-extern int ballRadius;
 struct Bounce {
 	bool right = false;
 	bool left = false;
 	bool up = false;
 	bool down = false;
 };
-extern Bounce bounceSide;
-extern bool invertY;
-extern bool invertX;
+struct Ball
+{
+	Vector2 position;
+	Vector2 speed;
+	Vector2 launchSpeedDiv;
+	Vector2 launchSpeed;
+
+	float radius;
+	float radiusDivider;
+	Bounce bounceSide;
+	bool invertY;
+	bool invertX;
+};
+extern Ball ball;
+void initBall();
 #endif // BALL_H

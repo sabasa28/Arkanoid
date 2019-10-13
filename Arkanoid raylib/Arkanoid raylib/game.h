@@ -11,5 +11,6 @@ enum State
 	closing
 };
 extern State gamestate;
+extern State lastState;
 void init();
 #endif //GAME_H

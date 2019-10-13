@@ -2,9 +2,11 @@
 #define MENU_H
 
 #include "raylib.h"
-extern Rectangle Jugar;
-extern Rectangle Opciones;
-extern Rectangle Salir;
+#include "codingTools.h"
+
+extern Button Play;
+extern Button Opciones;
+extern Button Salir;
 struct TextDivider
 {
 	float x;
@@ -15,11 +17,7 @@ extern TextDivider playText;
 extern TextDivider optionsText;
 extern TextDivider exitText;
 
-extern int opciones;
-extern Color selectedOption;
-extern Color notSelectedOption;
-extern Color selectedText;
-extern Color notSelectedText;
+extern int optionMenu;
 
 void initMenu();
 void executeMenu();

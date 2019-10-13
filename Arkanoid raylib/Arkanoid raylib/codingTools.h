@@ -12,6 +12,9 @@ struct Button
 	Color color;
 	Color textColor;
 };
-
+extern Color selectedOption;
+extern Color notSelectedOption;
+extern Color selectedText;
+extern Color notSelectedText;
 #endif //CODINGTOOLS_H
 

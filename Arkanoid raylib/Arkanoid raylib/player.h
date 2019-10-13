@@ -6,10 +6,12 @@
 struct Player
 {
 	Rectangle rectangle;
+	Rectangle divider;
 	float speed;
-	bool ballAttached = true;
+	float speedDivider;
 	float centerPosition;
-	int vidas;
+	bool ballAttached = true;
+	int lives;
 };
 extern Player player;
 enum Scorestate
@@ -20,6 +22,7 @@ enum Scorestate
 };
 extern Scorestate scorestate;
 
+float GetCenterPos(Player player);
 void initPlayer();
 
 #endif // PLAYER_H

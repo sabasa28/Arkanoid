@@ -2,85 +2,105 @@
 #include "raylib.h"
 #include "console.h"
 #include "game.h"
+#include "codingTools.h"
 
-Rectangle Jugar;
-Rectangle Opciones;
-Rectangle Salir;
-int opciones = 3;
-Color selectedOption = WHITE;
-Color notSelectedOption = BLUE;
-Color selectedText = BLUE;
-Color notSelectedText = WHITE;
-TextDivider playText;
+Button Play;
+Button Opciones;
+Button Salir;
+int optionMenu = 3;
+
 TextDivider optionsText;
 TextDivider exitText;
 
 void initMenu()
 {
-	Jugar.width = screenWidth / 3;
-	Jugar.height = screenHeight / 6;
-	Jugar.x = screenWidth / 2 - Jugar.width / 2;
-	Jugar.y = screenHeight / 4;
-	playText.x = 2.3f;
-	playText.y = 3.7f;
-	playText.font = 9.0f;
-	optionsText.x = 2.6f;
-	optionsText.y = 2.1f;
-	optionsText.font = 9.0f;
-	exitText.x = 2.3f;
-	exitText.y = 1.45;
-	exitText.font = 9.0f;
-	Opciones.width = screenWidth / 3;
-	Opciones.height = screenHeight / 6;
-	Opciones.x = screenWidth / 2 - Jugar.width / 2;
-	Opciones.y = screenHeight / 2.2;
-	Salir.width = screenWidth / 3;
-	Salir.height = screenHeight / 6;
-	Salir.x = screenWidth / 2 - Jugar.width / 2;
-	Salir.y = screenHeight / 1.5;
+	Play.divider.width = 3.0f;
+	Play.divider.height = 6.0f;
+	Play.divider.x = 3.0f;
+	Play.divider.y = 4.0f;
+	Play.textFontDivider = 9.0f;
+	Play.textDivider.x = 2.3f;
+	Play.textDivider.y = 3.7f;
+	Play.rectangle.width = screenWidth / Play.divider.width;
+	Play.rectangle.height = screenHeight / Play.divider.height;
+	Play.rectangle.x = screenWidth / Play.divider.x;
+	Play.rectangle.y = screenHeight / Play.divider.y;
+	Play.textFont = screenHeight / Play.textFontDivider;
+	Play.textPos.x = screenWidth / Play.textDivider.x;
+	Play.textPos.y = screenHeight / Play.textDivider.y;
+	Opciones.divider.y = 2.2f;
+	Opciones.textFontDivider = 9.0f;
+	Opciones.textDivider.x = 2.6f;
+	Opciones.textDivider.y = 2.1f;
+	Opciones.rectangle.width = Play.rectangle.width;
+	Opciones.rectangle.height = Play.rectangle.height;
+	Opciones.rectangle.x = Play.rectangle.x;
+	Opciones.rectangle.y = screenHeight / Opciones.divider.y;
+	Opciones.textFont = screenHeight / Opciones.textFontDivider;
+	Opciones.textPos.x = screenWidth / Opciones.textDivider.x;
+	Opciones.textPos.y = screenHeight / Opciones.textDivider.y;
+	Salir.divider.y = 1.5f;
+	Salir.textFontDivider= 9.0f;
+	Salir.textDivider.x = 2.3f;
+	Salir.textDivider.y = 1.45;
+	Salir.rectangle.width = Play.rectangle.width;
+	Salir.rectangle.height = Play.rectangle.height;
+	Salir.rectangle.x = Play.rectangle.x;
+	Salir.rectangle.y = screenHeight / Salir.divider.y;
+	Salir.textFont = screenHeight / Salir.textFontDivider;
+	Salir.textPos.x = screenWidth / Salir.textDivider.x;
+	Salir.textPos.y = screenHeight / Salir.textDivider.y;
 }
 
 void executeMenu()
 {
-	if (IsKeyPressed(KEY_DOWN))opciones--;
-	if (IsKeyPressed(KEY_UP))opciones++;
-	if (opciones < 1)opciones = 3;
-	if (opciones > 3)opciones = 1;
-	BeginDrawing();
-	ClearBackground(BLACK);
-	if (opciones == 1)
+	if (IsKeyPressed(KEY_DOWN))optionMenu--;
+	if (IsKeyPressed(KEY_UP))optionMenu++;
+	if (optionMenu < 1)optionMenu = 3;
+	if (optionMenu > 3)optionMenu = 1;
+	if (optionMenu == 1)
 	{
-		DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-		DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
-		DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
-		DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
-		DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, selectedOption);
-		DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, selectedText);
+		Play.color = notSelectedOption;
+		Opciones.color = notSelectedOption;
+		Salir.color = selectedOption;
+		Play.textColor = notSelectedText;
+		Opciones.textColor = notSelectedText;
+		Salir.textColor = selectedText;
 		if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
 	}
-	if (opciones == 2)
+	if (optionMenu == 2)
 	{
-		DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, notSelectedOption);
-		DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, notSelectedText);
-		DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, selectedOption);
-		DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, selectedText);
-		DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
-		DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
-		if (IsKeyDown(KEY_ENTER))
+		Play.color = notSelectedOption;
+		Opciones.color = selectedOption;
+		Salir.color = notSelectedOption;
+		Play.textColor = notSelectedText;
+		Opciones.textColor = selectedText;
+		Salir.textColor = notSelectedText;
+		if (IsKeyPressed(KEY_ENTER))
 		{
+			lastState = menu;
 			gamestate = options;
-			opciones = 3;
+			optionMenu = 3;
 		}
 	}
-	if (opciones == 3)
+	if (optionMenu == 3)
 	{
-		DrawRectangle(Jugar.x, Jugar.y, Jugar.width, Jugar.height, selectedOption);
-		DrawText("Play", screenWidth / playText.x, screenHeight / playText.y, screenHeight / playText.font, selectedText);
-		DrawRectangle(Opciones.x, Opciones.y, Opciones.width, Opciones.height, notSelectedOption);
-		DrawText("Options", screenWidth / optionsText.x, screenHeight / optionsText.y, screenHeight / optionsText.font, notSelectedText);
-		DrawRectangle(Salir.x, Salir.y, Salir.width, Salir.height, notSelectedOption);
-		DrawText("Salir", screenWidth / exitText.x, screenHeight / exitText.y, screenHeight / exitText.font, notSelectedText);
+		Play.color = selectedOption;
+		Opciones.color = notSelectedOption;
+		Salir.color = notSelectedOption;
+		Play.textColor = selectedText;
+		Opciones.textColor = notSelectedText;
+		Salir.textColor = notSelectedText;
 		if (IsKeyPressed(KEY_ENTER) && gamestate == menu) gamestate = gameplay;
 	}
+
+	BeginDrawing();
+	ClearBackground(BLACK);
+	DrawRectangle(Play.rectangle.x, Play.rectangle.y, Play.rectangle.width, Play.rectangle.height, Play.color);
+	DrawText("Play", Play.textPos.x, Play.textPos.y, Play.textFont, Play.textColor);
+	DrawRectangle(Opciones.rectangle.x, Opciones.rectangle.y, Opciones.rectangle.width, Opciones.rectangle.height, Opciones.color);
+	DrawText("Options", Opciones.textPos.x, Opciones.textPos.y, Opciones.textFont, Opciones.textColor);
+	DrawRectangle(Salir.rectangle.x, Salir.rectangle.y, Salir.rectangle.width, Salir.rectangle.height, Salir.color);
+	DrawText("Salir", Salir.textPos.x, Salir.textPos.y, Salir.textFont, Salir.textColor);
 	EndDrawing();
 }

@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="codingTools.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gameplay.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="bricks.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="codingTools.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameplay.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="options.h" />
     <ClInclude Include="player.h" />
