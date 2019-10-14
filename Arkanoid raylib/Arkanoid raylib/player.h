@@ -21,7 +21,6 @@ enum Scorestate
 	playing
 };
 extern Scorestate scorestate;
-
 float GetCenterPos(Player player);
 void initPlayer();
 

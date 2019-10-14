@@ -5,8 +5,8 @@
 #include "codingTools.h"
 
 extern Button Play;
-extern Button Opciones;
-extern Button Salir;
+extern Button Options;
+extern Button Exit;
 struct TextDivider
 {
 	float x;
@@ -17,7 +17,7 @@ extern TextDivider playText;
 extern TextDivider optionsText;
 extern TextDivider exitText;
 
-extern int optionMenu;
+extern int optionCounterMenu;
 
 void initMenu();
 void executeMenu();

@@ -12,7 +12,7 @@ Button SwapScreensize1;
 Button SwapScreensize2;
 Button SwapScreensize3;
 Button Back;
-static int optionCounter = 5;
+static int optionCounterOptions = 5;
 
 void initOptions()
 {
@@ -79,11 +79,11 @@ void initOptions()
 
 void executeOptions()
 {
-	if (IsKeyPressed(KEY_DOWN))optionCounter--;
-	if (IsKeyPressed(KEY_UP))optionCounter++;
-	if (optionCounter < 1)optionCounter = 5;
-	if (optionCounter > 5)optionCounter = 1;
-	if (optionCounter == 1)
+	if (IsKeyPressed(KEY_DOWN))optionCounterOptions--;
+	if (IsKeyPressed(KEY_UP))optionCounterOptions++;
+	if (optionCounterOptions < 1)optionCounterOptions = 5;
+	if (optionCounterOptions > 5)optionCounterOptions = 1;
+	if (optionCounterOptions == 1)
 	{
 		MuteVolume.color = notSelectedOption;
 		SwapScreensize1.color = notSelectedOption;
@@ -100,7 +100,7 @@ void executeOptions()
 			gamestate = lastState;
 		}
 	}
-	if (optionCounter == 2)
+	if (optionCounterOptions == 2)
 	{
 		MuteVolume.color = notSelectedOption;
 		SwapScreensize1.color = notSelectedOption;
@@ -121,7 +121,7 @@ void executeOptions()
 			init();
 		}
 	}
-	if (optionCounter == 3)
+	if (optionCounterOptions == 3)
 	{
 		MuteVolume.color = notSelectedOption;
 		SwapScreensize1.color = notSelectedOption;
@@ -146,7 +146,7 @@ void executeOptions()
 			init();
 		}
 	}
-	if (optionCounter == 4)
+	if (optionCounterOptions == 4)
 	{
 		MuteVolume.color = notSelectedOption;
 		SwapScreensize1.color = selectedOption;
@@ -171,7 +171,7 @@ void executeOptions()
 			init();
 		}
 	}
-	if (optionCounter == 5)
+	if (optionCounterOptions == 5)
 	{
 		MuteVolume.color = selectedOption;
 		SwapScreensize1.color = notSelectedOption;

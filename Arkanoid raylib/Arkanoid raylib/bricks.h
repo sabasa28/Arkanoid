@@ -1,10 +1,17 @@
 #ifndef BRICKS_H
 #define BRICKS_H
 #include "raylib.h"
-extern int bricksRemmaining;
+
 extern const int brickAmmount;
 extern int brickLines;
-extern Rectangle Brick[];
-extern bool BrickExists[];
+extern int bricksRemmaining;
+
+struct Brick
+{
+	Rectangle rectangle;
+	Rectangle divider;
+	bool exists;
+};
+extern Brick brick[];
 void initBricks();
 #endif // BRICKS_H

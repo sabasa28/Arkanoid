@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include <math.h>
+
 #include "ball.h"
 #include "bricks.h"
 #include "console.h"
@@ -9,21 +9,19 @@
 #include "menu.h"
 #include "options.h"
 #include "gameplay.h"
+#include "gameOver.h"
 
 //CAMBIAR GETCENTERPOSITION A GETRECTANGLECENTER Y QUE TOME UN RECTANGULO
 //TERMINAR DE PULIR COLISIONES
-//INTENTAR CAMBIAR COLISION BOLA - PALETA
-//AGREGAR COSAS A PANTALLA FINAL
+//INTENTAR CAMBIAR COLISION BOLA - PALETA se puede hacer lo mismo que en el pong
 //REVISAR QUE TODO LO EXTERN SEA NECESARIO Y SINO QUE SEA STATIC, EJ OPCIONES EN MENU
 //PONER TODO EN INGLES
-//cambiar el menu a como estan las opciones
 //hacer consistente el codigo (mayus o minus en los structs)
 //poner el "paused" segun screen height y width
 //arreglar colision de paleta con pared
-//arreglar posicionamiento de bloques cuando se cambia el screensize
-//que la pelota empiece attacheada
-
-
+//AL CAMBIAR PANTALLA DURANTE EL JEUGO PREGUNTAR "Hacer esto reiniciara tu juego s/n"
+//crear el modificador de multiplicador de ball.speed.x para la colision ball-player
+//hacer constantes los dividers que no esten dentro de structs
 
 int main(void)
 {
@@ -37,7 +35,7 @@ int main(void)
 		{
 			executeMenu();
 		}
-		if (gamestate == options)
+		if (gamestate == optionsMenu)
 		{
 			executeOptions();
 		}
@@ -45,28 +43,17 @@ int main(void)
 		{
 			executeGameplay();
 		}
-		if (gamestate == finalScreen)
+		if (gamestate == gameOver)
 		{
-			if (IsKeyDown('R'))gamestate = resetingValues;
-			BeginDrawing();
-			ClearBackground(BLUE);
-			if (scorestate == lost)
-			{
-				DrawText("Perdiste :(", screenWidth / 3, screenHeight / 3, 50, WHITE);
-			}
-			if (scorestate == won)
-			{
-				DrawText("Ganaste :)", screenWidth / 3, screenHeight / 3, 50, WHITE);
-			}
-			DrawText("Presiona 'R' para jugar de nuevo B)", screenWidth / 6, screenHeight / 2, 30, WHITE);
-			EndDrawing();
+			executeGameOver();
 		}
 		if (gamestate == resetingValues)
 		{
 			for (int i = 0; i < brickAmmount; i++)
 			{
-				BrickExists[i] = true;
+				brick[i].exists = true;
 			}
+			pause = false;
 			player.rectangle.x = GetScreenWidth() / 2;
 			player.lives = 5;
 			player.ballAttached = true;

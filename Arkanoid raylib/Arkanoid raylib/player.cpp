@@ -8,6 +8,7 @@ float GetCenterPos(Player player)
 {
 	return player.centerPosition = player.rectangle.x + player.rectangle.width / 2;
 }
+
 void initPlayer() 
 {
 	player.divider.width = 8.0f;
@@ -21,4 +22,5 @@ void initPlayer()
 	player.rectangle.y = screenHeight / player.divider.y;
 	player.speed = screenWidth / player.speedDivider;
 	player.lives = 5;
+	player.ballAttached = true;
 }

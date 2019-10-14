@@ -4,10 +4,10 @@
 enum State
 {
 	menu,
-	options,
+	optionsMenu,
 	resetingValues,
 	gameplay,
-	finalScreen,
+	gameOver,
 	closing
 };
 extern State gamestate;

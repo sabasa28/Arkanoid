@@ -7,6 +7,7 @@
 #include "options.h"
 #include "gameplay.h"
 #include "ball.h"
+#include "gameOver.h"
 State gamestate = menu;
 State lastState = menu;
 void init() 
@@ -17,4 +18,5 @@ void init()
 	initMenu();
 	initPause();
 	initOptions();
+	initGameOver();
 }

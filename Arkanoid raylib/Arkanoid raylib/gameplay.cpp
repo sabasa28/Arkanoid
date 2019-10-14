@@ -15,9 +15,16 @@ static Button Return;
 static Button Options;
 static Button Exit;
 
-
+Vector2 pausedText;
+Vector2 pausedTextDiv{ 2.4f,8.0f };
+static int pausedTextFont;
+static int pausedTextFontDiv = 15.0f;
+Vector2 livesText;
+Vector2 livesTextDiv{ 20.0f,1.1f };
+static int livesTextFont;
+static float livesTextFontDiv = 22.5f;
 bool pause = false;
-static int optionsPause = 3;
+static int optionCounterPause = 3;
 
 void initPause() 
 {
@@ -57,10 +64,20 @@ void initPause()
 	Exit.textFont = screenHeight / Exit.textFontDivider;
 	Exit.textPos.x = screenWidth / Exit.textDivider.x;
 	Exit.textPos.y = screenHeight / Exit.textDivider.y;
+	pausedText.x = screenWidth / pausedTextDiv.x;
+	pausedText.y = screenHeight / pausedTextDiv.y;
+	pausedTextFont = screenHeight / pausedTextFontDiv;
+	livesText.x = screenWidth / livesTextDiv.x;
+	livesText.y = screenHeight / livesTextDiv.y;
+	livesTextFont = screenHeight / livesTextFontDiv;
 }
 
 void executeGameplay() {
-	if (IsKeyPressed(KEY_ESCAPE)) pause = !pause;
+	if (IsKeyPressed(KEY_ESCAPE))
+	{
+		optionCounterPause = 3;
+		pause = !pause;
+	}
 	if (pause == false)
 	{
 		if (player.rectangle.x + player.rectangle.width <= GetScreenWidth())
@@ -95,54 +112,54 @@ void executeGameplay() {
 		}
 		for (int i = 0; i < brickAmmount; i++)
 		{
-			if (BrickExists[i] == true && CheckCollisionCircleRec(ball.position, ball.radius, Brick[i]))
+			if (brick[i].exists == true && CheckCollisionCircleRec(ball.position, ball.radius, brick[i].rectangle))
 			{
 				if (ball.speed.y < 0) {
-					if ((ball.position.y - ball.radius) <= (Brick[i].y + Brick[i].height)) {
+					if ((ball.position.y - ball.radius) <= (brick[i].rectangle.y + brick[i].rectangle.height)) {
 						ball.bounceSide.down = true;
-						BrickExists[i] = false;   // TENER UNO SOLO DE ESTOS EN EL IF GENERAL
+						brick[i].exists = false;   // TENER UNO SOLO DE ESTOS EN EL IF GENERAL
 					}
 				}
 				if (ball.speed.y > 0)
 				{
-					if ((ball.position.y + ball.radius) >= (Brick[i].y)) {
+					if ((ball.position.y + ball.radius) >= (brick[i].rectangle.y)) {
 						ball.bounceSide.up = true;
-						BrickExists[i] = false;
+						brick[i].exists = false;
 					}
 				}
 				if (ball.speed.x < 0) {
-					if ((ball.position.x - ball.radius) <= (Brick[i].x + Brick[i].width)) {
+					if ((ball.position.x - ball.radius) <= (brick[i].rectangle.x + brick[i].rectangle.width)) {
 						ball.bounceSide.right = true;
-						BrickExists[i] = false;
+						brick[i].exists = false;
 					}
 				}
 				if (ball.speed.x > 0) {
-					if ((ball.position.x + ball.radius) >= (Brick[i].x)) {
+					if ((ball.position.x + ball.radius) >= (brick[i].rectangle.x)) {
 						ball.bounceSide.left = true;
-						BrickExists[i] = false;
+						brick[i].exists = false;
 					}
 				}
 				if (ball.bounceSide.down == true && ball.bounceSide.up == true)
 				{
-					if (((Brick[i].y + Brick[i].height) - (ball.position.y - ball.radius)) < ((ball.position.y + ball.radius) - (Brick[i].y))) ball.bounceSide.up = false;
+					if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((ball.position.y + ball.radius) - (brick[i].rectangle.y))) ball.bounceSide.up = false;
 					else ball.bounceSide.down = false;
 				}
 				if (ball.bounceSide.left == true && ball.bounceSide.right == true)
 				{
-					if (((Brick[i].x + Brick[i].width) - (ball.position.x - ball.radius)) < ((ball.position.x + ball.radius) - (Brick[i].x))) ball.bounceSide.right = false;
+					if (((brick[i].rectangle.x + brick[i].rectangle.width) - (ball.position.x - ball.radius)) < ((ball.position.x + ball.radius) - (brick[i].rectangle.x))) ball.bounceSide.right = false;
 					else ball.bounceSide.left == false;
 				}
 				if (ball.bounceSide.down == true)
 				{
 					if (ball.bounceSide.left == true)
 					{
-						if (((Brick[i].y + Brick[i].height) - (ball.position.y - ball.radius)) < ((ball.position.x + ball.radius) - (Brick[i].x)))ball.bounceSide.left = false;
+						if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((ball.position.x + ball.radius) - (brick[i].rectangle.x)))ball.bounceSide.left = false;
 						else ball.bounceSide.down = false;
 
 					}
 					if (ball.bounceSide.right == true)
 					{
-						if (((Brick[i].y + Brick[i].height) - (ball.position.y - ball.radius)) < ((Brick[i].x + Brick[i].width) - (ball.position.x - ball.radius)))ball.bounceSide.right = false;
+						if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((brick[i].rectangle.x + brick[i].rectangle.width) - (ball.position.x - ball.radius)))ball.bounceSide.right = false;
 						else ball.bounceSide.down = false;
 					}
 				}
@@ -150,12 +167,12 @@ void executeGameplay() {
 				{
 					if (ball.bounceSide.left == true)
 					{
-						if (((ball.position.y + ball.radius) - (Brick[i].y)) < ((ball.position.x + ball.radius) - (Brick[i].x)))ball.bounceSide.left = false;
+						if (((ball.position.y + ball.radius) - (brick[i].rectangle.y)) < ((ball.position.x + ball.radius) - (brick[i].rectangle.x)))ball.bounceSide.left = false;
 						else ball.bounceSide.up = false;
 					}
 					if (ball.bounceSide.right == true)
 					{
-						if (((ball.position.y + ball.radius) - (Brick[i].y)) < ((Brick[i].x + Brick[i].width) - (ball.position.x - ball.radius)))ball.bounceSide.right = false;
+						if (((ball.position.y + ball.radius) - (brick[i].rectangle.y)) < ((brick[i].rectangle.x + brick[i].rectangle.width) - (ball.position.x - ball.radius)))ball.bounceSide.right = false;
 						else ball.bounceSide.up = false;
 					}
 				}
@@ -184,45 +201,45 @@ void executeGameplay() {
 		if (player.lives <= 0)
 		{
 			lastState = gameplay;
-			gamestate = finalScreen;
+			gamestate = gameOver;
 			scorestate = lost;
 		}
 		bricksRemmaining = 0;
 		for (int i = 0; i < brickAmmount; i++)
 		{
-			if (BrickExists[i] == true)bricksRemmaining += 1;
+			if (brick[i].exists == true)bricksRemmaining += 1;
 		}
 		if (bricksRemmaining == 0)
 		{
 			lastState = gameplay;
-			gamestate = finalScreen;
+			gamestate = gameOver;
 			scorestate = won;
 		}
 	}
-	if (pause&&IsKeyPressed(KEY_DOWN))optionsPause--;
-	if (pause&&IsKeyPressed(KEY_UP))optionsPause++;
-	if (optionsPause < 1)optionsPause = 3;
-	if (optionsPause > 3)optionsPause = 1;
+	if (pause&&IsKeyPressed(KEY_DOWN))optionCounterPause--;
+	if (pause&&IsKeyPressed(KEY_UP))optionCounterPause++;
+	if (optionCounterPause < 1)optionCounterPause = 3;
+	if (optionCounterPause > 3)optionCounterPause = 1;
 	framesCounter++;
 	BeginDrawing();
 	ClearBackground(BLACK);
-	DrawText(TextFormat("Lives left: %i", player.lives), 40, GetScreenHeight() - 40, 20, GRAY);
+	DrawCircleV(ball.position, ball.radius, YELLOW);
+	DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, GREEN);
+	DrawText(TextFormat("Lives left: %i", player.lives), livesText.x, livesText.y, livesTextFont, WHITE);
 	for (int i = 0; i < brickAmmount; i++)
 	{
 		Color auxcolor;
 		if (i % 2 == 0)	auxcolor = RED;
 		else auxcolor = BLUE;
-		if (BrickExists[i] == true)
+		if (brick[i].exists == true)
 		{
-			DrawRectangle(Brick[i].x, Brick[i].y, Brick[i].width, Brick[i].height, auxcolor);
+			DrawRectangle(brick[i].rectangle.x, brick[i].rectangle.y, brick[i].rectangle.width, brick[i].rectangle.height, auxcolor);
 		}
 	}
-	DrawCircleV(ball.position, ball.radius, YELLOW);
-	DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, GREEN);
 	if (pause)
 	{
-		if (((framesCounter / 30) % 2)) DrawText("PAUSED", 350, screenHeight / 8, 30, GRAY);
-		if (optionsPause == 3)
+		if (((framesCounter / 30) % 2)) DrawText("PAUSED", pausedText.x, pausedText.y, pausedTextFont, WHITE);
+		if (optionCounterPause == 3)
 		{
 			Return.color = selectedOption;
 			Options.color = notSelectedOption;
@@ -232,7 +249,7 @@ void executeGameplay() {
 			Exit.textColor = notSelectedText;
 			if(IsKeyPressed(KEY_ENTER))pause = !pause;
 		}
-		if (optionsPause == 2)
+		if (optionCounterPause == 2)
 		{
 			Return.color = notSelectedOption;
 			Options.color = selectedOption;
@@ -240,10 +257,10 @@ void executeGameplay() {
 			Return.textColor = notSelectedText;
 			Options.textColor = selectedText;
 			Exit.textColor = notSelectedText;
-			if (IsKeyPressed(KEY_ENTER))gamestate=options;
+			if (IsKeyPressed(KEY_ENTER))gamestate=optionsMenu;
 			lastState = gameplay;
 		}
-		if (optionsPause == 1)
+		if (optionCounterPause == 1)
 		{
 			Return.color = notSelectedOption;
 			Options.color = notSelectedOption;
@@ -251,7 +268,10 @@ void executeGameplay() {
 			Return.textColor = notSelectedText;
 			Options.textColor = notSelectedText;
 			Exit.textColor = selectedText;
-			if (IsKeyPressed(KEY_ENTER))gamestate = menu;
+			if (IsKeyPressed(KEY_ENTER)) {
+				optionCounterPause = 3;
+				gamestate = menu;
+			}
 		}
 		DrawRectangle(Return.rectangle.x, Return.rectangle.y, Return.rectangle.width, Return.rectangle.height, Return.color);
 		DrawRectangle(Options.rectangle.x, Options.rectangle.y, Options.rectangle.width, Options.rectangle.height, Options.color);

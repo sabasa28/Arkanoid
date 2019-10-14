@@ -4,10 +4,10 @@
 #include "game.h"
 #include "codingTools.h"
 
-Button Play;
-Button Opciones;
-Button Salir;
-int optionMenu = 3;
+static Button Play;
+static Button Options;
+static Button Exit;
+int optionCounterMenu = 3;
 
 TextDivider optionsText;
 TextDivider exitText;
@@ -28,79 +28,79 @@ void initMenu()
 	Play.textFont = screenHeight / Play.textFontDivider;
 	Play.textPos.x = screenWidth / Play.textDivider.x;
 	Play.textPos.y = screenHeight / Play.textDivider.y;
-	Opciones.divider.y = 2.2f;
-	Opciones.textFontDivider = 9.0f;
-	Opciones.textDivider.x = 2.6f;
-	Opciones.textDivider.y = 2.1f;
-	Opciones.rectangle.width = Play.rectangle.width;
-	Opciones.rectangle.height = Play.rectangle.height;
-	Opciones.rectangle.x = Play.rectangle.x;
-	Opciones.rectangle.y = screenHeight / Opciones.divider.y;
-	Opciones.textFont = screenHeight / Opciones.textFontDivider;
-	Opciones.textPos.x = screenWidth / Opciones.textDivider.x;
-	Opciones.textPos.y = screenHeight / Opciones.textDivider.y;
-	Salir.divider.y = 1.5f;
-	Salir.textFontDivider= 9.0f;
-	Salir.textDivider.x = 2.3f;
-	Salir.textDivider.y = 1.45;
-	Salir.rectangle.width = Play.rectangle.width;
-	Salir.rectangle.height = Play.rectangle.height;
-	Salir.rectangle.x = Play.rectangle.x;
-	Salir.rectangle.y = screenHeight / Salir.divider.y;
-	Salir.textFont = screenHeight / Salir.textFontDivider;
-	Salir.textPos.x = screenWidth / Salir.textDivider.x;
-	Salir.textPos.y = screenHeight / Salir.textDivider.y;
+	Options.divider.y = 2.2f;
+	Options.textFontDivider = 9.0f;
+	Options.textDivider.x = 2.6f;
+	Options.textDivider.y = 2.1f;
+	Options.rectangle.width = Play.rectangle.width;
+	Options.rectangle.height = Play.rectangle.height;
+	Options.rectangle.x = Play.rectangle.x;
+	Options.rectangle.y = screenHeight / Options.divider.y;
+	Options.textFont = screenHeight / Options.textFontDivider;
+	Options.textPos.x = screenWidth / Options.textDivider.x;
+	Options.textPos.y = screenHeight / Options.textDivider.y;
+	Exit.divider.y = 1.5f;
+	Exit.textFontDivider= 9.0f;
+	Exit.textDivider.x = 2.3f;
+	Exit.textDivider.y = 1.45;
+	Exit.rectangle.width = Play.rectangle.width;
+	Exit.rectangle.height = Play.rectangle.height;
+	Exit.rectangle.x = Play.rectangle.x;
+	Exit.rectangle.y = screenHeight / Exit.divider.y;
+	Exit.textFont = screenHeight / Exit.textFontDivider;
+	Exit.textPos.x = screenWidth / Exit.textDivider.x;
+	Exit.textPos.y = screenHeight / Exit.textDivider.y;
 }
 
 void executeMenu()
 {
-	if (IsKeyPressed(KEY_DOWN))optionMenu--;
-	if (IsKeyPressed(KEY_UP))optionMenu++;
-	if (optionMenu < 1)optionMenu = 3;
-	if (optionMenu > 3)optionMenu = 1;
-	if (optionMenu == 1)
+	if (IsKeyPressed(KEY_DOWN))optionCounterMenu--;
+	if (IsKeyPressed(KEY_UP))optionCounterMenu++;
+	if (optionCounterMenu < 1)optionCounterMenu = 3;
+	if (optionCounterMenu > 3)optionCounterMenu = 1;
+	if (optionCounterMenu == 1)
 	{
 		Play.color = notSelectedOption;
-		Opciones.color = notSelectedOption;
-		Salir.color = selectedOption;
+		Options.color = notSelectedOption;
+		Exit.color = selectedOption;
 		Play.textColor = notSelectedText;
-		Opciones.textColor = notSelectedText;
-		Salir.textColor = selectedText;
+		Options.textColor = notSelectedText;
+		Exit.textColor = selectedText;
 		if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
 	}
-	if (optionMenu == 2)
+	if (optionCounterMenu == 2)
 	{
 		Play.color = notSelectedOption;
-		Opciones.color = selectedOption;
-		Salir.color = notSelectedOption;
+		Options.color = selectedOption;
+		Exit.color = notSelectedOption;
 		Play.textColor = notSelectedText;
-		Opciones.textColor = selectedText;
-		Salir.textColor = notSelectedText;
+		Options.textColor = selectedText;
+		Exit.textColor = notSelectedText;
 		if (IsKeyPressed(KEY_ENTER))
 		{
 			lastState = menu;
-			gamestate = options;
-			optionMenu = 3;
+			gamestate = optionsMenu;
+			optionCounterMenu = 3;
 		}
 	}
-	if (optionMenu == 3)
+	if (optionCounterMenu == 3)
 	{
 		Play.color = selectedOption;
-		Opciones.color = notSelectedOption;
-		Salir.color = notSelectedOption;
+		Options.color = notSelectedOption;
+		Exit.color = notSelectedOption;
 		Play.textColor = selectedText;
-		Opciones.textColor = notSelectedText;
-		Salir.textColor = notSelectedText;
-		if (IsKeyPressed(KEY_ENTER) && gamestate == menu) gamestate = gameplay;
+		Options.textColor = notSelectedText;
+		Exit.textColor = notSelectedText;
+		if (IsKeyPressed(KEY_ENTER) && gamestate == menu) gamestate = resetingValues;
 	}
 
 	BeginDrawing();
 	ClearBackground(BLACK);
 	DrawRectangle(Play.rectangle.x, Play.rectangle.y, Play.rectangle.width, Play.rectangle.height, Play.color);
 	DrawText("Play", Play.textPos.x, Play.textPos.y, Play.textFont, Play.textColor);
-	DrawRectangle(Opciones.rectangle.x, Opciones.rectangle.y, Opciones.rectangle.width, Opciones.rectangle.height, Opciones.color);
-	DrawText("Options", Opciones.textPos.x, Opciones.textPos.y, Opciones.textFont, Opciones.textColor);
-	DrawRectangle(Salir.rectangle.x, Salir.rectangle.y, Salir.rectangle.width, Salir.rectangle.height, Salir.color);
-	DrawText("Salir", Salir.textPos.x, Salir.textPos.y, Salir.textFont, Salir.textColor);
+	DrawRectangle(Options.rectangle.x, Options.rectangle.y, Options.rectangle.width, Options.rectangle.height, Options.color);
+	DrawText("Options", Options.textPos.x, Options.textPos.y, Options.textFont, Options.textColor);
+	DrawRectangle(Exit.rectangle.x, Exit.rectangle.y, Exit.rectangle.width, Exit.rectangle.height, Exit.color);
+	DrawText("Exit", Exit.textPos.x, Exit.textPos.y, Exit.textFont, Exit.textColor);
 	EndDrawing();
 }

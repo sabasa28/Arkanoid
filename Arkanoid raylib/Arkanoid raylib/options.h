@@ -9,7 +9,7 @@ extern Button SwapScreensize2;
 extern Button SwapScreensize3;
 extern Button Back;
 
-extern int optionCounter;
+extern int optionCounterOptions;
 
 void initOptions();
 void executeOptions();
