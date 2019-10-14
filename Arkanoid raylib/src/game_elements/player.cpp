@@ -1,5 +1,6 @@
 #include "player.h"
-#include "console.h"
+
+#include "general_elements/console.h"
 
 Player player;
 Scorestate scorestate;
@@ -21,6 +22,6 @@ void initPlayer()
 	player.rectangle.x = screenWidth / player.divider.x;
 	player.rectangle.y = screenHeight / player.divider.y;
 	player.speed = screenWidth / player.speedDivider;
-	player.lives = 5;
+	player.lives = 10;
 	player.ballAttached = true;
 }

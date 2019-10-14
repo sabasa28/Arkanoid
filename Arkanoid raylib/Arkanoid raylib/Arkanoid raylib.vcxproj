@@ -18,6 +18,35 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\game_elements\ball.cpp" />
+    <ClCompile Include="..\src\game_elements\bricks.cpp" />
+    <ClCompile Include="..\src\game_elements\player.cpp" />
+    <ClCompile Include="..\src\game_elements\powerUP.cpp" />
+    <ClCompile Include="..\src\general_elements\codingTools.cpp" />
+    <ClCompile Include="..\src\general_elements\console.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\states\game.cpp" />
+    <ClCompile Include="..\src\states\gameOver.cpp" />
+    <ClCompile Include="..\src\states\gameplay.cpp" />
+    <ClCompile Include="..\src\states\menu.cpp" />
+    <ClCompile Include="..\src\states\options.cpp" />
+    <ClCompile Include="..\src\states\resetGameElements.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\game_elements\ball.h" />
+    <ClInclude Include="..\src\game_elements\bricks.h" />
+    <ClInclude Include="..\src\game_elements\player.h" />
+    <ClInclude Include="..\src\game_elements\powerUP.h" />
+    <ClInclude Include="..\src\general_elements\codingTools.h" />
+    <ClInclude Include="..\src\general_elements\console.h" />
+    <ClInclude Include="..\src\states\game.h" />
+    <ClInclude Include="..\src\states\gameOver.h" />
+    <ClInclude Include="..\src\states\gameplay.h" />
+    <ClInclude Include="..\src\states\menu.h" />
+    <ClInclude Include="..\src\states\options.h" />
+    <ClInclude Include="..\src\states\resetGameElements.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{E126A1F2-FD33-463B-A012-E31A41C2117E}</ProjectGuid>
@@ -69,20 +98,32 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\raylib-2.5.0-Win32-msvc15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/raylib-2.5.0-Win32-msvc15/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\raylib-2.5.0-Win32-msvc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>raylib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
+mkdir "$(OutDir)assets"
+xcopy "$(SolutionDir)resources\assets" "$(OutDir)assets" /s /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -90,6 +131,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/raylib-2.5.0-Win32-msvc15/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,7 +145,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\raylib-2.5.0-Win32-msvc15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/raylib-2.5.0-Win32-msvc15/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -113,6 +155,11 @@
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
+mkdir "$(OutDir)assets"
+xcopy "$(SolutionDir)resources\assets" "$(OutDir)assets" /s /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -122,39 +169,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/raylib-2.5.0-Win32-msvc15/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="codingTools.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="gameOver.cpp" />
-    <ClCompile Include="gameplay.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ball.cpp" />
-    <ClCompile Include="bricks.cpp" />
-    <ClCompile Include="console.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="options.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="powerUP.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ball.h" />
-    <ClInclude Include="bricks.h" />
-    <ClInclude Include="codingTools.h" />
-    <ClInclude Include="console.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="gameOver.h" />
-    <ClInclude Include="gameplay.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="options.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="powerUP.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

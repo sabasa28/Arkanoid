@@ -1,7 +1,9 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
+
 #include "raylib.h"
-#include "codingTools.h"
+
+#include "general_elements/codingTools.h"
 
 extern Button MuteVolume;
 extern Button SwapScreensize1;
@@ -12,6 +14,7 @@ extern Button Back;
 extern int optionCounterOptions;
 
 void initOptions();
-void executeOptions();
+void updateOptions();
+void drawOptions();
 #endif //OPTIONS_H
 

@@ -2,5 +2,6 @@
 #define GAMEOVER_H
 
 void initGameOver();
-void executeGameOver();
+void updateGameOver();
+void drawGameOver();
 #endif //GAMEOVER_H

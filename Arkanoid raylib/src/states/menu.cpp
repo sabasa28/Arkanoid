@@ -1,8 +1,10 @@
 #include "menu.h"
+
 #include "raylib.h"
-#include "console.h"
-#include "game.h"
-#include "codingTools.h"
+
+#include "general_elements/console.h"
+#include "general_elements/codingTools.h"
+#include "states/game.h"
 
 static Button Play;
 static Button Options;
@@ -52,7 +54,7 @@ void initMenu()
 	Exit.textPos.y = screenHeight / Exit.textDivider.y;
 }
 
-void executeMenu()
+void updateMenu()
 {
 	if (IsKeyPressed(KEY_DOWN))optionCounterMenu--;
 	if (IsKeyPressed(KEY_UP))optionCounterMenu++;
@@ -93,7 +95,9 @@ void executeMenu()
 		Exit.textColor = notSelectedText;
 		if (IsKeyPressed(KEY_ENTER) && gamestate == menu) gamestate = resetingValues;
 	}
-
+}
+void drawMenu()
+{
 	BeginDrawing();
 	ClearBackground(BLACK);
 	DrawRectangle(Play.rectangle.x, Play.rectangle.y, Play.rectangle.width, Play.rectangle.height, Play.color);

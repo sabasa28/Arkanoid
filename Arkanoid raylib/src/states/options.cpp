@@ -2,10 +2,11 @@
 
 #include "raylib.h"
 
-#include "codingTools.h"
-#include "console.h"
-#include "game.h"
-#include "gameplay.h"
+#include "general_elements/codingTools.h"
+#include "general_elements/console.h"
+#include "states/game.h"
+#include "states/gameplay.h"
+#include "resetGameElements.h"
 
 Button MuteVolume;
 Button SwapScreensize1;
@@ -77,7 +78,7 @@ void initOptions()
 }
 
 
-void executeOptions()
+void updateOptions()
 {
 	if (IsKeyPressed(KEY_DOWN))optionCounterOptions--;
 	if (IsKeyPressed(KEY_UP))optionCounterOptions++;
@@ -117,8 +118,9 @@ void executeOptions()
 			screenWidth = GetMonitorWidth(0);
 			screenHeight = GetMonitorHeight(0);
 			if(GetScreenWidth()!=GetMonitorWidth(0))ToggleFullscreen();
-			SetWindowSize(screenWidth, screenWidth);
+			SetWindowSize(screenWidth, screenHeight);
 			init();
+			if (lastState == gameplay)resetGameElements();
 		}
 	}
 	if (optionCounterOptions == 3)
@@ -144,6 +146,7 @@ void executeOptions()
 			SetWindowSize(screenWidth, screenHeight);
 			SetWindowPosition((GetMonitorWidth(0) - screenWidth) / 2, (GetMonitorHeight(0) - screenHeight) / 2);
 			init();
+			if (lastState == gameplay)resetGameElements();
 		}
 	}
 	if (optionCounterOptions == 4)
@@ -169,6 +172,7 @@ void executeOptions()
 			SetWindowSize(screenWidth, screenHeight);
 			SetWindowPosition((GetMonitorWidth(0) - screenWidth) / 2, (GetMonitorHeight(0) - screenHeight) / 2);
 			init();
+			if (lastState == gameplay)resetGameElements();
 		}
 	}
 	if (optionCounterOptions == 5)
@@ -185,6 +189,9 @@ void executeOptions()
 		Back.textColor = notSelectedText;
 		SetMasterVolume(0);
 	}
+}
+void drawOptions()
+{
 	BeginDrawing();
 	ClearBackground(BLACK);
 	DrawRectangle(MuteVolume.rectangle.x, MuteVolume.rectangle.y, MuteVolume.rectangle.width, MuteVolume.rectangle.height, MuteVolume.color);

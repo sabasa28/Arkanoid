@@ -2,7 +2,8 @@
 #define MENU_H
 
 #include "raylib.h"
-#include "codingTools.h"
+
+#include "general_elements/codingTools.h"
 
 extern Button Play;
 extern Button Options;
@@ -20,6 +21,6 @@ extern TextDivider exitText;
 extern int optionCounterMenu;
 
 void initMenu();
-void executeMenu();
-
+void updateMenu();
+void drawMenu();
 #endif //MENU_H

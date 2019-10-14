@@ -1,90 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Archivos de origen">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="game_elements">
+      <UniqueIdentifier>{a46545eb-376a-4d76-9ce8-78c0cd910b1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="general_elements">
+      <UniqueIdentifier>{14f0467a-bfac-4f81-80ee-87490f3aa453}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de recursos">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="states">
+      <UniqueIdentifier>{1b140963-0934-4d43-9732-128821677a56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ball.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\game_elements\ball.cpp">
+      <Filter>game_elements</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\game_elements\bricks.cpp">
+      <Filter>game_elements</Filter>
     </ClCompile>
-    <ClCompile Include="powerUP.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\game_elements\player.cpp">
+      <Filter>game_elements</Filter>
     </ClCompile>
-    <ClCompile Include="console.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\game_elements\powerUP.cpp">
+      <Filter>game_elements</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\general_elements\codingTools.cpp">
+      <Filter>general_elements</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\general_elements\console.cpp">
+      <Filter>general_elements</Filter>
     </ClCompile>
-    <ClCompile Include="bricks.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\states\game.cpp">
+      <Filter>states</Filter>
     </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\states\gameOver.cpp">
+      <Filter>states</Filter>
     </ClCompile>
-    <ClCompile Include="options.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\states\gameplay.cpp">
+      <Filter>states</Filter>
     </ClCompile>
-    <ClCompile Include="codingTools.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\states\menu.cpp">
+      <Filter>states</Filter>
     </ClCompile>
-    <ClCompile Include="gameplay.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\states\options.cpp">
+      <Filter>states</Filter>
     </ClCompile>
-    <ClCompile Include="gameOver.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\states\resetGameElements.cpp">
+      <Filter>states</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ball.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\game_elements\ball.h">
+      <Filter>game_elements</Filter>
     </ClInclude>
-    <ClInclude Include="console.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\game_elements\bricks.h">
+      <Filter>game_elements</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\game_elements\player.h">
+      <Filter>game_elements</Filter>
     </ClInclude>
-    <ClInclude Include="powerUP.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\game_elements\powerUP.h">
+      <Filter>game_elements</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\general_elements\codingTools.h">
+      <Filter>general_elements</Filter>
     </ClInclude>
-    <ClInclude Include="bricks.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\general_elements\console.h">
+      <Filter>general_elements</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\states\game.h">
+      <Filter>states</Filter>
     </ClInclude>
-    <ClInclude Include="options.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\states\gameOver.h">
+      <Filter>states</Filter>
     </ClInclude>
-    <ClInclude Include="codingTools.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\states\gameplay.h">
+      <Filter>states</Filter>
     </ClInclude>
-    <ClInclude Include="gameplay.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\states\menu.h">
+      <Filter>states</Filter>
     </ClInclude>
-    <ClInclude Include="gameOver.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="..\src\states\options.h">
+      <Filter>states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\states\resetGameElements.h">
+      <Filter>states</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

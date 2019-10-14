@@ -1,5 +1,7 @@
 #include "console.h"
+
 #include "raylib.h"
+
 int screenWidth = 800;
 int screenHeight = 450;
 

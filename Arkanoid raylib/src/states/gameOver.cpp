@@ -2,10 +2,10 @@
 
 #include "raylib.h"
 
-#include "game.h"
-#include "player.h"
-#include "console.h"
-#include "codingTools.h"
+#include "game_elements/player.h"
+#include "general_elements/console.h"
+#include "general_elements/codingTools.h"
+#include "states/game.h"
 
 static int optionCounterGameOver = 3;
 static Vector2 result;
@@ -57,7 +57,7 @@ void initGameOver()
 	exit.textPos.x = screenWidth / exit.textDivider.x;
 	exit.textPos.y = screenHeight / exit.textDivider.y;
 }
-void executeGameOver()
+void updateGameOver()
 {
 	if (IsKeyDown('R'))gamestate = resetingValues;
 	if (IsKeyPressed(KEY_DOWN))optionCounterGameOver--;
@@ -98,6 +98,9 @@ void executeGameOver()
 		exit.textColor = notSelectedText;
 		if (IsKeyPressed(KEY_ENTER) && gamestate == gameOver) gamestate = resetingValues;
 	}
+}
+void drawGameOver() 
+{
 	BeginDrawing();
 	ClearBackground(BLACK);
 	if (scorestate == lost)

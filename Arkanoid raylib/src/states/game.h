@@ -13,4 +13,5 @@ enum State
 extern State gamestate;
 extern State lastState;
 void init();
+void executeGame();
 #endif //GAME_H

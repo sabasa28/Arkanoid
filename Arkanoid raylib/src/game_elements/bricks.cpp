@@ -2,17 +2,21 @@
 
 #include "raylib.h"
 
-#include "console.h"
+#include "general_elements/console.h"
 
-const int brickAmmount = 64;
+const int maxBrickAmmount = 80;
+const int lvl1BrickAmmount = 32;
+const int lvl2BrickAmmount = 48;
+const int lvl3BrickAmmount = 64;
+const int lvl4BrickAmmount = 80;
 int brickLines = 0;
-Brick brick[brickAmmount];
+Brick brick[maxBrickAmmount];
 int bricksRemmaining = 0;
 static Vector2 offsetBricksDivider { 80.0f,11.25f };
 void initBricks() 
 {
 	
-	for (int i = 0; i < brickAmmount; i++)
+	for (int i = 0; i < maxBrickAmmount; i++)
 	{
 		brick[i].divider.width=20.0f;
 		brick[i].divider.height = 15.0f;

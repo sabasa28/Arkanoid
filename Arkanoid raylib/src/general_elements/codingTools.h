@@ -1,6 +1,8 @@
 #ifndef CODINGTOOLS_H
 #define CODINGTOOLS_H
+
 #include "raylib.h"
+
 struct Button
 {
 	Rectangle rectangle;

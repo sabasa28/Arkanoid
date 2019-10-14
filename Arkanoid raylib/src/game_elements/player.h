@@ -12,6 +12,7 @@ struct Player
 	float centerPosition;
 	bool ballAttached = true;
 	int lives;
+	int pieces = 12;
 };
 extern Player player;
 enum Scorestate
