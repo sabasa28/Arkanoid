@@ -25,28 +25,49 @@ namespace arkanoid_IDG {
 			brick[i].rectangle.height = screenHeight / brick[i].divider.height;
 			brick[i].rectangle.x = screenWidth / brick[i].divider.x * i;
 			brick[i].rectangle.y = 0;
-			switch ((GetRandomValue(0, 8)))
+			switch ((GetRandomValue(0, 30)))
 			{
 			case 0:
-				brick[i].content = PowerUp1;
+				brick[i].content = tpPlayer;
 				break;
 			case 1:
-				brick[i].content = PowerUp2;
+				brick[i].content = enlargeBall;
+				break;
+			case 2:
+				brick[i].content = shrinkBall;
+				break;
+			case 3:
+				brick[i].content = invertInput;
+				break;
+			case 5:
+			case 6:
+			case 7:
+			case 4:
+				brick[i].content = barrier;
 				break;
 			default:
 				brick[i].content = notPowerUp;
 			}
-			if (brick[i].content==PowerUp1)
+			switch (brick[i].content)
 			{
+			case tpPlayer:
+				brick[i].color = ORANGE;
+				break;
+			case invertInput:
+				brick[i].color = DARKPURPLE;
+				break;
+			case shrinkBall:
+				brick[i].color = DARKBROWN;
+				break;
+			case barrier:
+				brick[i].color = LIGHTGRAY;
+				break;
+			case enlargeBall:
 				brick[i].color = YELLOW;
-			}
-			else if (brick[i].content==PowerUp2)
-			{
-				brick[i].color = PURPLE;
-			}
-			else 
-			{
+				break;
+			case notPowerUp:
 				brick[i].color = RED;
+				break;
 			}
 			if (brick[i].rectangle.x + brick[i].rectangle.width >= GetScreenWidth())
 			{

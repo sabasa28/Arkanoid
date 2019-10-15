@@ -9,6 +9,14 @@ namespace arkanoid_IDG {
 		bool up = false;
 		bool down = false;
 	};
+	enum Size
+	{
+		enlarged2,
+		enlarged1,
+		normal,
+		shrinked1,
+		shrinked2,
+	};
 	struct Ball
 	{
 		Vector2 position;
@@ -18,6 +26,7 @@ namespace arkanoid_IDG {
 		float radius;
 		float radiusDivider;
 		Bounce bounceSide;
+		Size sizeState = normal;
 		bool invertY;
 		bool invertX;
 		float speedX0;

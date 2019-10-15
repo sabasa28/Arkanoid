@@ -13,9 +13,12 @@ namespace arkanoid_IDG {
 
 	enum PowerUp
 	{
-		notPowerUp,
-		PowerUp1,
-		PowerUp2
+		tpPlayer,
+		shrinkBall,
+		enlargeBall,
+		invertInput,
+		barrier,
+		notPowerUp
 	};
 
 	struct Brick

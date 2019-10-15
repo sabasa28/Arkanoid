@@ -3,6 +3,7 @@
 #include "game_elements/player.h"
 #include "game_elements/bricks.h"
 #include "game_elements/ball.h"
+#include "game_elements/powerUP.h"
 #include "general_elements/console.h"
 #include "states/menu.h"
 #include "states/options.h"
@@ -21,6 +22,7 @@ namespace arkanoid_IDG {
 		initPlayer();
 		initBall();
 		initBricks();
+		initPowerUps();
 		initMenu();
 		initPause();
 		initOptions();

@@ -5,11 +5,13 @@
 #include "game_elements/ball.h"
 #include "game_elements/bricks.h"
 #include "game_elements/player.h"
+#include "game_elements/powerUP.h"
 #include "general_elements/console.h"
 #include "general_elements/codingTools.h"
 #include "states/game.h"
 #include "assets/images.h"
 #include "assets/sound.h"
+
 namespace arkanoid_IDG {
 	static Button Return;
 	static Button optionsbutton;
@@ -29,6 +31,7 @@ namespace arkanoid_IDG {
 	static float livesTextFontDiv = 22.5f;
 	bool pause = false;
 	static int optionCounterPause = 3;
+	static bool ActiveBarrier = false;
 	lvl level = lvl1;
 	void levelTransition();
 	void initPause()
@@ -99,13 +102,23 @@ namespace arkanoid_IDG {
 					player.ballAttached = false;
 					ball.speed = { ball.launchSpeed.x, ball.launchSpeed.y };
 				}
-			ball.position.x += ball.speed.x*GetFrameTime()*70;
-			ball.position.y += ball.speed.y*GetFrameTime()*70;
+			ball.position.x += ball.speed.x*GetFrameTime() * 70;
+			ball.position.y += ball.speed.y*GetFrameTime() * 70;
 
 			if (ball.position.y + ball.radius >= GetScreenHeight())
 			{
-				player.ballAttached = true;
-				player.lives--;
+				if (ActiveBarrier == true)
+				{
+					ball.speed.y *= -1;
+					ActiveBarrier = false;
+				}
+				else
+				{
+					player.ballAttached = true;
+					ball.sizeState = normal;
+					ball.radius = (screenWidth + screenHeight) / ball.radiusDivider;
+					player.lives--;
+				}
 			}
 			if (player.ballAttached == true)ball.position = { GetCenterPos(player), player.rectangle.y - ball.radius };
 			if (ball.position.x + ball.radius >= (GetScreenWidth()) && ball.speed.x > 0) ball.speed.x *= -1.0f;
@@ -171,16 +184,10 @@ namespace arkanoid_IDG {
 			{
 				if (brick[i].exists == true && CheckCollisionCircleRec(ball.position, ball.radius, brick[i].rectangle))
 				{
-					switch (brick[i].content)
-					{
-						//HACER ALGO ACA
-					default:
-						break;
-					}
 					if (ball.speed.y < 0) {
 						if ((ball.position.y - ball.radius) <= (brick[i].rectangle.y + brick[i].rectangle.height)) {
 							ball.bounceSide.down = true;
-							brick[i].exists = false;   // TENER UNO SOLO DE ESTOS EN EL IF GENERAL
+							brick[i].exists = false; //?? TENER UNO SOLO DE ESTOS EN EL IF GENERAL
 						}
 					}
 					if (ball.speed.y > 0)
@@ -202,6 +209,7 @@ namespace arkanoid_IDG {
 							brick[i].exists = false;
 						}
 					}
+
 					if (ball.bounceSide.down == true && ball.bounceSide.up == true)
 					{
 						if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((ball.position.y + ball.radius) - (brick[i].rectangle.y))) ball.bounceSide.up = false;
@@ -247,6 +255,23 @@ namespace arkanoid_IDG {
 					ball.bounceSide.down = false;
 					ball.bounceSide.left = false;
 					ball.bounceSide.right = false;
+					switch (brick[i].content)
+					{
+					case tpPlayer:
+						playerToRandomX();
+						break;
+					case shrinkBall:
+						divideBallRadius();
+						break;
+					case enlargeBall:
+						multiplyBallRadius();
+						break;
+					case barrier:
+						ActiveBarrier = true;
+						break;
+					default:
+						break;
+					}
 				}
 				if (ball.invertY == true)
 				{
@@ -346,6 +371,10 @@ namespace arkanoid_IDG {
 		DrawText(TextFormat("LEVEL %i", static_cast<int>(level) + 1), levelText.x, levelText.y, levelTextFont, WHITE);
 		DrawCircleV(ball.position, ball.radius, YELLOW);
 		DrawText(TextFormat("Lives left: %i", player.lives), livesText.x, livesText.y, livesTextFont, WHITE);
+		if (ActiveBarrier==true)
+		{
+			DrawRectangle(barrierRec.x, barrierRec.y, barrierRec.width, barrierRec.height, YELLOW);
+		}
 		for (int i = 0; i < maxBrickAmmount; i++)
 		{
 			if (brick[i].exists == true)
@@ -413,7 +442,6 @@ namespace arkanoid_IDG {
 				}
 				break;
 			}
-
 		}
 		player.rectangle.x = GetScreenWidth() / 2;
 		player.ballAttached = true;

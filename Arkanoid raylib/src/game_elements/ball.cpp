@@ -8,6 +8,7 @@ namespace arkanoid_IDG {
 
 
 	void initBall() {
+		ball.sizeState = normal;
 		ball.radiusDivider = 125.0f;
 		ball.launchSpeedDiv.x = 0.0f;
 		ball.launchSpeedDiv.y = -90.0f;
