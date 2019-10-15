@@ -4,23 +4,21 @@
 #include "raylib.h"
 
 #include "general_elements/codingTools.h"
+namespace arkanoid_IDG {
+	extern Button playbutton;
+	extern Button optionsbutton;
+	extern Button exitbutton;
+	struct TextDivider
+	{
+		float x;
+		float y;
+		float font;
+	};
 
-extern Button Play;
-extern Button Options;
-extern Button Exit;
-struct TextDivider
-{
-	float x;
-	float y;
-	float font;
-};
-extern TextDivider playText;
-extern TextDivider optionsText;
-extern TextDivider exitText;
+	extern int optionCounterMenu;
 
-extern int optionCounterMenu;
-
-void initMenu();
-void updateMenu();
-void drawMenu();
+	void initMenu();
+	void updateMenu();
+	void drawMenu();
+}
 #endif //MENU_H

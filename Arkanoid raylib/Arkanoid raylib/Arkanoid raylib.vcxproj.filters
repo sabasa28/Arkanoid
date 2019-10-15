@@ -10,6 +10,9 @@
     <Filter Include="states">
       <UniqueIdentifier>{1b140963-0934-4d43-9732-128821677a56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{bd44549b-aa6c-4d33-87ac-389b1224d127}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game_elements\ball.cpp">
@@ -49,6 +52,12 @@
     <ClCompile Include="..\src\states\resetGameElements.cpp">
       <Filter>states</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\assets\images.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\assets\sound.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\game_elements\ball.h">
@@ -86,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="..\src\states\resetGameElements.h">
       <Filter>states</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assets\images.h">
+      <Filter>assets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\assets\sound.h">
+      <Filter>assets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

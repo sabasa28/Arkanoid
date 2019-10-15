@@ -9,51 +9,59 @@
 #include "states/gameplay.h"
 #include "states/gameOver.h"
 #include "resetGameElements.h"
+#include "assets/images.h"
+#include "assets/sound.h"
+namespace arkanoid_IDG {
+	State gamestate = menu;
+	State lastState = menu;
 
-State gamestate = menu;
-State lastState = menu;
-
-void init() 
-{
-	initPlayer();
-	initBall();
-	initBricks();
-	initMenu();
-	initPause();
-	initOptions();
-	initGameOver();
-}
-
-void executeGame() 
-{
-	initConsole();
-	init();
-	while (!WindowShouldClose() && gamestate != closing)
+	void init()
 	{
-		if (gamestate == menu)
-		{
-			updateMenu();
-			drawMenu();
-		}
-		if (gamestate == optionsMenu)
-		{
-			updateOptions();
-			drawOptions();
-		}
-		if (gamestate == gameplay)
-		{
-			updateGameplay();
-			drawGameplay();
-		}
-		if (gamestate == gameOver)
-		{
-			updateGameOver();
-			drawGameOver();
-		}
-		if (gamestate == resetingValues)
-		{
-			resetGameElements();
-		}
+		initTextures();
+		initPlayer();
+		initBall();
+		initBricks();
+		initMenu();
+		initPause();
+		initOptions();
+		initGameOver();
 	}
-	CloseWindow();
+
+	void executeGame()
+	{
+		initConsole();
+		initSounds();
+		init();
+		while (!WindowShouldClose() && gamestate != closing)
+		{
+			if (gamestate == menu)
+			{
+				updateMenu();
+				drawMenu();
+			}
+			if (gamestate == optionsMenu)
+			{
+				updateOptions();
+				drawOptions();
+			}
+			if (gamestate == gameplay)
+			{
+				updateGameplay();
+				drawGameplay();
+			}
+			if (gamestate == gameOver)
+			{
+				updateGameOver();
+				drawGameOver();
+			}
+			if (gamestate == resetingValues)
+			{
+				resetGameElements();
+			}
+		}
+		UnloadMusicStream(originalMusic1);
+		UnloadMusicStream(originalMusic);
+		UnloadSound(originalSound);
+		CloseWindow();
+	}
 }

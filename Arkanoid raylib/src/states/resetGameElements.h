@@ -1,6 +1,6 @@
 #ifndef RESETGAMEELEMENENTS_H
 #define RESETGAMEELEMENENTS_H
-
-void resetGameElements();
-
+namespace arkanoid_IDG {
+	void resetGameElements();
+}
 #endif //RESETGAMEELEMENENTS_H

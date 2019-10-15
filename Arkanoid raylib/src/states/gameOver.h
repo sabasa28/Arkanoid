@@ -1,7 +1,8 @@
 #ifndef GAMEOVER_H
 #define GAMEOVER_H
-
-void initGameOver();
-void updateGameOver();
-void drawGameOver();
+namespace arkanoid_IDG {
+	void initGameOver();
+	void updateGameOver();
+	void drawGameOver();
+}
 #endif //GAMEOVER_H

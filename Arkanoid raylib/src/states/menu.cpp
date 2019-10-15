@@ -5,106 +5,163 @@
 #include "general_elements/console.h"
 #include "general_elements/codingTools.h"
 #include "states/game.h"
-
-static Button Play;
-static Button Options;
-static Button Exit;
-int optionCounterMenu = 3;
-
-TextDivider optionsText;
-TextDivider exitText;
-
-void initMenu()
-{
-	Play.divider.width = 3.0f;
-	Play.divider.height = 6.0f;
-	Play.divider.x = 3.0f;
-	Play.divider.y = 4.0f;
-	Play.textFontDivider = 9.0f;
-	Play.textDivider.x = 2.3f;
-	Play.textDivider.y = 3.7f;
-	Play.rectangle.width = screenWidth / Play.divider.width;
-	Play.rectangle.height = screenHeight / Play.divider.height;
-	Play.rectangle.x = screenWidth / Play.divider.x;
-	Play.rectangle.y = screenHeight / Play.divider.y;
-	Play.textFont = screenHeight / Play.textFontDivider;
-	Play.textPos.x = screenWidth / Play.textDivider.x;
-	Play.textPos.y = screenHeight / Play.textDivider.y;
-	Options.divider.y = 2.2f;
-	Options.textFontDivider = 9.0f;
-	Options.textDivider.x = 2.6f;
-	Options.textDivider.y = 2.1f;
-	Options.rectangle.width = Play.rectangle.width;
-	Options.rectangle.height = Play.rectangle.height;
-	Options.rectangle.x = Play.rectangle.x;
-	Options.rectangle.y = screenHeight / Options.divider.y;
-	Options.textFont = screenHeight / Options.textFontDivider;
-	Options.textPos.x = screenWidth / Options.textDivider.x;
-	Options.textPos.y = screenHeight / Options.textDivider.y;
-	Exit.divider.y = 1.5f;
-	Exit.textFontDivider= 9.0f;
-	Exit.textDivider.x = 2.3f;
-	Exit.textDivider.y = 1.45;
-	Exit.rectangle.width = Play.rectangle.width;
-	Exit.rectangle.height = Play.rectangle.height;
-	Exit.rectangle.x = Play.rectangle.x;
-	Exit.rectangle.y = screenHeight / Exit.divider.y;
-	Exit.textFont = screenHeight / Exit.textFontDivider;
-	Exit.textPos.x = screenWidth / Exit.textDivider.x;
-	Exit.textPos.y = screenHeight / Exit.textDivider.y;
-}
-
-void updateMenu()
-{
-	if (IsKeyPressed(KEY_DOWN))optionCounterMenu--;
-	if (IsKeyPressed(KEY_UP))optionCounterMenu++;
-	if (optionCounterMenu < 1)optionCounterMenu = 3;
-	if (optionCounterMenu > 3)optionCounterMenu = 1;
-	if (optionCounterMenu == 1)
+#include "assets/images.h"
+#include "assets/sound.h"
+namespace arkanoid_IDG {
+	static Button playbutton;
+	static Button optionsbutton;
+	static Button exitbutton;
+	static Button infobutton;
+	static bool controls = false;
+	int optionCounterMenu = 4;
+	float controlsFontDiv = 15.0f;
+	int controlsFont;
+	void initMenu()
 	{
-		Play.color = notSelectedOption;
-		Options.color = notSelectedOption;
-		Exit.color = selectedOption;
-		Play.textColor = notSelectedText;
-		Options.textColor = notSelectedText;
-		Exit.textColor = selectedText;
-		if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
+		playbutton.divider.width = 3.0f;
+		playbutton.divider.height = 6.0f;
+		playbutton.divider.x = 3.0f;
+		playbutton.divider.y = 20.0f;
+		playbutton.textFontDivider = 9.0f;
+		playbutton.textDivider.x = 2.3f;
+		playbutton.textDivider.y = 15.0f;
+		playbutton.rectangle.width = screenWidth / playbutton.divider.width;
+		playbutton.rectangle.height = screenHeight / playbutton.divider.height;
+		playbutton.rectangle.x = screenWidth / playbutton.divider.x;
+		playbutton.rectangle.y = screenHeight / playbutton.divider.y;
+		playbutton.textFont = screenHeight / playbutton.textFontDivider;
+		playbutton.textPos.x = screenWidth / playbutton.textDivider.x;
+		playbutton.textPos.y = screenHeight / playbutton.textDivider.y;
+		optionsbutton.divider.y = 2.2f;
+		optionsbutton.textFontDivider = 9.0f;
+		optionsbutton.textDivider.x = 2.6f;
+		optionsbutton.textDivider.y = 2.1f;
+		optionsbutton.rectangle.width = playbutton.rectangle.width;
+		optionsbutton.rectangle.height = playbutton.rectangle.height;
+		optionsbutton.rectangle.x = playbutton.rectangle.x;
+		optionsbutton.rectangle.y = screenHeight / optionsbutton.divider.y;
+		optionsbutton.textFont = screenHeight / optionsbutton.textFontDivider;
+		optionsbutton.textPos.x = screenWidth / optionsbutton.textDivider.x;
+		optionsbutton.textPos.y = screenHeight / optionsbutton.textDivider.y;
+		exitbutton.divider.y = 1.5f;
+		exitbutton.textFontDivider = 9.0f;
+		exitbutton.textDivider.x = 2.3f;
+		exitbutton.textDivider.y = 1.45;
+		exitbutton.rectangle.width = playbutton.rectangle.width;
+		exitbutton.rectangle.height = playbutton.rectangle.height;
+		exitbutton.rectangle.x = playbutton.rectangle.x;
+		exitbutton.rectangle.y = screenHeight / exitbutton.divider.y;
+		exitbutton.textFont = screenHeight / exitbutton.textFontDivider;
+		exitbutton.textPos.x = screenWidth / exitbutton.textDivider.x;
+		exitbutton.textPos.y = screenHeight / exitbutton.textDivider.y;
+		infobutton.divider.y = 4.0f;
+		infobutton.textFontDivider = 9.0f;
+		infobutton.textDivider.x = 2.3f;
+		infobutton.textDivider.y = 3.7f;
+		infobutton.rectangle.width = playbutton.rectangle.width;
+		infobutton.rectangle.height = playbutton.rectangle.height;
+		infobutton.rectangle.x = playbutton.rectangle.x;
+		infobutton.rectangle.y = screenHeight / infobutton.divider.y;
+		infobutton.textFont = screenHeight / infobutton.textFontDivider;
+		infobutton.textPos.x = screenWidth / infobutton.textDivider.x;
+		infobutton.textPos.y = screenHeight / infobutton.textDivider.y;
+		controlsFont = screenHeight / controlsFontDiv;
 	}
-	if (optionCounterMenu == 2)
+
+	void updateMenu()
 	{
-		Play.color = notSelectedOption;
-		Options.color = selectedOption;
-		Exit.color = notSelectedOption;
-		Play.textColor = notSelectedText;
-		Options.textColor = selectedText;
-		Exit.textColor = notSelectedText;
-		if (IsKeyPressed(KEY_ENTER))
+		UpdateMusicStream(originalMusic);
+		if (controls == true)
 		{
-			lastState = menu;
-			gamestate = optionsMenu;
-			optionCounterMenu = 3;
+			if (IsKeyPressed(KEY_ENTER))
+			{
+				controls=false;
+			}
+		}
+		else
+		{
+			if (IsKeyPressed(KEY_DOWN))optionCounterMenu--;
+				if (IsKeyPressed(KEY_UP))optionCounterMenu++;
+				if (optionCounterMenu < 1)optionCounterMenu = 4;
+				if (optionCounterMenu > 4)optionCounterMenu = 1;
+				if (optionCounterMenu == 1)
+				{
+					playbutton.color = notSelectedOption;
+					infobutton.color = notSelectedOption;
+					optionsbutton.color = notSelectedOption;
+					exitbutton.color = selectedOption;
+					playbutton.textColor = notSelectedText;
+					infobutton.textColor = notSelectedText;
+					optionsbutton.textColor = notSelectedText;
+					exitbutton.textColor = selectedText;
+					if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
+				}
+			if (optionCounterMenu == 2)
+			{
+				playbutton.color = notSelectedOption;
+				infobutton.color = notSelectedOption;
+				optionsbutton.color = selectedOption;
+				exitbutton.color = notSelectedOption;
+				playbutton.textColor = notSelectedText;
+				infobutton.textColor = notSelectedText;
+				optionsbutton.textColor = selectedText;
+				exitbutton.textColor = notSelectedText;
+				if (IsKeyPressed(KEY_ENTER))
+				{
+					lastState = menu;
+					gamestate = optionsMenu;
+					optionCounterMenu = 4;
+				}
+			}
+			if (optionCounterMenu == 3)
+			{
+				playbutton.color = notSelectedOption;
+				infobutton.color = selectedOption;
+				optionsbutton.color = notSelectedOption;
+				exitbutton.color = notSelectedOption;
+				playbutton.textColor = notSelectedText;
+				infobutton.textColor = selectedText;
+				optionsbutton.textColor = notSelectedText;
+				exitbutton.textColor = notSelectedText;
+				if (IsKeyPressed(KEY_ENTER) && gamestate == menu) controls = true;
+			}
+			if (optionCounterMenu == 4)
+			{
+				playbutton.color = selectedOption;
+				infobutton.color = notSelectedOption;
+				optionsbutton.color = notSelectedOption;
+				exitbutton.color = notSelectedOption;
+				playbutton.textColor = selectedText;
+				infobutton.textColor = notSelectedText;
+				optionsbutton.textColor = notSelectedText;
+				exitbutton.textColor = notSelectedText;
+				if (IsKeyPressed(KEY_ENTER) && gamestate == menu) gamestate = resetingValues;
+			}
 		}
 	}
-	if (optionCounterMenu == 3)
+	void drawMenu()
 	{
-		Play.color = selectedOption;
-		Options.color = notSelectedOption;
-		Exit.color = notSelectedOption;
-		Play.textColor = selectedText;
-		Options.textColor = notSelectedText;
-		Exit.textColor = notSelectedText;
-		if (IsKeyPressed(KEY_ENTER) && gamestate == menu) gamestate = resetingValues;
+		BeginDrawing();
+		if (controls==true)
+		{
+			ClearBackground(BLACK);
+			DrawText("Move= right and left arrows", screenWidth/8, screenHeight / 4,controlsFont,WHITE);
+			DrawText("space to de-attach the ball", screenWidth / 8, screenHeight / 3, controlsFont, WHITE);
+			DrawText("escape to pause", screenWidth / 8, screenHeight / 2.5, controlsFont, WHITE);
+			DrawText("Press enter to go back to menu", screenWidth / 8, screenHeight / 2, controlsFont, WHITE);
+		}
+		else
+		{
+			DrawTexture(background, 0, 0, WHITE);
+			DrawRectangle(playbutton.rectangle.x, playbutton.rectangle.y, playbutton.rectangle.width, playbutton.rectangle.height, playbutton.color);
+			DrawText("Play", playbutton.textPos.x, playbutton.textPos.y, playbutton.textFont, playbutton.textColor);
+			DrawRectangle(infobutton.rectangle.x, infobutton.rectangle.y, infobutton.rectangle.width, infobutton.rectangle.height, infobutton.color);
+			DrawText("Info", infobutton.textPos.x, infobutton.textPos.y, infobutton.textFont, infobutton.textColor);
+			DrawRectangle(optionsbutton.rectangle.x, optionsbutton.rectangle.y, optionsbutton.rectangle.width, optionsbutton.rectangle.height, optionsbutton.color);
+			DrawText("Options", optionsbutton.textPos.x, optionsbutton.textPos.y, optionsbutton.textFont, optionsbutton.textColor);
+			DrawRectangle(exitbutton.rectangle.x, exitbutton.rectangle.y, exitbutton.rectangle.width, exitbutton.rectangle.height, exitbutton.color);
+			DrawText("Exit", exitbutton.textPos.x, exitbutton.textPos.y, exitbutton.textFont, exitbutton.textColor);
+		}
+		EndDrawing();
 	}
-}
-void drawMenu()
-{
-	BeginDrawing();
-	ClearBackground(BLACK);
-	DrawRectangle(Play.rectangle.x, Play.rectangle.y, Play.rectangle.width, Play.rectangle.height, Play.color);
-	DrawText("Play", Play.textPos.x, Play.textPos.y, Play.textFont, Play.textColor);
-	DrawRectangle(Options.rectangle.x, Options.rectangle.y, Options.rectangle.width, Options.rectangle.height, Options.color);
-	DrawText("Options", Options.textPos.x, Options.textPos.y, Options.textFont, Options.textColor);
-	DrawRectangle(Exit.rectangle.x, Exit.rectangle.y, Exit.rectangle.width, Exit.rectangle.height, Exit.color);
-	DrawText("Exit", Exit.textPos.x, Exit.textPos.y, Exit.textFont, Exit.textColor);
-	EndDrawing();
 }
