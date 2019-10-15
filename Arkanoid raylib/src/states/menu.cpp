@@ -12,10 +12,24 @@ namespace arkanoid_IDG {
 	static Button optionsbutton;
 	static Button exitbutton;
 	static Button infobutton;
+	static int optionCounterMenu = 4;
 	static bool controls = false;
-	int optionCounterMenu = 4;
-	float controlsFontDiv = 15.0f;
-	int controlsFont;
+	static float controlsFontDiv = 15.0f;
+	static int controlsFont;
+	static float controlsXDiv = 8.0f;
+	static float controls1YDiv = 6.0f;
+	static float controls2YDiv = 3.5f;
+	static float controls3YDiv = 2.5f;
+	static float controls4YDiv = 1.9f;
+	static float controls5YDiv = 1.25f;
+	static float controls1YPos;
+	static float controls2YPos;
+	static float controls3YPos;
+	static float controls4YPos;
+	static float controls5YPos;
+	static float controlsXPos;
+
+
 	void initMenu()
 	{
 		playbutton.divider.width = 3.0f;
@@ -56,7 +70,7 @@ namespace arkanoid_IDG {
 		exitbutton.textPos.y = screenHeight / exitbutton.textDivider.y;
 		infobutton.divider.y = 4.0f;
 		infobutton.textFontDivider = 9.0f;
-		infobutton.textDivider.x = 2.3f;
+		infobutton.textDivider.x = 2.75f;
 		infobutton.textDivider.y = 3.7f;
 		infobutton.rectangle.width = playbutton.rectangle.width;
 		infobutton.rectangle.height = playbutton.rectangle.height;
@@ -66,6 +80,13 @@ namespace arkanoid_IDG {
 		infobutton.textPos.x = screenWidth / infobutton.textDivider.x;
 		infobutton.textPos.y = screenHeight / infobutton.textDivider.y;
 		controlsFont = screenHeight / controlsFontDiv;
+		controls1YPos = screenHeight / controls1YDiv;
+		controls2YPos = screenHeight / controls2YDiv;
+		controls3YPos = screenHeight / controls3YDiv;
+		controls4YPos = screenHeight / controls4YDiv;
+		controls5YPos = screenHeight / controls5YDiv;
+		controlsXPos = screenWidth / controlsXDiv;
+
 	}
 
 	void updateMenu()
@@ -145,12 +166,11 @@ namespace arkanoid_IDG {
 		if (controls==true)
 		{
 			ClearBackground(BLACK);
-			DrawText("CONTROLS:", screenWidth / 8, screenHeight / 5.5, controlsFont, WHITE);
-			DrawText("Move= right and left arrows", screenWidth/8, screenHeight / 4,controlsFont,WHITE);
-			DrawText("space to de-attach the ball", screenWidth / 8, screenHeight / 3, controlsFont, WHITE);
-			DrawText("escape to pause", screenWidth / 8, screenHeight / 2.5, controlsFont, WHITE);
-			DrawText("CREDITS: gameplay song - Micael Lucuman", screenWidth / 8, screenHeight / 1.5, controlsFont, WHITE);
-			DrawText("Press enter to go back to menu", screenWidth / 8, screenHeight / 1.2, controlsFont, WHITE);
+			DrawText("CONTROLS:", controlsXPos, controls1YPos, controlsFont, WHITE);
+			DrawText("Move = right and left arrows", controlsXPos, controls2YPos,controlsFont,WHITE);
+			DrawText("Launch ball = spacebar", controlsXPos, controls3YPos, controlsFont, WHITE);
+			DrawText("Pause = escape", controlsXPos, controls4YPos, controlsFont, WHITE);
+			DrawText("Press enter to go back to menu", controlsXPos, controls5YPos, controlsFont, WHITE);
 		}
 		else
 		{
@@ -158,7 +178,7 @@ namespace arkanoid_IDG {
 			DrawRectangle(playbutton.rectangle.x, playbutton.rectangle.y, playbutton.rectangle.width, playbutton.rectangle.height, playbutton.color);
 			DrawText("Play", playbutton.textPos.x, playbutton.textPos.y, playbutton.textFont, playbutton.textColor);
 			DrawRectangle(infobutton.rectangle.x, infobutton.rectangle.y, infobutton.rectangle.width, infobutton.rectangle.height, infobutton.color);
-			DrawText("Info", infobutton.textPos.x, infobutton.textPos.y, infobutton.textFont, infobutton.textColor);
+			DrawText("Controls", infobutton.textPos.x, infobutton.textPos.y, infobutton.textFont, infobutton.textColor);
 			DrawRectangle(optionsbutton.rectangle.x, optionsbutton.rectangle.y, optionsbutton.rectangle.width, optionsbutton.rectangle.height, optionsbutton.color);
 			DrawText("Options", optionsbutton.textPos.x, optionsbutton.textPos.y, optionsbutton.textFont, optionsbutton.textColor);
 			DrawRectangle(exitbutton.rectangle.x, exitbutton.rectangle.y, exitbutton.rectangle.width, exitbutton.rectangle.height, exitbutton.color);

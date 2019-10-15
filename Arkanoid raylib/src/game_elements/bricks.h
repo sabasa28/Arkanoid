@@ -11,11 +11,20 @@ namespace arkanoid_IDG {
 	extern int brickLines;
 	extern int bricksRemmaining;
 
+	enum PowerUp
+	{
+		notPowerUp,
+		PowerUp1,
+		PowerUp2
+	};
+
 	struct Brick
 	{
 		Rectangle rectangle;
 		Rectangle divider;
 		bool exists;
+		PowerUp content;
+		Color color;
 	};
 	extern Brick brick[];
 	void initBricks();

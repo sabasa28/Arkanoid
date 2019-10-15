@@ -171,6 +171,12 @@ namespace arkanoid_IDG {
 			{
 				if (brick[i].exists == true && CheckCollisionCircleRec(ball.position, ball.radius, brick[i].rectangle))
 				{
+					switch (brick[i].content)
+					{
+						//HACER ALGO ACA
+					default:
+						break;
+					}
 					if (ball.speed.y < 0) {
 						if ((ball.position.y - ball.radius) <= (brick[i].rectangle.y + brick[i].rectangle.height)) {
 							ball.bounceSide.down = true;
@@ -342,12 +348,9 @@ namespace arkanoid_IDG {
 		DrawText(TextFormat("Lives left: %i", player.lives), livesText.x, livesText.y, livesTextFont, WHITE);
 		for (int i = 0; i < maxBrickAmmount; i++)
 		{
-			Color auxcolor;
-			if (i % 2 == 0)	auxcolor = GREEN;
-			else auxcolor = RED;
 			if (brick[i].exists == true)
 			{
-				DrawRectangle(brick[i].rectangle.x, brick[i].rectangle.y, brick[i].rectangle.width, brick[i].rectangle.height, auxcolor);
+				DrawRectangle(brick[i].rectangle.x, brick[i].rectangle.y, brick[i].rectangle.width, brick[i].rectangle.height, brick[i].color);
 			}
 		}
 		if (pause)
