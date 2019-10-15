@@ -145,10 +145,12 @@ namespace arkanoid_IDG {
 		if (controls==true)
 		{
 			ClearBackground(BLACK);
+			DrawText("CONTROLS:", screenWidth / 8, screenHeight / 5.5, controlsFont, WHITE);
 			DrawText("Move= right and left arrows", screenWidth/8, screenHeight / 4,controlsFont,WHITE);
 			DrawText("space to de-attach the ball", screenWidth / 8, screenHeight / 3, controlsFont, WHITE);
 			DrawText("escape to pause", screenWidth / 8, screenHeight / 2.5, controlsFont, WHITE);
-			DrawText("Press enter to go back to menu", screenWidth / 8, screenHeight / 2, controlsFont, WHITE);
+			DrawText("CREDITS: gameplay song - Micael Lucuman", screenWidth / 8, screenHeight / 1.5, controlsFont, WHITE);
+			DrawText("Press enter to go back to menu", screenWidth / 8, screenHeight / 1.2, controlsFont, WHITE);
 		}
 		else
 		{
