@@ -124,11 +124,15 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
-mkdir "$(OutDir)assets"
-xcopy "$(SolutionDir)resources\assets" "$(OutDir)assets" /s /y
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
+
+xcopy "$(SolutionDir)resources\assets" "$(OutDir)" /s /y
+</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -161,11 +165,15 @@ xcopy "$(SolutionDir)resources\assets" "$(OutDir)assets" /s /y
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
-mkdir "$(OutDir)assets"
-xcopy "$(SolutionDir)resources\assets" "$(OutDir)assets" /s /y
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
+
+xcopy "$(SolutionDir)resources\assets" "$(OutDir)" /s /y
+</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
