@@ -9,6 +9,8 @@ namespace arkanoid_IDG {
 	void playerToRandomX();
 	void divideBallRadius();
 	void multiplyBallRadius();
+	void divideSpeeds(bool isSlowed);
+	void resetSpeeds();
 }
 #endif // POWERUP_H
 

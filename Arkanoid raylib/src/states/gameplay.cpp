@@ -16,7 +16,6 @@ namespace arkanoid_IDG {
 	static Button Return;
 	static Button optionsbutton;
 	static Button exitbutton;
-
 	Vector2 pausedText;
 	Vector2 pausedTextDiv{ 2.4f,8.0f };
 	static int pausedTextFont;
@@ -33,6 +32,7 @@ namespace arkanoid_IDG {
 	static int optionCounterPause = 3;
 	static bool ActiveBarrier = false;
 	lvl level = lvl1;
+	bool speedsIncreased=false;
 	void levelTransition();
 	void initPause()
 	{
@@ -115,7 +115,7 @@ namespace arkanoid_IDG {
 				else
 				{
 					player.ballAttached = true;
-					ball.sizeState = normal;
+					ball.sizeState = normalSize;
 					ball.radius = (screenWidth + screenHeight) / ball.radiusDivider;
 					player.lives--;
 				}
@@ -128,6 +128,11 @@ namespace arkanoid_IDG {
 			{
 				if (ball.speed.y > 0)
 				{
+					if (speedsIncreased == true)
+					{
+						resetSpeeds();
+						speedsIncreased = false;
+					}
 					ball.speed.y = ball.generalYSpeed;
 					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces))
 					{
@@ -269,6 +274,10 @@ namespace arkanoid_IDG {
 					case barrier:
 						ActiveBarrier = true;
 						break;
+					case slowMo:
+						divideSpeeds(speedsIncreased);
+						speedsIncreased = true;
+						break;
 					default:
 						break;
 					}
@@ -286,6 +295,7 @@ namespace arkanoid_IDG {
 					break;
 				}
 			}
+
 			if (player.lives <= 0)
 			{
 				lastState = gameplay;

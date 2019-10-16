@@ -13,7 +13,7 @@ namespace arkanoid_IDG {
 	{
 		enlarged2,
 		enlarged1,
-		normal,
+		normalSize,
 		shrinked1,
 		shrinked2,
 	};
@@ -26,7 +26,7 @@ namespace arkanoid_IDG {
 		float radius;
 		float radiusDivider;
 		Bounce bounceSide;
-		Size sizeState = normal;
+		Size sizeState = normalSize;
 		bool invertY;
 		bool invertX;
 		float speedX0;

@@ -3,6 +3,7 @@
 
 #include "raylib.h"
 namespace arkanoid_IDG {
+	
 	struct Player
 	{
 		Rectangle rectangle;
@@ -13,8 +14,10 @@ namespace arkanoid_IDG {
 		bool ballAttached = true;
 		int lives;
 		int pieces = 12;
+		float regularSpeed;
 	};
 	extern Player player;
+
 	enum Scorestate
 	{
 		lost,
@@ -22,6 +25,7 @@ namespace arkanoid_IDG {
 		playing
 	};
 	extern Scorestate scorestate;
+
 	float GetCenterPos(Player player);
 	void initPlayer();
 }

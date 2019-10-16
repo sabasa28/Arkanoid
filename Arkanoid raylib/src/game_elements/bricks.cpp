@@ -36,12 +36,12 @@ namespace arkanoid_IDG {
 			case 2:
 				brick[i].content = shrinkBall;
 				break;
-			case 3:
-				brick[i].content = invertInput;
-				break;
 			case 5:
 			case 6:
 			case 7:
+			case 3:
+				brick[i].content = slowMo;
+				break;
 			case 4:
 				brick[i].content = barrier;
 				break;
@@ -53,7 +53,7 @@ namespace arkanoid_IDG {
 			case tpPlayer:
 				brick[i].color = ORANGE;
 				break;
-			case invertInput:
+			case slowMo:
 				brick[i].color = DARKPURPLE;
 				break;
 			case shrinkBall:

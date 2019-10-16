@@ -2,6 +2,7 @@
 #define BRICKS_H
 
 #include "raylib.h"
+
 namespace arkanoid_IDG {
 	extern const int maxBrickAmmount;
 	extern const int lvl1BrickAmmount;
@@ -16,7 +17,7 @@ namespace arkanoid_IDG {
 		tpPlayer,
 		shrinkBall,
 		enlargeBall,
-		invertInput,
+		slowMo,
 		barrier,
 		notPowerUp
 	};

@@ -14,15 +14,14 @@ namespace arkanoid_IDG {
 	static const int minTpDistance = 100;
 	Rectangle barrierRec;
 	float barrierHeightDiv = 225.0f;
+
 	void initPowerUps() 
 	{
 		barrierRec.width = screenWidth;
 		barrierRec.height = screenHeight / barrierHeightDiv;
 		barrierRec.x = 0;
 		barrierRec.y = screenHeight-barrierRec.height;
-		
 	}
-
 
 	void playerToRandomX()
 	{
@@ -32,6 +31,7 @@ namespace arkanoid_IDG {
 		}
 		player.rectangle.x = auxRandom;
 	}
+
 	void divideBallRadius()
 	{
 		if (ball.sizeState != shrinked2)
@@ -43,9 +43,9 @@ namespace arkanoid_IDG {
 				ball.sizeState = enlarged1;
 				break;
 			case enlarged1:
-				ball.sizeState = normal;
+				ball.sizeState = normalSize;
 				break;
-			case normal:
+			case normalSize:
 				ball.sizeState = shrinked1;
 				break;
 			case shrinked1:
@@ -54,6 +54,7 @@ namespace arkanoid_IDG {
 			}
 		}
 	}
+
 	void multiplyBallRadius()
 	{
 		if (ball.sizeState != enlarged2)
@@ -65,9 +66,9 @@ namespace arkanoid_IDG {
 				ball.sizeState = shrinked1;
 				break;
 			case shrinked1:
-				ball.sizeState = normal;
+				ball.sizeState = normalSize;
 				break;
-			case normal:
+			case normalSize:
 				ball.sizeState = enlarged1;
 				break;
 			case enlarged1:
@@ -75,5 +76,21 @@ namespace arkanoid_IDG {
 				break;
 			}
 		}
+	}
+
+	void divideSpeeds(bool isSlowed)
+	{
+		if (isSlowed==false)
+		{
+			player.speed /= 2;
+			ball.speed.x /= 2;
+			ball.speed.y /= 2;
+		}
+	}
+	void resetSpeeds()
+	{
+		player.speed *= 2;
+		ball.speed.x *= 2;
+		ball.speed.y *= 2;
 	}
 }
