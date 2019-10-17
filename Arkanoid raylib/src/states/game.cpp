@@ -16,7 +16,13 @@ namespace arkanoid_IDG {
 	State gamestate = menu;
 	State lastState = menu;
 
-	void init()
+	void oneTimeInit() 
+	{
+		initConsole();
+		initSounds();
+	}
+
+	void generalInit()
 	{
 		initTextures();
 		initPlayer();
@@ -31,9 +37,8 @@ namespace arkanoid_IDG {
 
 	void executeGame()
 	{
-		initConsole();
-		initSounds();
-		init();
+		oneTimeInit();
+		generalInit();
 		while (!WindowShouldClose() && gamestate != closing)
 		{
 			if (gamestate == menu)

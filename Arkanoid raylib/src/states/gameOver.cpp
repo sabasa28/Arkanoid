@@ -6,6 +6,8 @@
 #include "general_elements/console.h"
 #include "general_elements/codingTools.h"
 #include "states/game.h"
+#include "assets/sound.h"
+
 namespace arkanoid_IDG {
 	static int optionCounterGameOver = 3;
 	static Vector2 result;
@@ -59,6 +61,7 @@ namespace arkanoid_IDG {
 	}
 	void updateGameOver()
 	{
+		UpdateMusicStream(originalMusic);
 		if (IsKeyDown('R'))gamestate = resetingValues;
 		if (IsKeyPressed(KEY_DOWN))optionCounterGameOver--;
 		if (IsKeyPressed(KEY_UP))optionCounterGameOver++;
@@ -86,6 +89,7 @@ namespace arkanoid_IDG {
 			{
 				gamestate = menu;
 				optionCounterGameOver = 3;
+				resetSounds();
 			}
 		}
 		if (optionCounterGameOver == 3)
@@ -96,7 +100,11 @@ namespace arkanoid_IDG {
 			playAgain.textColor = selectedText;
 			backToMenu.textColor = notSelectedText;
 			exit.textColor = notSelectedText;
-			if (IsKeyPressed(KEY_ENTER) && gamestate == gameOver) gamestate = resetingValues;
+			if (IsKeyPressed(KEY_ENTER) && gamestate == gameOver)
+			{
+				gamestate = resetingValues;
+				resetSounds();
+			}
 		}
 	}
 	void drawGameOver()

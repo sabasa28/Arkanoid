@@ -7,6 +7,7 @@
 #include "game_elements/player.h"
 #include "game_elements/ball.h"
 #include "general_elements/console.h"
+#include "assets/sound.h"
 
 namespace arkanoid_IDG {
 	static int auxRandom = 0;
@@ -85,6 +86,7 @@ namespace arkanoid_IDG {
 			player.speed /= 2;
 			ball.speed.x /= 2;
 			ball.speed.y /= 2;
+			SetMusicPitch(originalMusic1, 0.8f);
 		}
 	}
 	void resetSpeeds()
@@ -92,5 +94,6 @@ namespace arkanoid_IDG {
 		player.speed *= 2;
 		ball.speed.x *= 2;
 		ball.speed.y *= 2;
+		SetMusicPitch(originalMusic1, 1.0f);
 	}
 }

@@ -7,5 +7,6 @@ namespace arkanoid_IDG {
 	extern Music originalMusic1;
 	extern Sound originalSound;
 	void initSounds();
+	void resetSounds();
 }
 #endif //SOUNDS_H

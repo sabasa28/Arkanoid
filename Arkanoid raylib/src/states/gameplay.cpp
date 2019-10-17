@@ -84,7 +84,6 @@ namespace arkanoid_IDG {
 	}
 
 	void updateGameplay() {
-		UpdateMusicStream(originalMusic1);
 		if (IsKeyPressed(KEY_ESCAPE))
 		{
 			optionCounterPause = 3;
@@ -92,6 +91,7 @@ namespace arkanoid_IDG {
 		}
 		if (pause == false)
 		{
+			UpdateMusicStream(originalMusic1);
 			if (player.rectangle.x + player.rectangle.width < screenWidth)
 				if (IsKeyDown(KEY_RIGHT) || IsKeyDown('D'))player.rectangle.x += player.speed*GetFrameTime() * 70;
 			if (player.rectangle.x > 0)
@@ -189,32 +189,23 @@ namespace arkanoid_IDG {
 			{
 				if (brick[i].exists == true && CheckCollisionCircleRec(ball.position, ball.radius, brick[i].rectangle))
 				{
-					if (ball.speed.y < 0) {
-						if ((ball.position.y - ball.radius) <= (brick[i].rectangle.y + brick[i].rectangle.height)) {
-							ball.bounceSide.down = true;
-							brick[i].exists = false; //?? TENER UNO SOLO DE ESTOS EN EL IF GENERAL
-						}
+					brick[i].exists = false;
+					if (ball.speed.y < 0) 
+					{
+						ball.bounceSide.down = true;
 					}
 					if (ball.speed.y > 0)
 					{
-						if ((ball.position.y + ball.radius) >= (brick[i].rectangle.y)) {
-							ball.bounceSide.up = true;
-							brick[i].exists = false;
-						}
+						ball.bounceSide.up = true;
 					}
-					if (ball.speed.x < 0) {
-						if ((ball.position.x - ball.radius) <= (brick[i].rectangle.x + brick[i].rectangle.width)) {
-							ball.bounceSide.right = true;
-							brick[i].exists = false;
-						}
+					if (ball.speed.x < 0) 
+					{
+						ball.bounceSide.right = true;
 					}
-					if (ball.speed.x > 0) {
-						if ((ball.position.x + ball.radius) >= (brick[i].rectangle.x)) {
-							ball.bounceSide.left = true;
-							brick[i].exists = false;
-						}
+					if (ball.speed.x > 0) 
+					{
+						ball.bounceSide.left = true;
 					}
-
 					if (ball.bounceSide.down == true && ball.bounceSide.up == true)
 					{
 						if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((ball.position.y + ball.radius) - (brick[i].rectangle.y))) ball.bounceSide.up = false;
@@ -368,6 +359,7 @@ namespace arkanoid_IDG {
 				if (IsKeyPressed(KEY_ENTER)) {
 					optionCounterPause = 3;
 					gamestate = menu;
+					resetSounds();
 				}
 			}
 		}

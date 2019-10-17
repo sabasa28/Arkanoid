@@ -19,4 +19,12 @@ namespace arkanoid_IDG {
 		PlayMusicStream(originalMusic1);
 		SetMasterVolume(0.1f);
 	}
+
+	void resetSounds()
+	{
+		StopMusicStream(originalMusic);
+		PlayMusicStream(originalMusic);
+		StopMusicStream(originalMusic1);
+		PlayMusicStream(originalMusic1);
+	}
 }

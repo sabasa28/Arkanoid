@@ -12,7 +12,7 @@ namespace arkanoid_IDG {
 	};
 	extern State gamestate;
 	extern State lastState;
-	void init();
+	void generalInit();
 	void executeGame();
 }
 #endif //GAME_H

@@ -8,6 +8,8 @@
 #include "states/gameplay.h"
 #include "resetGameElements.h"
 #include "assets/images.h"
+#include "assets/sound.h"
+
 namespace arkanoid_IDG {
 
 	static bool muted=false;
@@ -83,6 +85,7 @@ namespace arkanoid_IDG {
 
 	void updateOptions()
 	{
+		UpdateMusicStream(originalMusic);
 		if (IsKeyPressed(KEY_DOWN))optionCounterOptions--;
 		if (IsKeyPressed(KEY_UP))optionCounterOptions++;
 		if (optionCounterOptions < 1)optionCounterOptions = 5;
@@ -122,7 +125,7 @@ namespace arkanoid_IDG {
 				screenHeight = GetMonitorHeight(0);
 				if (GetScreenWidth() != GetMonitorWidth(0))ToggleFullscreen();
 				SetWindowSize(screenWidth, screenHeight);
-				init();
+				generalInit();
 				if (lastState == gameplay)resetGameElements();
 			}
 		}
@@ -148,7 +151,7 @@ namespace arkanoid_IDG {
 				screenHeight = windowSize2_y;
 				SetWindowSize(screenWidth, screenHeight);
 				SetWindowPosition((GetMonitorWidth(0) - screenWidth) / 2, (GetMonitorHeight(0) - screenHeight) / 2);
-				init();
+				generalInit();
 				if (lastState == gameplay)resetGameElements();
 			}
 		}
@@ -174,7 +177,7 @@ namespace arkanoid_IDG {
 				screenHeight = windowSize1_y;
 				SetWindowSize(screenWidth, screenHeight);
 				SetWindowPosition((GetMonitorWidth(0) - screenWidth) / 2, (GetMonitorHeight(0) - screenHeight) / 2);
-				init();
+				generalInit();
 				if (lastState == gameplay)resetGameElements();
 			}
 		}
