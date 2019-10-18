@@ -13,4 +13,9 @@ namespace arkanoid_IDG {
 		background = LoadTextureFromImage(originalImage);
 		UnloadImage(originalImage);
 	}
+
+	void unloadTextures()
+	{
+		UnloadTexture(background);
+	}
 }

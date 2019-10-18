@@ -35,6 +35,12 @@ namespace arkanoid_IDG {
 		initGameOver();
 	}
 
+	void closeGame()
+	{
+		unloadSounds();
+		unloadTextures();
+	}
+
 	void executeGame()
 	{
 		oneTimeInit();
@@ -66,9 +72,7 @@ namespace arkanoid_IDG {
 				resetGameElements();
 			}
 		}
-		UnloadMusicStream(originalMusic1);
-		UnloadMusicStream(originalMusic);
-		UnloadSound(originalSound);
+		closeGame();
 		CloseWindow();
 	}
 }

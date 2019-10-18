@@ -11,8 +11,10 @@
 
 namespace arkanoid_IDG {
 	static int auxRandom = 0;
-	static const int maxTpDistance = 200;
-	static const int minTpDistance = 100;
+	static const int maxTpDisDiv = 4;
+	static const int mminTpDisDiv = 8;
+	static int maxTpDistance;
+	static int minTpDistance;
 	Rectangle barrierRec;
 	float barrierHeightDiv = 225.0f;
 
@@ -22,6 +24,8 @@ namespace arkanoid_IDG {
 		barrierRec.height = screenHeight / barrierHeightDiv;
 		barrierRec.x = 0;
 		barrierRec.y = screenHeight-barrierRec.height;
+		maxTpDistance = screenWidth / maxTpDisDiv;
+		minTpDistance = screenWidth / mminTpDisDiv;
 	}
 
 	void playerToRandomX()

@@ -5,5 +5,6 @@
 namespace arkanoid_IDG {
 	extern Texture background;
 	void initTextures();
+	void unloadTextures();
 }
 #endif //IMAGES_H

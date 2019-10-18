@@ -13,10 +13,12 @@ namespace arkanoid_IDG {
 		originalMusic1 = LoadMusicStream("sounds/NotSoEpicSongySong.ogg");
 		wave = LoadWave("sounds/epic_sound.wav");
 		originalSound = LoadSoundFromWave(wave);
-		SetSoundPitch(originalSound,2.0f);
 		UnloadWave(wave);
+		SetSoundPitch(originalSound,2.0f);
 		PlayMusicStream(originalMusic);
 		PlayMusicStream(originalMusic1);
+		SetSoundVolume(originalSound,0.1);
+		SetMusicVolume(originalMusic1,0.1);
 		SetMasterVolume(0.1f);
 	}
 
@@ -26,5 +28,12 @@ namespace arkanoid_IDG {
 		PlayMusicStream(originalMusic);
 		StopMusicStream(originalMusic1);
 		PlayMusicStream(originalMusic1);
+	}
+
+	void unloadSounds()
+	{
+		UnloadSound(originalSound);
+		UnloadMusicStream(originalMusic);
+		UnloadMusicStream(originalMusic1);
 	}
 }
