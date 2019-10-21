@@ -19,11 +19,11 @@ namespace arkanoid_IDG {
 	Vector2 pausedText;
 	Vector2 pausedTextDiv{ 2.4f,8.0f };
 	static int pausedTextFont;
-	static int pausedTextFontDiv = 15.0f;
+	static float pausedTextFontDiv = 15.0f;
 	Vector2 levelText;
 	Vector2 levelTextDiv{ 2.5f,1.5f };
 	static int levelTextFont;
-	static int levelTextFontDiv = 10.0f;
+	static float levelTextFontDiv = 10.0f;
 	Vector2 livesText;
 	Vector2 livesTextDiv{ 20.0f,1.1f };
 	static int livesTextFont;
@@ -49,7 +49,7 @@ namespace arkanoid_IDG {
 		Return.rectangle.height = screenHeight / Return.divider.height;
 		Return.rectangle.x = screenWidth / Return.divider.x;
 		Return.rectangle.y = screenHeight / Return.divider.y;
-		Return.textFont = screenHeight / Return.textFontDivider;
+		Return.textFont = static_cast<int>(screenHeight / Return.textFontDivider);
 		Return.textPos.x = screenWidth / Return.textDivider.x;
 		Return.textPos.y = screenHeight / Return.textDivider.y;
 		optionsbutton.divider.y = 2.2f;
@@ -60,29 +60,29 @@ namespace arkanoid_IDG {
 		optionsbutton.rectangle.height = Return.rectangle.height;
 		optionsbutton.rectangle.x = Return.rectangle.x;
 		optionsbutton.rectangle.y = screenHeight / optionsbutton.divider.y;
-		optionsbutton.textFont = screenHeight / optionsbutton.textFontDivider;
+		optionsbutton.textFont = static_cast<int>(screenHeight / optionsbutton.textFontDivider);
 		optionsbutton.textPos.x = screenWidth / optionsbutton.textDivider.x;
 		optionsbutton.textPos.y = screenHeight / optionsbutton.textDivider.y;
 		exitbutton.divider.y = 1.5f;
 		exitbutton.textFontDivider = 9.0f;
 		exitbutton.textDivider.x = 2.3f;
-		exitbutton.textDivider.y = 1.45;
+		exitbutton.textDivider.y = 1.45f;
 		exitbutton.rectangle.width = Return.rectangle.width;
 		exitbutton.rectangle.height = Return.rectangle.height;
 		exitbutton.rectangle.x = Return.rectangle.x;
 		exitbutton.rectangle.y = screenHeight / exitbutton.divider.y;
-		exitbutton.textFont = screenHeight / exitbutton.textFontDivider;
+		exitbutton.textFont = static_cast<int>(screenHeight / exitbutton.textFontDivider);
 		exitbutton.textPos.x = screenWidth / exitbutton.textDivider.x;
 		exitbutton.textPos.y = screenHeight / exitbutton.textDivider.y;
 		pausedText.x = screenWidth / pausedTextDiv.x;
 		pausedText.y = screenHeight / pausedTextDiv.y;
-		pausedTextFont = screenHeight / pausedTextFontDiv;
+		pausedTextFont = static_cast<int>(screenHeight / pausedTextFontDiv);
 		livesText.x = screenWidth / livesTextDiv.x;
 		livesText.y = screenHeight / livesTextDiv.y;
-		livesTextFont = screenHeight / livesTextFontDiv;
+		livesTextFont = static_cast<int>(screenHeight / livesTextFontDiv);
 		levelText.x = screenWidth / levelTextDiv.x;
 		levelText.y = screenHeight / levelTextDiv.y;
-		levelTextFont = screenHeight / levelTextFontDiv;
+		levelTextFont = static_cast<int>(screenHeight / levelTextFontDiv);
 	}
 
 	void updateGameplay() {
@@ -377,30 +377,30 @@ namespace arkanoid_IDG {
 	{
 		BeginDrawing();
 		DrawTexture(background, 0, 0, WHITE);
-		DrawRectangle(player.rectangle.x, player.rectangle.y, player.rectangle.width, player.rectangle.height, BLUE);
-		DrawText(TextFormat("LEVEL %i", static_cast<int>(level) + 1), levelText.x, levelText.y, levelTextFont, WHITE);
+		DrawRectangle(static_cast<int>(player.rectangle.x), static_cast<int>(player.rectangle.y), static_cast<int>(player.rectangle.width), static_cast<int>(player.rectangle.height), BLUE);
+		DrawText(TextFormat("LEVEL %i", static_cast<int>(level) + 1), static_cast<int>(levelText.x), static_cast<int>(levelText.y), levelTextFont, WHITE);
 		DrawCircleV(ball.position, ball.radius, YELLOW);
-		DrawText(TextFormat("Lives left: %i", player.lives), livesText.x, livesText.y, livesTextFont, WHITE);
+		DrawText(TextFormat("Lives left: %i", player.lives), static_cast<int>(livesText.x), static_cast<int>(livesText.y), livesTextFont, WHITE);
 		if (ActiveBarrier==true)
 		{
-			DrawRectangle(barrierRec.x, barrierRec.y, barrierRec.width, barrierRec.height, YELLOW);
+			DrawRectangle(static_cast<int>(barrierRec.x), static_cast<int>(barrierRec.y), static_cast<int>(barrierRec.width), static_cast<int>(barrierRec.height), YELLOW);
 		}
 		for (int i = 0; i < maxBrickAmmount; i++)
 		{
 			if (brick[i].exists == true)
 			{
-				DrawRectangle(brick[i].rectangle.x, brick[i].rectangle.y, brick[i].rectangle.width, brick[i].rectangle.height, brick[i].color);
+				DrawRectangle(static_cast<int>(brick[i].rectangle.x), static_cast<int>(brick[i].rectangle.y), static_cast<int>(brick[i].rectangle.width), static_cast<int>(brick[i].rectangle.height), brick[i].color);
 			}
 		}
 		if (pause)
 		{
-			DrawText("PAUSED", pausedText.x, pausedText.y, pausedTextFont, WHITE);
-			DrawRectangle(Return.rectangle.x, Return.rectangle.y, Return.rectangle.width, Return.rectangle.height, Return.color);
-			DrawRectangle(optionsbutton.rectangle.x, optionsbutton.rectangle.y, optionsbutton.rectangle.width, optionsbutton.rectangle.height, optionsbutton.color);
-			DrawRectangle(exitbutton.rectangle.x, exitbutton.rectangle.y, exitbutton.rectangle.width, exitbutton.rectangle.height, exitbutton.color);
-			DrawText("Return", Return.textPos.x, Return.textPos.y, Return.textFont, Return.textColor);
-			DrawText("Options", optionsbutton.textPos.x, optionsbutton.textPos.y, optionsbutton.textFont, optionsbutton.textColor);
-			DrawText("Exit", exitbutton.textPos.x, exitbutton.textPos.y, exitbutton.textFont, exitbutton.textColor);
+			DrawText("PAUSED", static_cast<int>(pausedText.x), static_cast<int>(pausedText.y), pausedTextFont, WHITE);
+			DrawRectangle(static_cast<int>(Return.rectangle.x), static_cast<int>(Return.rectangle.y), static_cast<int>(Return.rectangle.width), static_cast<int>(Return.rectangle.height), Return.color);
+			DrawRectangle(static_cast<int>(optionsbutton.rectangle.x), static_cast<int>(optionsbutton.rectangle.y), static_cast<int>(optionsbutton.rectangle.width), static_cast<int>(optionsbutton.rectangle.height), optionsbutton.color);
+			DrawRectangle(static_cast<int>(exitbutton.rectangle.x), static_cast<int>(exitbutton.rectangle.y), static_cast<int>(exitbutton.rectangle.width), static_cast<int>(exitbutton.rectangle.height), exitbutton.color);
+			DrawText("Return", static_cast<int>(Return.textPos.x), static_cast<int>(Return.textPos.y), Return.textFont, Return.textColor);
+			DrawText("Options", static_cast<int>(optionsbutton.textPos.x), static_cast<int>(optionsbutton.textPos.y), optionsbutton.textFont, optionsbutton.textColor);
+			DrawText("Exit", static_cast<int>(exitbutton.textPos.x), static_cast<int>(exitbutton.textPos.y), exitbutton.textFont, exitbutton.textColor);
 		}
 		EndDrawing();
 	}
@@ -520,7 +520,7 @@ namespace arkanoid_IDG {
 				break;
 			}
 		}
-		player.rectangle.x = GetScreenWidth() / 2;
+		player.rectangle.x = static_cast<float>(GetScreenWidth() / 2);
 		player.ballAttached = true;
 		ActiveBarrier = false;
 		ball.radius = ball.originalRadius;

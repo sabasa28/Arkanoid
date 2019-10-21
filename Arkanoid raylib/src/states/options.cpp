@@ -23,6 +23,7 @@ namespace arkanoid_IDG {
 	static int lastScreenSizeY;
 	void resizeScreen(int width, int height);
 	void resizeScreen(int width, int height);
+	void resizeToFullscreen();
 	bool fullscreenIsActivated();
 
 	void initOptions()
@@ -38,7 +39,7 @@ namespace arkanoid_IDG {
 		MuteVolume.rectangle.y = screenHeight / MuteVolume.divider.y;
 		MuteVolume.rectangle.width = screenWidth / MuteVolume.divider.width;
 		MuteVolume.rectangle.height = screenHeight / MuteVolume.divider.height;
-		MuteVolume.textFont = screenHeight / MuteVolume.textFontDivider;
+		MuteVolume.textFont = static_cast<int>(screenHeight / MuteVolume.textFontDivider);
 		MuteVolume.textPos.x = screenWidth / MuteVolume.textDivider.x;
 		MuteVolume.textPos.y = screenHeight / MuteVolume.textDivider.y;
 		SwapScreensize1.divider.x = 2.8f;
@@ -52,7 +53,7 @@ namespace arkanoid_IDG {
 		SwapScreensize1.rectangle.y = screenHeight / SwapScreensize1.divider.y;
 		SwapScreensize1.rectangle.width = screenWidth / SwapScreensize1.divider.width;
 		SwapScreensize1.rectangle.height = screenHeight / SwapScreensize1.divider.height;
-		SwapScreensize1.textFont = screenHeight / SwapScreensize1.textFontDivider;
+		SwapScreensize1.textFont = static_cast<int>(screenHeight / SwapScreensize1.textFontDivider);
 		SwapScreensize1.textPos.x = screenWidth / SwapScreensize1.textDivider.x;
 		SwapScreensize1.textPos.y = screenHeight / SwapScreensize1.textDivider.y;
 		SwapScreensize2.divider.y = 1.8f;
@@ -126,12 +127,7 @@ namespace arkanoid_IDG {
 			Back.textColor = notSelectedText;
 			if (IsKeyPressed(KEY_ENTER))
 			{
-				screenWidth = GetMonitorWidth(0);
-				screenHeight = GetMonitorHeight(0);
-				if (GetScreenWidth() != GetMonitorWidth(0))ToggleFullscreen();
-				SetWindowSize(screenWidth, screenHeight);
-				generalInit();
-				if (lastState == gameplay)resetGameElements();
+				resizeToFullscreen();
 			}
 		}
 		if (optionCounterOptions == 3)
@@ -194,16 +190,16 @@ namespace arkanoid_IDG {
 	{
 		BeginDrawing();
 		DrawTexture(background, 0, 0, WHITE);
-		DrawRectangle(MuteVolume.rectangle.x, MuteVolume.rectangle.y, MuteVolume.rectangle.width, MuteVolume.rectangle.height, MuteVolume.color);
-		DrawText("Mute sounds", MuteVolume.textPos.x, MuteVolume.textPos.y, MuteVolume.textFont, MuteVolume.textColor);
-		DrawRectangle(SwapScreensize1.rectangle.x, SwapScreensize1.rectangle.y, SwapScreensize1.rectangle.width, SwapScreensize1.rectangle.height, SwapScreensize1.color);
-		DrawText("Screensize 1", SwapScreensize1.textPos.x, SwapScreensize1.textPos.y, SwapScreensize1.textFont, SwapScreensize1.textColor);
-		DrawRectangle(SwapScreensize2.rectangle.x, SwapScreensize2.rectangle.y, SwapScreensize2.rectangle.width, SwapScreensize2.rectangle.height, SwapScreensize2.color);
-		DrawText("Screensize 2", SwapScreensize2.textPos.x, SwapScreensize2.textPos.y, SwapScreensize2.textFont, SwapScreensize2.textColor);
-		DrawRectangle(SwapScreensize3.rectangle.x, SwapScreensize3.rectangle.y, SwapScreensize3.rectangle.width, SwapScreensize3.rectangle.height, SwapScreensize3.color);
-		DrawText("Screensize 3", SwapScreensize3.textPos.x, SwapScreensize3.textPos.y, SwapScreensize3.textFont, SwapScreensize3.textColor);
-		DrawRectangle(Back.rectangle.x, Back.rectangle.y, Back.rectangle.width, Back.rectangle.height, Back.color);
-		DrawText("Back", Back.textPos.x, Back.textPos.y, Back.textFont, Back.textColor);
+		DrawRectangle(static_cast<int>(MuteVolume.rectangle.x), static_cast<int>(MuteVolume.rectangle.y), static_cast<int>(MuteVolume.rectangle.width), static_cast<int>(MuteVolume.rectangle.height), MuteVolume.color);
+		DrawText("Mute sounds", static_cast<int>(MuteVolume.textPos.x), static_cast<int>(MuteVolume.textPos.y), MuteVolume.textFont, MuteVolume.textColor);
+		DrawRectangle(static_cast<int>(SwapScreensize1.rectangle.x), static_cast<int>(SwapScreensize1.rectangle.y), static_cast<int>(SwapScreensize1.rectangle.width), static_cast<int>(SwapScreensize1.rectangle.height), SwapScreensize1.color);
+		DrawText("Screensize 1", static_cast<int>(SwapScreensize1.textPos.x), static_cast<int>(SwapScreensize1.textPos.y), SwapScreensize1.textFont, SwapScreensize1.textColor);
+		DrawRectangle(static_cast<int>(SwapScreensize2.rectangle.x), static_cast<int>(SwapScreensize2.rectangle.y), static_cast<int>(SwapScreensize2.rectangle.width), static_cast<int>(SwapScreensize2.rectangle.height), SwapScreensize2.color);
+		DrawText("Screensize 2", static_cast<int>(SwapScreensize2.textPos.x), static_cast<int>(SwapScreensize2.textPos.y), SwapScreensize2.textFont, SwapScreensize2.textColor);
+		DrawRectangle(static_cast<int>(SwapScreensize3.rectangle.x), static_cast<int>(SwapScreensize3.rectangle.y), static_cast<int>(SwapScreensize3.rectangle.width), static_cast<int>(SwapScreensize3.rectangle.height), SwapScreensize3.color);
+		DrawText("Screensize 3", static_cast<int>(SwapScreensize3.textPos.x), static_cast<int>(SwapScreensize3.textPos.y), SwapScreensize3.textFont, SwapScreensize3.textColor);
+		DrawRectangle(static_cast<int>(Back.rectangle.x), static_cast<int>(Back.rectangle.y), static_cast<int>(Back.rectangle.width), static_cast<int>(Back.rectangle.height), Back.color);
+		DrawText("Back", static_cast<int>(Back.textPos.x), static_cast<int>(Back.textPos.y), Back.textFont, Back.textColor);
 		EndDrawing();
 	}
 	
@@ -222,10 +218,16 @@ namespace arkanoid_IDG {
 		resizeInit(static_cast<float>(width)/lastScreenSizeX,static_cast<float>(height)/lastScreenSizeY,static_cast<float>(width+height)/(lastScreenSizeX+lastScreenSizeY));
 	}
 
-	//void resizeToFullscreen()
-	//{
-	//
-	//}
+	void resizeToFullscreen()
+	{
+		lastScreenSizeX = screenWidth;
+		lastScreenSizeY = screenHeight;
+		screenWidth = GetMonitorWidth(0);
+		screenHeight = GetMonitorHeight(0);
+		ToggleFullscreen();
+		SetWindowSize(screenWidth, screenHeight);
+		resizeInit(static_cast<float>(screenWidth) / lastScreenSizeX, static_cast<float>(screenHeight) / lastScreenSizeY, static_cast<float>(screenWidth + screenHeight) / (lastScreenSizeX + lastScreenSizeY));
+	}
 
 	bool fullscreenIsActivated()
 	{

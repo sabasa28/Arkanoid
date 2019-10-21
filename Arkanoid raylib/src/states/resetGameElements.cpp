@@ -20,7 +20,7 @@ namespace arkanoid_IDG {
 				brick[i].exists = false;
 			}
 		}
-		player.rectangle.x = GetScreenWidth() / 2;
+		player.rectangle.x = static_cast<float>(GetScreenWidth() / 2);
 		player.ballAttached = true;
 		pause = false;
 		player.lives = 10;

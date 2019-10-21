@@ -82,7 +82,7 @@ namespace arkanoid_IDG {
 					brick[i].rectangle.x -= GetScreenWidth();
 				}
 			}
-			brickLines += brick[i].rectangle.width + screenWidth / offsetBricksDivider.x;
+			brickLines += static_cast<int>(brick[i].rectangle.width + screenWidth / offsetBricksDivider.x);
 		}
 		brickLines = brickLines / GetScreenWidth();
 	}
@@ -103,7 +103,7 @@ namespace arkanoid_IDG {
 					brick[i].rectangle.x -= GetScreenWidth();
 				}
 			}
-			brickLines += brick[i].rectangle.width + screenWidth / offsetBricksDivider.x;
+			brickLines += static_cast<int>(brick[i].rectangle.width + screenWidth / offsetBricksDivider.x);
 		}
 	}
 

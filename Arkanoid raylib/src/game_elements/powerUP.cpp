@@ -20,7 +20,7 @@ namespace arkanoid_IDG {
 
 	void initPowerUps() 
 	{
-		barrierRec.width = screenWidth;
+		barrierRec.width = static_cast<float>(screenWidth);
 		barrierRec.height = screenHeight / barrierHeightDiv;
 		barrierRec.x = 0;
 		barrierRec.y = screenHeight-barrierRec.height;
@@ -32,9 +32,9 @@ namespace arkanoid_IDG {
 	{
 		while (fabs(player.rectangle.x - auxRandom)>maxTpDistance || fabs(player.rectangle.x - auxRandom)<minTpDistance )
 		{
-			auxRandom = GetRandomValue(0, screenWidth - player.rectangle.width);
+			auxRandom = GetRandomValue(0, screenWidth - static_cast<int>(player.rectangle.width));
 		}
-		player.rectangle.x = auxRandom;
+		player.rectangle.x = static_cast<float>(auxRandom);
 	}
 
 	void divideBallRadius()

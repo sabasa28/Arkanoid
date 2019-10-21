@@ -64,7 +64,7 @@ namespace arkanoid_IDG {
 		playAgain.rectangle.height = screenHeight / playAgain.divider.height;
 		playAgain.rectangle.x = screenWidth / playAgain.divider.x;
 		playAgain.rectangle.y = screenHeight / playAgain.divider.y;
-		playAgain.textFont = screenHeight / playAgain.textFontDivider;
+		playAgain.textFont = static_cast<int>(screenHeight / playAgain.textFontDivider);
 		playAgain.textPos.x = screenWidth / playAgain.textDivider.x;
 		playAgain.textPos.y = screenHeight / playAgain.textDivider.y;
 		backToMenu.divider.y = 2.5f;
@@ -75,7 +75,7 @@ namespace arkanoid_IDG {
 		backToMenu.rectangle.height = playAgain.rectangle.height;
 		backToMenu.rectangle.x = playAgain.rectangle.x;
 		backToMenu.rectangle.y = screenHeight / backToMenu.divider.y;
-		backToMenu.textFont = screenHeight / backToMenu.textFontDivider;
+		backToMenu.textFont = static_cast<int>(screenHeight / backToMenu.textFontDivider);
 		backToMenu.textPos.x = screenWidth / backToMenu.textDivider.x;
 		backToMenu.textPos.y = screenHeight / backToMenu.textDivider.y;
 		exit.divider.y = 1.7f;
@@ -86,7 +86,7 @@ namespace arkanoid_IDG {
 		exit.rectangle.height = playAgain.rectangle.height;
 		exit.rectangle.x = playAgain.rectangle.x;
 		exit.rectangle.y = screenHeight / exit.divider.y;
-		exit.textFont = screenHeight / exit.textFontDivider;
+		exit.textFont = static_cast<int>(screenHeight / exit.textFontDivider);
 		exit.textPos.x = screenWidth / exit.textDivider.x;
 		exit.textPos.y = screenHeight / exit.textDivider.y;
 		credits.divider.y = 1.3f;
@@ -97,7 +97,7 @@ namespace arkanoid_IDG {
 		credits.rectangle.height = playAgain.rectangle.height;
 		credits.rectangle.x = playAgain.rectangle.x;
 		credits.rectangle.y = screenHeight / credits.divider.y;
-		credits.textFont = screenHeight / credits.textFontDivider;
+		credits.textFont = static_cast<int>(screenHeight / credits.textFontDivider);
 		credits.textPos.x = screenWidth / credits.textDivider.x;
 		credits.textPos.y = screenHeight / credits.textDivider.y;
 	}
@@ -190,27 +190,27 @@ namespace arkanoid_IDG {
 		{
 			if (scorestate == lost)
 			{
-				DrawText("You lost :(", result.x, result.y, resultFont, WHITE);
+				DrawText("You lost :(", static_cast<int>(result.x), static_cast<int>(result.y), static_cast<int>(resultFont), WHITE);
 			}
 			if (scorestate == won)
 			{
-				DrawText("You won :)", result.x, result.y, resultFont, WHITE);
+				DrawText("You won :)", static_cast<int>(result.x), static_cast<int>(result.y), static_cast<int>(resultFont), WHITE);
 			}
-			DrawRectangle(playAgain.rectangle.x, playAgain.rectangle.y, playAgain.rectangle.width, playAgain.rectangle.height, playAgain.color);
-			DrawRectangle(backToMenu.rectangle.x, backToMenu.rectangle.y, backToMenu.rectangle.width, backToMenu.rectangle.height, backToMenu.color);
-			DrawRectangle(exit.rectangle.x, exit.rectangle.y, exit.rectangle.width, exit.rectangle.height, exit.color);
-			DrawRectangle(credits.rectangle.x, credits.rectangle.y, credits.rectangle.width, credits.rectangle.height, credits.color);
-			DrawText("Play Again", playAgain.textPos.x, playAgain.textPos.y, playAgain.textFont, playAgain.textColor);
-			DrawText("Menu", backToMenu.textPos.x, backToMenu.textPos.y, backToMenu.textFont, backToMenu.textColor);
-			DrawText("Exit", exit.textPos.x, exit.textPos.y, exit.textFont, exit.textColor);
-			DrawText("Credits", credits.textPos.x, credits.textPos.y, credits.textFont, credits.textColor);
+			DrawRectangle(static_cast<int>(playAgain.rectangle.x), static_cast<int>(playAgain.rectangle.y), static_cast<int>(playAgain.rectangle.width), static_cast<int>(playAgain.rectangle.height), playAgain.color);
+			DrawRectangle(static_cast<int>(backToMenu.rectangle.x), static_cast<int>(backToMenu.rectangle.y), static_cast<int>(backToMenu.rectangle.width), static_cast<int>(backToMenu.rectangle.height), backToMenu.color);
+			DrawRectangle(static_cast<int>(exit.rectangle.x), static_cast<int>(exit.rectangle.y), static_cast<int>(exit.rectangle.width), static_cast<int>(exit.rectangle.height), exit.color);
+			DrawRectangle(static_cast<int>(credits.rectangle.x), static_cast<int>(credits.rectangle.y), static_cast<int>(credits.rectangle.width), static_cast<int>(credits.rectangle.height), credits.color);
+			DrawText("Play Again", static_cast<int>(playAgain.textPos.x), static_cast<int>(playAgain.textPos.y), static_cast<int>(playAgain.textFont), playAgain.textColor);
+			DrawText("Menu", static_cast<int>(backToMenu.textPos.x), static_cast<int>(backToMenu.textPos.y), static_cast<int>(backToMenu.textFont), backToMenu.textColor);
+			DrawText("Exit", static_cast<int>(exit.textPos.x), static_cast<int>(exit.textPos.y), static_cast<int>(exit.textFont), exit.textColor);
+			DrawText("Credits", static_cast<int>(credits.textPos.x), static_cast<int>(credits.textPos.y), static_cast<int>(credits.textFont), credits.textColor);
 		}
 		else
 		{
-			DrawText("CREDITS", creditsText1.x, creditsText1.y, creditsTextFont, WHITE);
-			DrawText("Gameplay song \"NotSoEpicSongySong\" - Micael \"BlueEagle\" Lucuman", creditsText2.x,creditsText2.y, creditsTextFont,WHITE);
-			DrawText("Audio, art, design & programming - Inaki Diez Galarza", creditsText3.x, creditsText3.y, creditsTextFont, WHITE);
-			DrawText("Press ENTER to go back", creditsText4.x, creditsText4.y, creditsTextFont, WHITE);
+			DrawText("CREDITS", static_cast<int>(creditsText1.x), static_cast<int>(creditsText1.y), static_cast<int>(creditsTextFont), WHITE);
+			DrawText("Gameplay song \"NotSoEpicSongySong\" - Micael \"BlueEagle\" Lucuman", static_cast<int>(creditsText2.x), static_cast<int>(creditsText2.y), static_cast<int>(creditsTextFont),WHITE);
+			DrawText("Audio, art, design & programming - Inaki Diez Galarza", static_cast<int>(creditsText3.x), static_cast<int>(creditsText3.y), static_cast<int>(creditsTextFont), WHITE);
+			DrawText("Press ENTER to go back", static_cast<int>(creditsText4.x), static_cast<int>(creditsText4.y), static_cast<int>(creditsTextFont), WHITE);
 		}
 		EndDrawing();
 	}

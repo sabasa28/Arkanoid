@@ -43,7 +43,7 @@ namespace arkanoid_IDG {
 		playbutton.rectangle.height = screenHeight / playbutton.divider.height;
 		playbutton.rectangle.x = screenWidth / playbutton.divider.x;
 		playbutton.rectangle.y = screenHeight / playbutton.divider.y;
-		playbutton.textFont = screenHeight / playbutton.textFontDivider;
+		playbutton.textFont = static_cast<int>(screenHeight / playbutton.textFontDivider);
 		playbutton.textPos.x = screenWidth / playbutton.textDivider.x;
 		playbutton.textPos.y = screenHeight / playbutton.textDivider.y;
 		optionsbutton.divider.y = 2.2f;
@@ -54,18 +54,18 @@ namespace arkanoid_IDG {
 		optionsbutton.rectangle.height = playbutton.rectangle.height;
 		optionsbutton.rectangle.x = playbutton.rectangle.x;
 		optionsbutton.rectangle.y = screenHeight / optionsbutton.divider.y;
-		optionsbutton.textFont = screenHeight / optionsbutton.textFontDivider;
+		optionsbutton.textFont = static_cast<int>(screenHeight / optionsbutton.textFontDivider);
 		optionsbutton.textPos.x = screenWidth / optionsbutton.textDivider.x;
 		optionsbutton.textPos.y = screenHeight / optionsbutton.textDivider.y;
 		exitbutton.divider.y = 1.5f;
 		exitbutton.textFontDivider = 9.0f;
 		exitbutton.textDivider.x = 2.3f;
-		exitbutton.textDivider.y = 1.45;
+		exitbutton.textDivider.y = 1.45f;
 		exitbutton.rectangle.width = playbutton.rectangle.width;
 		exitbutton.rectangle.height = playbutton.rectangle.height;
 		exitbutton.rectangle.x = playbutton.rectangle.x;
 		exitbutton.rectangle.y = screenHeight / exitbutton.divider.y;
-		exitbutton.textFont = screenHeight / exitbutton.textFontDivider;
+		exitbutton.textFont = static_cast<int>(screenHeight / exitbutton.textFontDivider);
 		exitbutton.textPos.x = screenWidth / exitbutton.textDivider.x;
 		exitbutton.textPos.y = screenHeight / exitbutton.textDivider.y;
 		infobutton.divider.y = 4.0f;
@@ -76,10 +76,10 @@ namespace arkanoid_IDG {
 		infobutton.rectangle.height = playbutton.rectangle.height;
 		infobutton.rectangle.x = playbutton.rectangle.x;
 		infobutton.rectangle.y = screenHeight / infobutton.divider.y;
-		infobutton.textFont = screenHeight / infobutton.textFontDivider;
+		infobutton.textFont = static_cast<int>(screenHeight / infobutton.textFontDivider);
 		infobutton.textPos.x = screenWidth / infobutton.textDivider.x;
 		infobutton.textPos.y = screenHeight / infobutton.textDivider.y;
-		controlsFont = screenHeight / controlsFontDiv;
+		controlsFont = static_cast<int>(screenHeight / controlsFontDiv);
 		controls1YPos = screenHeight / controls1YDiv;
 		controls2YPos = screenHeight / controls2YDiv;
 		controls3YPos = screenHeight / controls3YDiv;
@@ -166,23 +166,23 @@ namespace arkanoid_IDG {
 		if (showingControls==true)
 		{
 			ClearBackground(BLACK);
-			DrawText("CONTROLS:", controlsXPos, controls1YPos, controlsFont, WHITE);
-			DrawText("Move = right and left arrows", controlsXPos, controls2YPos,controlsFont,WHITE);
-			DrawText("Launch ball = spacebar", controlsXPos, controls3YPos, controlsFont, WHITE);
-			DrawText("Pause = escape", controlsXPos, controls4YPos, controlsFont, WHITE);
-			DrawText("Press enter to go back to menu", controlsXPos, controls5YPos, controlsFont, WHITE);
+			DrawText("CONTROLS:", static_cast<int>(controlsXPos), static_cast<int>(controls1YPos), controlsFont, WHITE);
+			DrawText("Move = right and left arrows", static_cast<int>(controlsXPos), static_cast<int>(controls2YPos),controlsFont,WHITE);
+			DrawText("Launch ball = spacebar", static_cast<int>(controlsXPos), static_cast<int>(controls3YPos), controlsFont, WHITE);
+			DrawText("Pause = escape", static_cast<int>(controlsXPos), static_cast<int>(controls4YPos), controlsFont, WHITE);
+			DrawText("Press enter to go back to menu", static_cast<int>(controlsXPos), static_cast<int>(controls5YPos), controlsFont, WHITE);
 		}
 		else
 		{
 			DrawTexture(background, 0, 0, WHITE);
-			DrawRectangle(playbutton.rectangle.x, playbutton.rectangle.y, playbutton.rectangle.width, playbutton.rectangle.height, playbutton.color);
-			DrawText("Play", playbutton.textPos.x, playbutton.textPos.y, playbutton.textFont, playbutton.textColor);
-			DrawRectangle(infobutton.rectangle.x, infobutton.rectangle.y, infobutton.rectangle.width, infobutton.rectangle.height, infobutton.color);
-			DrawText("Controls", infobutton.textPos.x, infobutton.textPos.y, infobutton.textFont, infobutton.textColor);
-			DrawRectangle(optionsbutton.rectangle.x, optionsbutton.rectangle.y, optionsbutton.rectangle.width, optionsbutton.rectangle.height, optionsbutton.color);
-			DrawText("Options", optionsbutton.textPos.x, optionsbutton.textPos.y, optionsbutton.textFont, optionsbutton.textColor);
-			DrawRectangle(exitbutton.rectangle.x, exitbutton.rectangle.y, exitbutton.rectangle.width, exitbutton.rectangle.height, exitbutton.color);
-			DrawText("Exit", exitbutton.textPos.x, exitbutton.textPos.y, exitbutton.textFont, exitbutton.textColor);
+			DrawRectangle(static_cast<int>(playbutton.rectangle.x), static_cast<int>(playbutton.rectangle.y), static_cast<int>(playbutton.rectangle.width), static_cast<int>(playbutton.rectangle.height), playbutton.color);
+			DrawText("Play", static_cast<int>(playbutton.textPos.x), static_cast<int>(playbutton.textPos.y), playbutton.textFont, playbutton.textColor);
+			DrawRectangle(static_cast<int>(infobutton.rectangle.x), static_cast<int>(infobutton.rectangle.y), static_cast<int>(infobutton.rectangle.width), static_cast<int>(infobutton.rectangle.height), infobutton.color);
+			DrawText("Controls", static_cast<int>(infobutton.textPos.x), static_cast<int>(infobutton.textPos.y), infobutton.textFont, infobutton.textColor);
+			DrawRectangle(static_cast<int>(optionsbutton.rectangle.x), static_cast<int>(optionsbutton.rectangle.y), static_cast<int>(optionsbutton.rectangle.width), static_cast<int>(optionsbutton.rectangle.height), optionsbutton.color);
+			DrawText("Options", static_cast<int>(optionsbutton.textPos.x), static_cast<int>(optionsbutton.textPos.y), optionsbutton.textFont, optionsbutton.textColor);
+			DrawRectangle(static_cast<int>(exitbutton.rectangle.x), static_cast<int>(exitbutton.rectangle.y), static_cast<int>(exitbutton.rectangle.width), static_cast<int>(exitbutton.rectangle.height), exitbutton.color);
+			DrawText("Exit", static_cast<int>(exitbutton.textPos.x), static_cast<int>(exitbutton.textPos.y), exitbutton.textFont, exitbutton.textColor);
 		}
 		EndDrawing();
 	}

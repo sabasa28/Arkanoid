@@ -17,8 +17,8 @@ namespace arkanoid_IDG {
 		SetSoundPitch(originalSound,2.0f);
 		PlayMusicStream(originalMusic);
 		PlayMusicStream(originalMusic1);
-		SetSoundVolume(originalSound,0.1);
-		SetMusicVolume(originalMusic1,0.1);
+		SetSoundVolume(originalSound,0.1f);
+		SetMusicVolume(originalMusic1,0.1f);
 		SetMasterVolume(0.1f);
 	}
 

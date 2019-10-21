@@ -1,6 +1,6 @@
 #include "states/game.h"
 
-void main()
+int main()
 {
 	arkanoid_IDG::executeGame();
 }
