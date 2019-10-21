@@ -19,6 +19,11 @@ namespace arkanoid_IDG {
 	Button SwapScreensize3;
 	Button Back;
 	static int optionCounterOptions = 5;
+	static int lastScreenSizeX;
+	static int lastScreenSizeY;
+	void resizeScreen(int width, int height);
+	void resizeScreen(int width, int height);
+	bool fullscreenIsActivated();
 
 	void initOptions()
 	{
@@ -143,16 +148,7 @@ namespace arkanoid_IDG {
 			Back.textColor = notSelectedText;
 			if (IsKeyPressed(KEY_ENTER))
 			{
-				if (screenWidth == GetMonitorWidth(0))
-				{
-					ToggleFullscreen();
-				}
-				screenWidth = windowSize2_x;
-				screenHeight = windowSize2_y;
-				SetWindowSize(screenWidth, screenHeight);
-				SetWindowPosition((GetMonitorWidth(0) - screenWidth) / 2, (GetMonitorHeight(0) - screenHeight) / 2);
-				generalInit();
-				if (lastState == gameplay)resetGameElements();
+				resizeScreen(windowSize2_x,windowSize2_y);
 			}
 		}
 		if (optionCounterOptions == 4)
@@ -169,16 +165,7 @@ namespace arkanoid_IDG {
 			Back.textColor = notSelectedText;
 			if (IsKeyPressed(KEY_ENTER))
 			{
-				if (screenWidth == GetMonitorWidth(0))
-				{
-					ToggleFullscreen();
-				}
-				screenWidth = windowSize1_x;
-				screenHeight = windowSize1_y;
-				SetWindowSize(screenWidth, screenHeight);
-				SetWindowPosition((GetMonitorWidth(0) - screenWidth) / 2, (GetMonitorHeight(0) - screenHeight) / 2);
-				generalInit();
-				if (lastState == gameplay)resetGameElements();
+				resizeScreen(windowSize1_x, windowSize1_y);
 			}
 		}
 		if (optionCounterOptions == 5)
@@ -202,6 +189,7 @@ namespace arkanoid_IDG {
 			}
 		}
 	}
+
 	void drawOptions()
 	{
 		BeginDrawing();
@@ -217,5 +205,30 @@ namespace arkanoid_IDG {
 		DrawRectangle(Back.rectangle.x, Back.rectangle.y, Back.rectangle.width, Back.rectangle.height, Back.color);
 		DrawText("Back", Back.textPos.x, Back.textPos.y, Back.textFont, Back.textColor);
 		EndDrawing();
+	}
+	
+	void resizeScreen(int width, int height)
+	{
+		if (fullscreenIsActivated())
+		{
+			ToggleFullscreen();
+		}
+		lastScreenSizeX = screenWidth;
+		lastScreenSizeY = screenHeight;
+		screenWidth = width;
+		screenHeight = height;
+		SetWindowSize(screenWidth, screenHeight);
+		SetWindowPosition((GetMonitorWidth(0) - screenWidth) / 2, (GetMonitorHeight(0) - screenHeight) / 2);
+		resizeInit(static_cast<float>(width)/lastScreenSizeX,static_cast<float>(height)/lastScreenSizeY,static_cast<float>(width+height)/(lastScreenSizeX+lastScreenSizeY));
+	}
+
+	//void resizeToFullscreen()
+	//{
+	//
+	//}
+
+	bool fullscreenIsActivated()
+	{
+		return screenWidth == GetMonitorWidth(0);
 	}
 }

@@ -29,8 +29,15 @@ namespace arkanoid_IDG {
 		bool exists;
 		PowerUp content;
 		Color color;
+		int lives;
+		bool collidedLastFrame;
 	};
 	extern Brick brick[];
 	void initBricks();
+	void initResizedBricks();
+	float brickBottomSideY(Brick brick);
+	float brickTopSideY(Brick brick);
+	float brickLeftSideX(Brick brick);
+	float brickRightSideX(Brick brick);
 }
 #endif // BRICKS_H

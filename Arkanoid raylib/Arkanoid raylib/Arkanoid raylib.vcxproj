@@ -124,9 +124,8 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
-
-xcopy "$(SolutionDir)resources\assets" "$(OutDir)" /s /y</Command>
+      <Command>cd $(SolutionDir)
+copy.bat "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(SolutionDir)resources\assets" "$(OutDir)" </Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -164,9 +163,8 @@ xcopy "$(SolutionDir)resources\assets" "$(OutDir)" /s /y</Command>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(OutDir)" /Y
-
-xcopy "$(SolutionDir)resources\assets" "$(OutDir)" /s /y</Command>
+      <Command>cd $(SolutionDir)
+copy.bat "$(SolutionDir)raylib-2.5.0-Win32-msvc15\bin\raylib.dll" "$(SolutionDir)resources\assets" "$(OutDir)" </Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>

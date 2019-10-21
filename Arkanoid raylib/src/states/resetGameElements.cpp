@@ -7,6 +7,7 @@
 #include "game.h"
 namespace arkanoid_IDG {
 	void resetGameElements() {
+		initBricks();
 		level = lvl1;
 		for (int i = 0; i < maxBrickAmmount; i++)
 		{
@@ -23,7 +24,7 @@ namespace arkanoid_IDG {
 		player.ballAttached = true;
 		pause = false;
 		player.lives = 10;
-		ball.position = { GetCenterPos(player), player.rectangle.y - ball.radius };
+		ball.position = { GetCenterXPos(player), player.rectangle.y - ball.radius };
 		gamestate = gameplay;
 	}
 }

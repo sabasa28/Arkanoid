@@ -35,6 +35,19 @@ namespace arkanoid_IDG {
 		initGameOver();
 	}
 
+	void resizeInit(float multiplierX, float multiplierY, float multiplierXY)
+	{
+		initTextures();
+		initResizedPlayer(multiplierX, multiplierY);
+		initResizedBall(multiplierX, multiplierY, multiplierXY);
+		initResizedBricks();
+		initPowerUps();
+		initMenu();
+		initPause();
+		initOptions();
+		initGameOver();
+	}
+
 	void closeGame()
 	{
 		unloadSounds();

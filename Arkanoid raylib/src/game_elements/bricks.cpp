@@ -25,20 +25,24 @@ namespace arkanoid_IDG {
 			brick[i].rectangle.height = screenHeight / brick[i].divider.height;
 			brick[i].rectangle.x = screenWidth / brick[i].divider.x * i;
 			brick[i].rectangle.y = 0;
+			brick[i].color = RED;
+			brick[i].lives = 1;
+			brick[i].collidedLastFrame = false;
 			switch ((GetRandomValue(0, 30)))
 			{
 			case 0:
 				brick[i].content = tpPlayer;
 				break;
+			case 7:
+			case 8:
+			case 9:
+			case 10:
 			case 1:
 				brick[i].content = enlargeBall;
 				break;
 			case 2:
 				brick[i].content = shrinkBall;
 				break;
-			case 5:
-			case 6:
-			case 7:
 			case 3:
 				brick[i].content = slowMo;
 				break;
@@ -67,6 +71,7 @@ namespace arkanoid_IDG {
 				break;
 			case notPowerUp:
 				brick[i].color = RED;
+				brick[i].lives = 2;
 				break;
 			}
 			if (brick[i].rectangle.x + brick[i].rectangle.width >= GetScreenWidth())
@@ -80,5 +85,45 @@ namespace arkanoid_IDG {
 			brickLines += brick[i].rectangle.width + screenWidth / offsetBricksDivider.x;
 		}
 		brickLines = brickLines / GetScreenWidth();
+	}
+
+	void initResizedBricks()
+	{
+		for (int i = 0; i < maxBrickAmmount; i++)
+		{
+			brick[i].rectangle.width = screenWidth / brick[i].divider.width;
+			brick[i].rectangle.height = screenHeight / brick[i].divider.height;
+			brick[i].rectangle.x = screenWidth / brick[i].divider.x * i;
+			brick[i].rectangle.y = 0;
+			if (brick[i].rectangle.x + brick[i].rectangle.width >= GetScreenWidth())
+			{
+				while (brick[i].rectangle.x + brick[i].rectangle.width >= GetScreenWidth())
+				{
+					brick[i].rectangle.y += screenHeight / offsetBricksDivider.y;
+					brick[i].rectangle.x -= GetScreenWidth();
+				}
+			}
+			brickLines += brick[i].rectangle.width + screenWidth / offsetBricksDivider.x;
+		}
+	}
+
+	float brickBottomSideY(Brick brick)
+	{
+		return(brick.rectangle.y + brick.rectangle.height);
+	}
+
+	float brickTopSideY(Brick brick)
+	{
+		return brick.rectangle.y;
+	}
+
+	float brickLeftSideX(Brick brick)
+	{
+		return brick.rectangle.x;
+	}
+
+	float brickRightSideX(Brick brick)
+	{
+		return brick.rectangle.x + brick.rectangle.width;
 	}
 }

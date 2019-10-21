@@ -32,7 +32,9 @@ namespace arkanoid_IDG {
 	static int optionCounterPause = 3;
 	static bool ActiveBarrier = false;
 	lvl level = lvl1;
-	bool speedsIncreased=false;
+	bool speedsDecreased=false;
+	bool ballShouldCollideBrick(Brick brick, Ball ball);
+	void applySpeedToBall(Ball &ball, Player player);
 	void levelTransition();
 	void initPause()
 	{
@@ -84,24 +86,38 @@ namespace arkanoid_IDG {
 	}
 
 	void updateGameplay() {
+
 		if (IsKeyPressed(KEY_ESCAPE))
 		{
 			optionCounterPause = 3;
 			pause = !pause;
 		}
+
 		if (pause == false)
 		{
 			UpdateMusicStream(originalMusic1);
+
 			if (player.rectangle.x + player.rectangle.width < screenWidth)
-				if (IsKeyDown(KEY_RIGHT) || IsKeyDown('D'))player.rectangle.x += player.speed*GetFrameTime() * 70;
-			if (player.rectangle.x > 0)
-				if (IsKeyDown(KEY_LEFT) || IsKeyDown('A')) player.rectangle.x -= player.speed*GetFrameTime() * 70;
-			if (player.ballAttached == true)
-				if (IsKeyPressed(KEY_SPACE))
+			{
+				if (IsKeyDown(KEY_RIGHT) || IsKeyDown('D'))
 				{
-					player.ballAttached = false;
-					ball.speed = { ball.launchSpeed.x, ball.launchSpeed.y };
+					player.rectangle.x += player.speed*GetFrameTime() * 70;
 				}
+			}
+			if (player.rectangle.x > 0)
+			{
+				if (IsKeyDown(KEY_LEFT) || IsKeyDown('A'))
+				{
+					player.rectangle.x -= player.speed*GetFrameTime() * 70;
+				}
+			}
+
+			if (player.ballAttached == true && IsKeyPressed(KEY_SPACE))
+			{
+				player.ballAttached = false;
+				ball.speed = { ball.launchSpeed.x, ball.launchSpeed.y };
+			}
+
 			ball.position.x += ball.speed.x*GetFrameTime() * 70;
 			ball.position.y += ball.speed.y*GetFrameTime() * 70;
 
@@ -120,137 +136,106 @@ namespace arkanoid_IDG {
 					player.lives--;
 				}
 			}
-			if (player.ballAttached == true)ball.position = { GetCenterPos(player), player.rectangle.y - ball.radius };
-			if (ball.position.x + ball.radius >= (GetScreenWidth()) && ball.speed.x > 0) ball.speed.x *= -1.0f;
-			if (ball.position.x <= ball.radius && ball.speed.x < 0) ball.speed.x *= -1.0f;
+
+			if (player.ballAttached == true)
+			{
+				ball.position = { GetCenterXPos(player), player.rectangle.y - ball.radius };
+			}
+
+			if (ballIsOffScreenLimits(ball)) ball.speed.x *= -1.0f;
+
 			if ((ball.position.y <= ball.radius) && ball.speed.y < 0) ball.speed.y *= -1.0f;
+
 			if (CheckCollisionCircleRec(ball.position, ball.radius, player.rectangle))
 			{
 				if (ball.speed.y > 0)
 				{
-					if (speedsIncreased == true)
+					if (speedsDecreased == true)
 					{
 						resetSpeeds();
-						speedsIncreased = false;
+						speedsDecreased = false;
 					}
 					ball.speed.y = ball.generalYSpeed;
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces))
-					{
-						ball.speed.x = -ball.speedX6;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 2) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 1)))
-					{
-						ball.speed.x = -ball.speedX5;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 3) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 2)))
-					{
-						ball.speed.x = -ball.speedX4;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 4) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 3)))
-					{
-						ball.speed.x = -ball.speedX3;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 5) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 4)))
-					{
-						ball.speed.x = -ball.speedX2;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 6) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 5)))
-					{
-						ball.speed.x = -ball.speedX1;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 7) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 6)))
-					{
-						ball.speed.x = ball.speedX1;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 8) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 7)))
-					{
-						ball.speed.x = ball.speedX2;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 9) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 8)))
-					{
-						ball.speed.x = ball.speedX3;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 10) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 9)))
-					{
-						ball.speed.x = ball.speedX4;
-					}
-					if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 11) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 10)))
-					{
-						ball.speed.x = ball.speedX5;
-					}
-					if (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 11))
-					{
-						ball.speed.x = ball.speedX6;
-					}
+					applySpeedToBall(ball, player);
 					PlaySound(originalSound);
 				}
 			}
+
 			for (int i = 0; i < maxBrickAmmount; i++)
 			{
-				if (brick[i].exists == true && CheckCollisionCircleRec(ball.position, ball.radius, brick[i].rectangle))
+				if (ballShouldCollideBrick(brick[i],ball))
 				{
-					brick[i].exists = false;
+					brick[i].collidedLastFrame = true;
+
+					if (brick[i].lives>1)
+					{
+						brick[i].lives--;
+						brick[i].color = WHITE;
+					}
+					else
+					{
+						brick[i].exists = false;
+					}
+
 					if (ball.speed.y < 0) 
 					{
-						ball.bounceSide.down = true;
+						ball.generalDir.up = true;
 					}
 					if (ball.speed.y > 0)
 					{
-						ball.bounceSide.up = true;
+						ball.generalDir.down = true;
 					}
 					if (ball.speed.x < 0) 
 					{
-						ball.bounceSide.right = true;
+						ball.generalDir.left = true;
 					}
 					if (ball.speed.x > 0) 
 					{
-						ball.bounceSide.left = true;
+						ball.generalDir.right = true;
 					}
-					if (ball.bounceSide.down == true && ball.bounceSide.up == true)
-					{
-						if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((ball.position.y + ball.radius) - (brick[i].rectangle.y))) ball.bounceSide.up = false;
-						else ball.bounceSide.down = false;
-					}
-					if (ball.bounceSide.left == true && ball.bounceSide.right == true)
-					{
-						if (((brick[i].rectangle.x + brick[i].rectangle.width) - (ball.position.x - ball.radius)) < ((ball.position.x + ball.radius) - (brick[i].rectangle.x))) ball.bounceSide.right = false;
-						else ball.bounceSide.left == false;
-					}
-					if (ball.bounceSide.down == true)
-					{
-						if (ball.bounceSide.left == true)
-						{
-							if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((ball.position.x + ball.radius) - (brick[i].rectangle.x)))ball.bounceSide.left = false;
-							else ball.bounceSide.down = false;
 
-						}
-						if (ball.bounceSide.right == true)
-						{
-							if (((brick[i].rectangle.y + brick[i].rectangle.height) - (ball.position.y - ball.radius)) < ((brick[i].rectangle.x + brick[i].rectangle.width) - (ball.position.x - ball.radius)))ball.bounceSide.right = false;
-							else ball.bounceSide.down = false;
-						}
-					}
-					if (ball.bounceSide.up == true)
+					if (ball.generalDir.up == true)
 					{
-						if (ball.bounceSide.left == true)
+						if (ball.generalDir.right == true)
 						{
-							if (((ball.position.y + ball.radius) - (brick[i].rectangle.y)) < ((ball.position.x + ball.radius) - (brick[i].rectangle.x)))ball.bounceSide.left = false;
-							else ball.bounceSide.up = false;
+							if ((brickBottomSideY(brick[i]) - ballTopSideY(ball)) < (ballRightSideX(ball) - brickLeftSideX(brick[i])))ball.generalDir.right = false;
+							else ball.generalDir.up = false;
 						}
-						if (ball.bounceSide.right == true)
+						if (ball.generalDir.left == true)
 						{
-							if (((ball.position.y + ball.radius) - (brick[i].rectangle.y)) < ((brick[i].rectangle.x + brick[i].rectangle.width) - (ball.position.x - ball.radius)))ball.bounceSide.right = false;
-							else ball.bounceSide.up = false;
+							if ((brickBottomSideY(brick[i]) - ballTopSideY(ball)) < (brickRightSideX(brick[i]) - ballLeftSideX(ball)))ball.generalDir.left = false;
+							else ball.generalDir.up = false;
 						}
 					}
-					if (ball.bounceSide.right == true && ball.speed.x < 0) ball.invertX = true;
-					if (ball.bounceSide.left == true && ball.speed.x > 0) ball.invertX = true;
-					if (ball.bounceSide.down == true && ball.speed.y < 0) ball.invertY = true;
-					if (ball.bounceSide.up == true && ball.speed.y > 0) ball.invertY = true;
-					ball.bounceSide.up = false;
-					ball.bounceSide.down = false;
-					ball.bounceSide.left = false;
-					ball.bounceSide.right = false;
+
+					if (ball.generalDir.down == true)
+					{
+						if (ball.generalDir.right == true)
+						{
+							if ((ballBottomSideY(ball) - brickTopSideY(brick[i])) < (ballRightSideX(ball) - brickLeftSideX(brick[i])))ball.generalDir.right = false;
+							else ball.generalDir.down = false;
+						}
+						if (ball.generalDir.left == true)
+						{
+							if ((ballBottomSideY(ball) - brickTopSideY(brick[i])) < (brickRightSideX(brick[i]) - ballLeftSideX(ball)))ball.generalDir.left = false;
+							else ball.generalDir.down = false;
+						}
+					}
+
+					if (ball.generalDir.left == true || ball.generalDir.right == true)
+					{
+						ball.invertX = true;
+					}
+					if (ball.generalDir.up == true || ball.generalDir.down == true)
+					{
+						ball.invertY = true;
+					}
+				
+					ball.generalDir.down = false;
+					ball.generalDir.up = false;
+					ball.generalDir.right = false;
+					ball.generalDir.left = false;
+
 					switch (brick[i].content)
 					{
 					case tpPlayer:
@@ -266,13 +251,18 @@ namespace arkanoid_IDG {
 						ActiveBarrier = true;
 						break;
 					case slowMo:
-						divideSpeeds(speedsIncreased);
-						speedsIncreased = true;
+						divideSpeeds(speedsDecreased);
+						speedsDecreased = true;
 						break;
 					default:
 						break;
 					}
 				}
+				else 
+				{
+					brick[i].collidedLastFrame = false;
+				}
+
 				if (ball.invertY == true)
 				{
 					ball.speed.y *= -1.0f;
@@ -281,8 +271,8 @@ namespace arkanoid_IDG {
 				}
 				if (ball.invertX == true)
 				{
-					ball.invertX = false;
 					ball.speed.x *= -1.0f;
+					ball.invertX = false;
 					break;
 				}
 			}
@@ -293,11 +283,12 @@ namespace arkanoid_IDG {
 				gamestate = gameOver;
 				scorestate = lost;
 			}
-			bricksRemmaining = 0;
+
 			for (int i = 0; i < maxBrickAmmount; i++)
 			{
 				if (brick[i].exists == true)bricksRemmaining += 1;
 			}
+
 			if (bricksRemmaining == 0)
 			{
 				switch (level)
@@ -319,14 +310,29 @@ namespace arkanoid_IDG {
 				}
 				levelTransition();
 			}
+			bricksRemmaining = 0;
 		}
-		if (pause&&IsKeyPressed(KEY_DOWN))optionCounterPause--;
-		if (pause&&IsKeyPressed(KEY_UP))optionCounterPause++;
-		if (optionCounterPause < 1)optionCounterPause = 3;
-		if (optionCounterPause > 3)optionCounterPause = 1;
-		framesCounter++;
+		
 		if (pause)
 		{
+			if (IsKeyPressed(KEY_DOWN))
+			{
+				optionCounterPause--;
+			}
+			if (IsKeyPressed(KEY_UP))
+			{
+				optionCounterPause++;
+			}
+
+			if (optionCounterPause < 1)
+			{
+				optionCounterPause = 3;
+			}
+			if (optionCounterPause > 3)
+			{
+				optionCounterPause = 1;
+			}
+
 			if (optionCounterPause == 3)
 			{
 				Return.color = selectedOption;
@@ -337,6 +343,7 @@ namespace arkanoid_IDG {
 				exitbutton.textColor = notSelectedText;
 				if (IsKeyPressed(KEY_ENTER))pause = !pause;
 			}
+
 			if (optionCounterPause == 2)
 			{
 				Return.color = notSelectedOption;
@@ -348,6 +355,7 @@ namespace arkanoid_IDG {
 				if (IsKeyPressed(KEY_ENTER))gamestate = optionsMenu;
 				lastState = gameplay;
 			}
+
 			if (optionCounterPause == 1)
 			{
 				Return.color = notSelectedOption;
@@ -397,8 +405,75 @@ namespace arkanoid_IDG {
 		EndDrawing();
 	}
 
+	
+
+	bool ballShouldCollideBrick(Brick brick, Ball ball)
+	{
+		if (brick.exists == true && brick.collidedLastFrame == false && CheckCollisionCircleRec(ball.position, ball.radius, brick.rectangle))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	void applySpeedToBall(Ball &ball, Player player)
+	{
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces))
+		{
+			ball.speed.x = -ball.speedX6;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 2) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 1)))
+		{
+			ball.speed.x = -ball.speedX5;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 3) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 2)))
+		{
+			ball.speed.x = -ball.speedX4;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 4) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 3)))
+		{
+			ball.speed.x = -ball.speedX3;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 5) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 4)))
+		{
+			ball.speed.x = -ball.speedX2;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 6) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 5)))
+		{
+			ball.speed.x = -ball.speedX1;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 7) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 6)))
+		{
+			ball.speed.x = ball.speedX1;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 8) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 7)))
+		{
+			ball.speed.x = ball.speedX2;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 9) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 8)))
+		{
+			ball.speed.x = ball.speedX3;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 10) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 9)))
+		{
+			ball.speed.x = ball.speedX4;
+		}
+		if (ball.position.x < player.rectangle.x + (player.rectangle.width / player.pieces * 11) && (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 10)))
+		{
+			ball.speed.x = ball.speedX5;
+		}
+		if (ball.position.x >= player.rectangle.x + (player.rectangle.width / player.pieces * 11))
+		{
+			ball.speed.x = ball.speedX6;
+		}
+	}
+
 	void levelTransition()
 	{
+		initBricks();
 		for (int i = 0; i < maxBrickAmmount; i++)
 		{
 			switch (level)
@@ -447,5 +522,8 @@ namespace arkanoid_IDG {
 		}
 		player.rectangle.x = GetScreenWidth() / 2;
 		player.ballAttached = true;
+		ActiveBarrier = false;
+		ball.radius = ball.originalRadius;
+		ball.sizeState = normalSize;
 	}
 }

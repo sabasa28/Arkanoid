@@ -3,11 +3,11 @@
 
 #include "raylib.h"
 namespace arkanoid_IDG {
-	struct Bounce {
-		bool right = false;
+	struct Direction {
 		bool left = false;
-		bool up = false;
+		bool right = false;
 		bool down = false;
+		bool up = false;
 	};
 	enum Size
 	{
@@ -24,8 +24,9 @@ namespace arkanoid_IDG {
 		Vector2 launchSpeedDiv;
 		Vector2 launchSpeed;
 		float radius;
+		float originalRadius;
 		float radiusDivider;
-		Bounce bounceSide;
+		Direction generalDir;
 		Size sizeState = normalSize;
 		bool invertY;
 		bool invertX;
@@ -47,5 +48,11 @@ namespace arkanoid_IDG {
 	};
 	extern Ball ball;
 	void initBall();
+	void initResizedBall(float multiplierX, float muliplierY, float multiplierXY);
+	bool ballIsOffScreenLimits(Ball ball);
+	float ballTopSideY(Ball ball);
+	float ballBottomSideY(Ball ball);
+	float ballLeftSideX(Ball ball);
+	float ballRightSideX(Ball ball);
 }
 #endif // BALL_H

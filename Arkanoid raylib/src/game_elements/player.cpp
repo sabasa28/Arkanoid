@@ -6,7 +6,7 @@ namespace arkanoid_IDG {
 	Scorestate scorestate;
 
 
-	float GetCenterPos(Player player)
+	float GetCenterXPos(Player player)
 	{
 		return player.centerPosition = player.rectangle.x + player.rectangle.width / 2;
 	}
@@ -26,5 +26,14 @@ namespace arkanoid_IDG {
 		player.regularSpeed = player.speed;
 		player.lives = 10;
 		player.ballAttached = true;
+	}
+
+	void initResizedPlayer(float multiplierX, float multiplierY)
+	{
+		player.rectangle.width = screenWidth / player.divider.width;
+		player.rectangle.height = screenHeight / player.divider.height;
+		player.speed = screenWidth / player.speedDivider;
+		player.rectangle.x = player.rectangle.x*multiplierX;
+		player.rectangle.y = player.rectangle.y*multiplierX;
 	}
 }

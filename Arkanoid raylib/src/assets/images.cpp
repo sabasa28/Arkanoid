@@ -6,6 +6,7 @@
 namespace arkanoid_IDG {
 	static Image originalImage;
 	Texture background;
+
 	void initTextures()
 	{
 		originalImage = LoadImage("images/arkanoid_background.jpg");
