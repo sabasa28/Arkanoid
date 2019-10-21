@@ -24,7 +24,7 @@ namespace arkanoid_IDG {
 		player.ballAttached = true;
 		pause = false;
 		player.lives = 10;
-		ball.position = { GetCenterXPos(player), player.rectangle.y - ball.radius };
+		ball.position = { getCenterXPos(player), player.rectangle.y - ball.radius };
 		gamestate = gameplay;
 	}
 }

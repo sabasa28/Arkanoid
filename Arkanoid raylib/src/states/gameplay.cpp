@@ -139,7 +139,7 @@ namespace arkanoid_IDG {
 
 			if (player.ballAttached == true)
 			{
-				ball.position = { GetCenterXPos(player), player.rectangle.y - ball.radius };
+				ball.position = { getCenterXPos(player), player.rectangle.y - ball.radius };
 			}
 
 			if (ballIsOffScreenLimits(ball)) ball.speed.x *= -1.0f;

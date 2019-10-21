@@ -6,10 +6,12 @@ namespace arkanoid_IDG {
 	Scorestate scorestate;
 
 
-	float GetCenterXPos(Player player)
+	float getCenterXPos(Player player)
 	{
 		return player.centerPosition = player.rectangle.x + player.rectangle.width / 2;
 	}
+
+	
 
 	void initPlayer()
 	{
@@ -36,4 +38,5 @@ namespace arkanoid_IDG {
 		player.rectangle.x = player.rectangle.x*multiplierX;
 		player.rectangle.y = player.rectangle.y*multiplierX;
 	}
+
 }

@@ -31,22 +31,23 @@ namespace arkanoid_IDG {
 			switch ((GetRandomValue(0, 30)))
 			{
 			case 0:
+			case 1:
 				brick[i].content = tpPlayer;
 				break;
-			case 7:
-			case 8:
-			case 9:
-			case 10:
-			case 1:
+			case 2:
+			case 3:
 				brick[i].content = enlargeBall;
 				break;
-			case 2:
+			case 4:
+			case 5:
 				brick[i].content = shrinkBall;
 				break;
-			case 3:
+			case 6:
+			case 7:
 				brick[i].content = slowMo;
 				break;
-			case 4:
+			case 8:
+			case 9:
 				brick[i].content = barrier;
 				break;
 			default:

@@ -26,7 +26,7 @@ namespace arkanoid_IDG {
 	};
 	extern Scorestate scorestate;
 
-	float GetCenterXPos(Player player);
+	float getCenterXPos(Player player);
 	void initPlayer();
 	void initResizedPlayer(float multiplierX, float multiplierY);
 }
