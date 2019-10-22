@@ -12,18 +12,16 @@
 #include "resetGameElements.h"
 #include "assets/images.h"
 #include "assets/sound.h"
+
 namespace arkanoid_IDG {
+
 	State gamestate = menu;
 	State lastState = menu;
 
-	void oneTimeInit() 
+	void generalInit()
 	{
 		initConsole();
 		initSounds();
-	}
-
-	void generalInit()
-	{
 		HideCursor();
 		initTextures();
 		initPlayer();
@@ -57,7 +55,6 @@ namespace arkanoid_IDG {
 
 	void executeGame()
 	{
-		oneTimeInit();
 		generalInit();
 		while (!WindowShouldClose() && gamestate != closing)
 		{
@@ -86,6 +83,7 @@ namespace arkanoid_IDG {
 				resetGameElements();
 			}
 		}
+
 		closeGame();
 		CloseWindow();
 	}

@@ -8,12 +8,16 @@
 #include "assets/images.h"
 #include "assets/sound.h"
 namespace arkanoid_IDG {
+
 	static Button playbutton;
 	static Button optionsbutton;
 	static Button exitbutton;
 	static Button infobutton;
+
 	static int optionCounterMenu = 4;
+
 	static bool showingControls = false;
+
 	static float controlsFontDiv = 15.0f;
 	static int controlsFont;
 	static float controlsXDiv = 8.0f;
@@ -89,12 +93,12 @@ namespace arkanoid_IDG {
 		controls5YPos = screenHeight / controls5YDiv;
 		controls6YPos = screenHeight / controls6YDiv;
 		controlsXPos = screenWidth / controlsXDiv;
-
 	}
 
 	void updateMenu()
 	{
 		UpdateMusicStream(originalMusic);
+
 		if (showingControls == true)
 		{
 			if (IsKeyPressed(KEY_ENTER))
@@ -102,24 +106,43 @@ namespace arkanoid_IDG {
 				showingControls=false;
 			}
 		}
+
 		else
 		{
-			if (IsKeyPressed(KEY_DOWN))optionCounterMenu--;
-				if (IsKeyPressed(KEY_UP))optionCounterMenu++;
-				if (optionCounterMenu < 1)optionCounterMenu = 4;
-				if (optionCounterMenu > 4)optionCounterMenu = 1;
-				if (optionCounterMenu == 1)
+			if (IsKeyPressed(KEY_DOWN))
+			{
+				optionCounterMenu--;
+			}
+			if (IsKeyPressed(KEY_UP))
+			{
+				optionCounterMenu++;
+			}
+			if (optionCounterMenu < 1)
+			{
+				optionCounterMenu = 4;
+			}
+			if (optionCounterMenu > 4)
+			{
+				optionCounterMenu = 1;
+			}
+
+			if (optionCounterMenu == 1)
+			{
+				playbutton.color = notSelectedOption;
+				infobutton.color = notSelectedOption;
+				optionsbutton.color = notSelectedOption;
+				exitbutton.color = selectedOption;
+				playbutton.textColor = notSelectedText;
+				infobutton.textColor = notSelectedText;
+				optionsbutton.textColor = notSelectedText;
+				exitbutton.textColor = selectedText;
+
+				if (IsKeyPressed(KEY_ENTER))
 				{
-					playbutton.color = notSelectedOption;
-					infobutton.color = notSelectedOption;
-					optionsbutton.color = notSelectedOption;
-					exitbutton.color = selectedOption;
-					playbutton.textColor = notSelectedText;
-					infobutton.textColor = notSelectedText;
-					optionsbutton.textColor = notSelectedText;
-					exitbutton.textColor = selectedText;
-					if (IsKeyPressed(KEY_ENTER)) gamestate = closing;
+					gamestate = closing;
 				}
+			}
+
 			if (optionCounterMenu == 2)
 			{
 				playbutton.color = notSelectedOption;
@@ -130,6 +153,7 @@ namespace arkanoid_IDG {
 				infobutton.textColor = notSelectedText;
 				optionsbutton.textColor = selectedText;
 				exitbutton.textColor = notSelectedText;
+
 				if (IsKeyPressed(KEY_ENTER))
 				{
 					lastState = menu;
@@ -137,6 +161,7 @@ namespace arkanoid_IDG {
 					optionCounterMenu = 4;
 				}
 			}
+
 			if (optionCounterMenu == 3)
 			{
 				playbutton.color = notSelectedOption;
@@ -147,8 +172,13 @@ namespace arkanoid_IDG {
 				infobutton.textColor = selectedText;
 				optionsbutton.textColor = notSelectedText;
 				exitbutton.textColor = notSelectedText;
-				if (IsKeyPressed(KEY_ENTER) && gamestate == menu) showingControls = true;
+				
+				if (IsKeyPressed(KEY_ENTER) && gamestate == menu)
+				{
+					showingControls = true;
+				}
 			}
+
 			if (optionCounterMenu == 4)
 			{
 				playbutton.color = selectedOption;
@@ -159,13 +189,19 @@ namespace arkanoid_IDG {
 				infobutton.textColor = notSelectedText;
 				optionsbutton.textColor = notSelectedText;
 				exitbutton.textColor = notSelectedText;
-				if (IsKeyPressed(KEY_ENTER) && gamestate == menu) gamestate = resetingValues;
+				
+				if (IsKeyPressed(KEY_ENTER) && gamestate == menu)
+				{
+					gamestate = resetingValues;
+				}
 			}
 		}
 	}
+
 	void drawMenu()
 	{
 		BeginDrawing();
+
 		if (showingControls==true)
 		{
 			ClearBackground(BLACK);
@@ -190,4 +226,5 @@ namespace arkanoid_IDG {
 		}
 		EndDrawing();
 	}
+
 }

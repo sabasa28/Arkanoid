@@ -13,29 +13,38 @@
 #include "assets/sound.h"
 
 namespace arkanoid_IDG {
+
 	static Button Return;
 	static Button optionsbutton;
 	static Button exitbutton;
+
 	Vector2 pausedText;
 	Vector2 pausedTextDiv{ 2.4f,8.0f };
 	static int pausedTextFont;
 	static float pausedTextFontDiv = 15.0f;
+
 	Vector2 levelText;
 	Vector2 levelTextDiv{ 2.5f,1.5f };
 	static int levelTextFont;
 	static float levelTextFontDiv = 10.0f;
+
 	Vector2 livesText;
 	Vector2 livesTextDiv{ 20.0f,1.1f };
 	static int livesTextFont;
 	static float livesTextFontDiv = 22.5f;
+
 	bool pause = false;
 	static int optionCounterPause = 3;
-	static bool ActiveBarrier = false;
+
+	bool ActiveBarrier = false;
 	lvl level = lvl1;
 	bool speedsDecreased=false;
+
+
 	bool ballShouldCollideBrick(Brick brick, Ball ball);
 	void applySpeedToBall(Ball &ball, Player player);
 	void levelTransition();
+
 	void initPause()
 	{
 		Return.divider.width = 3.0f;

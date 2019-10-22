@@ -9,11 +9,14 @@
 #include "assets/sound.h"
 
 namespace arkanoid_IDG {
+
 	static int optionCounterGameOver = 3;
+
 	static Vector2 result;
 	static Vector2 resultDivider{ 2.8f,16.0f };
 	static float resultFontDivider = 10.0f;
 	static float resultFont;
+
 	static Vector2 creditsText1Div;
 	static Vector2 creditsText2Div;
 	static Vector2 creditsText3Div;
@@ -24,11 +27,13 @@ namespace arkanoid_IDG {
 	static Vector2 creditsText4;
 	static float creditsTextFontDiv;
 	static float creditsTextFont;
+	static bool showingCredits = false;
+
 	static Button playAgain;
 	static Button backToMenu;
 	static Button exit;
 	static Button credits;
-	static bool showingCredits = false;
+
 
 	void initGameOver()
 	{
@@ -185,17 +190,21 @@ namespace arkanoid_IDG {
 	void drawGameOver()
 	{
 		BeginDrawing();
+
 		ClearBackground(BLACK);
+
 		if (showingCredits == false)
 		{
 			if (scorestate == lost)
 			{
 				DrawText("You lost :(", static_cast<int>(result.x), static_cast<int>(result.y), static_cast<int>(resultFont), WHITE);
 			}
+
 			if (scorestate == won)
 			{
 				DrawText("You won :)", static_cast<int>(result.x), static_cast<int>(result.y), static_cast<int>(resultFont), WHITE);
 			}
+
 			DrawRectangle(static_cast<int>(playAgain.rectangle.x), static_cast<int>(playAgain.rectangle.y), static_cast<int>(playAgain.rectangle.width), static_cast<int>(playAgain.rectangle.height), playAgain.color);
 			DrawRectangle(static_cast<int>(backToMenu.rectangle.x), static_cast<int>(backToMenu.rectangle.y), static_cast<int>(backToMenu.rectangle.width), static_cast<int>(backToMenu.rectangle.height), backToMenu.color);
 			DrawRectangle(static_cast<int>(exit.rectangle.x), static_cast<int>(exit.rectangle.y), static_cast<int>(exit.rectangle.width), static_cast<int>(exit.rectangle.height), exit.color);
@@ -212,6 +221,7 @@ namespace arkanoid_IDG {
 			DrawText("Audio, art, design & programming - Inaki Diez Galarza", static_cast<int>(creditsText3.x), static_cast<int>(creditsText3.y), static_cast<int>(creditsTextFont), WHITE);
 			DrawText("Press ENTER to go back", static_cast<int>(creditsText4.x), static_cast<int>(creditsText4.y), static_cast<int>(creditsTextFont), WHITE);
 		}
+
 		EndDrawing();
 	}
 }

@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
+
 namespace arkanoid_IDG {
+
 	enum State
 	{
 		menu,
@@ -12,8 +14,9 @@ namespace arkanoid_IDG {
 	};
 	extern State gamestate;
 	extern State lastState;
-	void generalInit();
+
 	void resizeInit(float multiplierX, float multiplierY, float multiplierXY);
 	void executeGame();
 }
+
 #endif //GAME_H

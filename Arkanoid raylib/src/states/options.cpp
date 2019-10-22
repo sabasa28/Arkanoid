@@ -13,11 +13,11 @@
 namespace arkanoid_IDG {
 
 	static bool muted=false;
-	Button MuteVolume;
-	Button SwapScreensize1;
-	Button SwapScreensize2;
-	Button SwapScreensize3;
-	Button Back;
+	static Button MuteVolume;
+	static Button SwapScreensize1;
+	static Button SwapScreensize2;
+	static Button SwapScreensize3;
+	static Button Back;
 	static int optionCounterOptions = 5;
 	static int lastScreenSizeX;
 	static int lastScreenSizeY;
@@ -92,10 +92,13 @@ namespace arkanoid_IDG {
 	void updateOptions()
 	{
 		UpdateMusicStream(originalMusic);
+
 		if (IsKeyPressed(KEY_DOWN))optionCounterOptions--;
 		if (IsKeyPressed(KEY_UP))optionCounterOptions++;
 		if (optionCounterOptions < 1)optionCounterOptions = 5;
 		if (optionCounterOptions > 5)optionCounterOptions = 1;
+
+
 		if (optionCounterOptions == 1)
 		{
 			MuteVolume.color = notSelectedOption;
@@ -113,6 +116,7 @@ namespace arkanoid_IDG {
 				gamestate = lastState;
 			}
 		}
+
 		if (optionCounterOptions == 2)
 		{
 			MuteVolume.color = notSelectedOption;
@@ -130,6 +134,7 @@ namespace arkanoid_IDG {
 				resizeToFullscreen();
 			}
 		}
+
 		if (optionCounterOptions == 3)
 		{
 			MuteVolume.color = notSelectedOption;
@@ -147,6 +152,7 @@ namespace arkanoid_IDG {
 				resizeScreen(windowSize2_x,windowSize2_y);
 			}
 		}
+
 		if (optionCounterOptions == 4)
 		{
 			MuteVolume.color = notSelectedOption;
@@ -164,6 +170,7 @@ namespace arkanoid_IDG {
 				resizeScreen(windowSize1_x, windowSize1_y);
 			}
 		}
+
 		if (optionCounterOptions == 5)
 		{
 			MuteVolume.color = selectedOption;
@@ -184,6 +191,7 @@ namespace arkanoid_IDG {
 				else muted = true;
 			}
 		}
+
 	}
 
 	void drawOptions()
