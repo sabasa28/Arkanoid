@@ -22,11 +22,13 @@ namespace arkanoid_IDG {
 	static float controls3YDiv = 2.5f;
 	static float controls4YDiv = 1.9f;
 	static float controls5YDiv = 1.25f;
+	static float controls6YDiv = 1.55f;
 	static float controls1YPos;
 	static float controls2YPos;
 	static float controls3YPos;
 	static float controls4YPos;
 	static float controls5YPos;
+	static float controls6YPos;
 	static float controlsXPos;
 
 
@@ -85,6 +87,7 @@ namespace arkanoid_IDG {
 		controls3YPos = screenHeight / controls3YDiv;
 		controls4YPos = screenHeight / controls4YDiv;
 		controls5YPos = screenHeight / controls5YDiv;
+		controls6YPos = screenHeight / controls6YDiv;
 		controlsXPos = screenWidth / controlsXDiv;
 
 	}
@@ -170,6 +173,7 @@ namespace arkanoid_IDG {
 			DrawText("Move = right and left arrows", static_cast<int>(controlsXPos), static_cast<int>(controls2YPos),controlsFont,WHITE);
 			DrawText("Launch ball = spacebar", static_cast<int>(controlsXPos), static_cast<int>(controls3YPos), controlsFont, WHITE);
 			DrawText("Pause = escape", static_cast<int>(controlsXPos), static_cast<int>(controls4YPos), controlsFont, WHITE);
+			DrawText("Beat all four stages to WIN!", static_cast<int>(controlsXPos), static_cast<int>(controls6YPos), controlsFont, WHITE);
 			DrawText("Press enter to go back to menu", static_cast<int>(controlsXPos), static_cast<int>(controls5YPos), controlsFont, WHITE);
 		}
 		else

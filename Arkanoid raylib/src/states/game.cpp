@@ -24,6 +24,7 @@ namespace arkanoid_IDG {
 
 	void generalInit()
 	{
+		HideCursor();
 		initTextures();
 		initPlayer();
 		initBall();
